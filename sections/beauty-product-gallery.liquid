@@ -1,0 +1,68 @@
+{%- comment -%}
+  Beauty Care — Product gallery (scroll-snap), one card per product block.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section beauty__section--tight{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 28 }}px;padding-bottom:{{ s.padding_bottom | default: 28 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Nos essentiels' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Les produits de vos packs' }}</h2>
+    </div>
+    <div class="beauty__wrap beauty-gallery__wrap">
+      <button type="button" class="beauty-gallery__nav beauty-gallery__nav--prev" aria-label="Précédent" data-beauty-gallery-prev>‹</button>
+      <div class="beauty-gallery" role="list" aria-label="{{ s.title | default: 'Nos essentiels' | escape }}">
+        {%- assign blocks = section.blocks | where: 'type', 'product_item' -%}
+        {%- if blocks.size > 0 -%}
+          {%- for b in blocks -%}
+            <div class="beauty-gallery__item" role="listitem" {{ b.shopify_attributes }}>
+              {%- render 'beauty-card', image: b.settings.image, ratio: '4-5', title: b.settings.title, text: b.settings.text -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="beauty-gallery__item">{%- render 'beauty-card', ratio: '4-5', title: 'Papaya Face Wash', text: 'Nettoyant doux illuminateur.' -%}</div>
+          <div class="beauty-gallery__item">{%- render 'beauty-card', ratio: '4-5', title: 'Aloe Vera Scrub', text: 'Exfoliant apaisant visage.' -%}</div>
+          <div class="beauty-gallery__item">{%- render 'beauty-card', ratio: '4-5', title: 'Rose Cream', text: 'Crème hydratante à la rose.' -%}</div>
+          <div class="beauty-gallery__item">{%- render 'beauty-card', ratio: '4-5', title: 'Perfume Mist', text: 'Brume parfumée longue tenue.' -%}</div>
+        {%- endif -%}
+      </div>
+      <button type="button" class="beauty-gallery__nav beauty-gallery__nav--next" aria-label="Suivant" data-beauty-gallery-next>›</button>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Product Gallery",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Nos essentiels" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Les produits de vos packs" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "blocks": [
+    {
+      "type": "product_item",
+      "name": "Produit",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Nom du produit", "default": "Papaya Face Wash" },
+        { "type": "textarea", "id": "text", "label": "Description courte", "default": "Nettoyant doux illuminateur." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Product Gallery",
+      "blocks": [
+        { "type": "product_item", "settings": { "title": "Papaya Face Wash", "text": "Nettoyant doux illuminateur." } },
+        { "type": "product_item", "settings": { "title": "Aloe Vera Scrub", "text": "Exfoliant apaisant visage." } },
+        { "type": "product_item", "settings": { "title": "Rose Cream", "text": "Crème hydratante à la rose." } },
+        { "type": "product_item", "settings": { "title": "Perfume Mist", "text": "Brume parfumée longue tenue." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

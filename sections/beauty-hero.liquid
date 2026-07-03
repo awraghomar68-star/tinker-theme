@@ -1,0 +1,123 @@
+{%- comment -%}
+  Beauty Care — Hero section (first section on the page; loads the shared
+  stylesheet for the whole landing page).
+{%- endcomment -%}
+
+{{ 'beauty-landing.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign hero_img = s.hero_image
+-%}
+{%- if hero_img != blank -%}<link rel="preload" as="image" href="{{ hero_img | image_url: width: 1200 }}" fetchpriority="high">{%- endif -%}
+
+<div class="beauty" id="beauty-top">
+  <section class="beauty-hero">
+    <div class="beauty-hero__media">
+      {%- if hero_img != blank -%}
+        <img
+          src="{{ hero_img | image_url: width: 1200 }}"
+          srcset="{{ hero_img | image_url: width: 700 }} 700w, {{ hero_img | image_url: width: 1200 }} 1200w, {{ hero_img | image_url: width: 1600 }} 1600w"
+          sizes="100vw"
+          width="{{ hero_img.width | default: 1200 }}"
+          height="{{ hero_img.height | default: 1500 }}"
+          alt="{{ s.hero_title | default: 'Beauty Care' | escape }}"
+          loading="eager" fetchpriority="high" decoding="async">
+      {%- else -%}
+        <span class="beauty-ph"></span>
+      {%- endif -%}
+    </div>
+    <div class="beauty-hero__inner">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'BEAUTY CARE · PACKS SOIN PREMIUM' }}</p>
+      <h1 class="beauty__h1">{{ s.hero_title | default: 'Révélez votre éclat naturel' }}</h1>
+
+      {%- if s.rating != blank or s.reviews_count != blank -%}
+      <div class="beauty-rating beauty-hero__rating">
+        {%- if s.rating != blank -%}
+        <span class="beauty-stars">
+          {%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}
+        </span>
+        {%- endif -%}
+        <span class="beauty-rating__txt">{%- if s.rating != blank -%}<b>{{ s.rating }}/5</b>{%- endif -%}{%- if s.rating != blank and s.reviews_count != blank -%} · {% endif %}{%- if s.reviews_count != blank -%}{{ s.reviews_count }} {{ s.reviews_word | default: 'avis clientes' }}{%- endif -%}</span>
+      </div>
+      {%- endif -%}
+
+      <p class="beauty__lead">{{ s.hero_sub | default: 'Des packs soin curés, ingrédients doux, résultats visibles. Paiement à la livraison.' }}</p>
+
+      {%- if s.price != blank -%}
+      <div class="beauty-hero__price">
+        <b>{{ s.price }}</b>
+        {%- if s.compare_price != blank -%}<s>{{ s.compare_price }}</s>{%- endif -%}
+      </div>
+      {%- endif -%}
+
+      <div class="beauty-cta-block">
+        <a href="#beauty-order" class="beauty-btn" data-beauty-scroll>{{ s.cta_label | default: 'Choisir mon pack' }}</a>
+      </div>
+
+      <div class="beauty-trustrow">
+        {%- assign badge_blocks = section.blocks | where: 'type', 'trust_badge' -%}
+        {%- if badge_blocks.size > 0 -%}
+          {%- for b in badge_blocks -%}
+            {%- render 'beauty-badge', icon: b.settings.icon, icon_image: b.settings.icon_image, text: b.settings.text -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- render 'beauty-badge', icon: 'cash', text: 'Paiement à la livraison' -%}
+          {%- render 'beauty-badge', icon: 'truck', text: 'Livraison gratuite' -%}
+          {%- render 'beauty-badge', icon: 'shield', text: 'Satisfaite ou remboursée' -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{{ 'beauty-landing.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Beauty Hero",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Image hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BEAUTY CARE · PACKS SOIN PREMIUM" },
+    { "type": "text", "id": "hero_title", "label": "Titre", "default": "Révélez votre éclat naturel" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sous-titre", "default": "Des packs soin curés, ingrédients doux, résultats visibles. Paiement à la livraison." },
+    { "type": "text", "id": "price", "label": "Prix affiché (optionnel)" },
+    { "type": "text", "id": "compare_price", "label": "Prix barré (optionnel)" },
+    { "type": "text", "id": "cta_label", "label": "Texte CTA", "default": "Choisir mon pack" },
+    { "type": "header", "content": "Preuve sociale (chiffres réels uniquement)" },
+    { "type": "text", "id": "rating", "label": "Note /5 (réelle)", "info": "Vide = masqué." },
+    { "type": "text", "id": "reviews_count", "label": "Nombre d'avis (réel)", "info": "Vide = masqué." },
+    { "type": "text", "id": "reviews_word", "label": "Mot 'avis'", "default": "avis clientes" },
+    { "type": "header", "content": "Espacement" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Badge de confiance",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "cash",
+          "options": [
+            { "value": "cash", "label": "COD" }, { "value": "truck", "label": "Livraison" }, { "value": "shield", "label": "Garantie" },
+            { "value": "leaf", "label": "Naturel" }, { "value": "sparkle", "label": "Éclat" }, { "value": "gift", "label": "Cadeau" }, { "value": "heart", "label": "Cœur" }
+          ] },
+        { "type": "image_picker", "id": "icon_image", "label": "Icône — image (override)" },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Paiement à la livraison" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Hero",
+      "blocks": [
+        { "type": "trust_badge", "settings": { "icon": "cash", "text": "Paiement à la livraison" } },
+        { "type": "trust_badge", "settings": { "icon": "truck", "text": "Livraison gratuite" } },
+        { "type": "trust_badge", "settings": { "icon": "shield", "text": "Satisfaite ou remboursée" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

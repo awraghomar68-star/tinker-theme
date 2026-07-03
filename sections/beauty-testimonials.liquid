@@ -1,0 +1,82 @@
+{%- comment -%}
+  Beauty Care — Customer reviews / testimonials. Rating/count blank = hidden
+  (no fabricated stats, same honesty rule used across the store's landing pages).
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Elles nous font confiance' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Ce que disent nos clientes' }}</h2>
+
+      {%- if s.rating != blank or s.reviews_count != blank -%}
+      <div class="beauty-rating beauty__center beauty-mt-16" style="justify-content:center;display:flex;">
+        {%- if s.rating != blank -%}
+        <span class="beauty-stars">{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}</span>
+        {%- endif -%}
+        <span class="beauty-rating__txt">{%- if s.rating != blank -%}<b>{{ s.rating }}/5</b>{%- endif -%}{%- if s.rating != blank and s.reviews_count != blank -%} · {% endif %}{%- if s.reviews_count != blank -%}{{ s.reviews_count }} {{ s.reviews_word | default: 'avis vérifiés' }}{%- endif -%}</span>
+      </div>
+      {%- endif -%}
+
+      <div class="beauty-reviews beauty-mt-24">
+        {%- assign blocks = section.blocks | where: 'type', 'review' -%}
+        {%- if blocks.size > 0 -%}
+          {%- for r in blocks -%}
+            <div class="beauty-review" {{ r.shopify_attributes }}>
+              <div class="beauty-review__top">
+                <div class="beauty-review__av">{%- if r.settings.photo != blank -%}<img src="{{ r.settings.photo | image_url: width: 88 }}" width="44" height="44" alt="{{ r.settings.name | escape }}" loading="lazy" decoding="async">{%- else -%}<span class="beauty-ph"></span>{%- endif -%}</div>
+                <div class="beauty-review__who"><b>{{ r.settings.name }}</b><span>{{ r.settings.city }}</span></div>
+              </div>
+              <span class="beauty-stars">{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}</span>
+              <p class="beauty-review__txt">{{ r.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="beauty-review"><div class="beauty-review__top"><div class="beauty-review__av"><span class="beauty-ph"></span></div><div class="beauty-review__who"><b>Salma K.</b><span>Casablanca</span></div></div><span class="beauty-stars">{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}</span><p class="beauty-review__txt">Ma peau est visiblement plus lumineuse après 2 semaines. Livraison rapide et pack magnifique.</p></div>
+          <div class="beauty-review"><div class="beauty-review__top"><div class="beauty-review__av"><span class="beauty-ph"></span></div><div class="beauty-review__who"><b>Imane R.</b><span>Rabat</span></div></div><span class="beauty-stars">{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}</span><p class="beauty-review__txt">Le Glow Pack sent divinement bon, texture très agréable. Je recommande.</p></div>
+          <div class="beauty-review"><div class="beauty-review__top"><div class="beauty-review__av"><span class="beauty-ph"></span></div><div class="beauty-review__who"><b>Fatima Z.</b><span>Marrakech</span></div></div><span class="beauty-stars">{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}{%- render 'beauty-icons', icon: 'star' -%}</span><p class="beauty-review__txt">Parfait comme cadeau, emballage soigné. Paiement à la livraison très pratique.</p></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Testimonials",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Elles nous font confiance" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Ce que disent nos clientes" },
+    { "type": "text", "id": "rating", "label": "Note /5 (réelle)", "info": "Vide = masqué." },
+    { "type": "text", "id": "reviews_count", "label": "Nombre d'avis (réel)", "info": "Vide = masqué." },
+    { "type": "text", "id": "reviews_word", "label": "Mot 'avis'", "default": "avis vérifiés" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis client",
+      "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Photo cliente (optionnel)" },
+        { "type": "text", "id": "name", "label": "Nom", "default": "Salma K." },
+        { "type": "text", "id": "city", "label": "Ville", "default": "Casablanca" },
+        { "type": "textarea", "id": "text", "label": "Avis", "default": "Ma peau est visiblement plus lumineuse après 2 semaines." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Testimonials",
+      "blocks": [
+        { "type": "review", "settings": { "name": "Salma K.", "city": "Casablanca", "text": "Ma peau est visiblement plus lumineuse après 2 semaines. Livraison rapide et pack magnifique." } },
+        { "type": "review", "settings": { "name": "Imane R.", "city": "Rabat", "text": "Le Glow Pack sent divinement bon, texture très agréable. Je recommande." } },
+        { "type": "review", "settings": { "name": "Fatima Z.", "city": "Marrakech", "text": "Parfait comme cadeau, emballage soigné. Paiement à la livraison très pratique." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

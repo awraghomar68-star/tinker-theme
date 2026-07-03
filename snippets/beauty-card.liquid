@@ -1,0 +1,58 @@
+{%- comment -%}
+  beauty-card
+  Reusable product/bundle card: image, title, price, optional savings badge.
+  Used by beauty-pack-builder.liquid and beauty-product-gallery.liquid.
+
+  Params:
+    image         {Image}   product/bundle image (blank = soft placeholder).
+    ratio         {String}  aspect ratio token: '1-1' | '4-5' | '3-4'. Default '4-5'.
+    title         {String}  card title.
+    text          {String}  optional short description.
+    price         {String}  current/bundle price (already formatted, e.g. "249 DH").
+    compare_price {String}  optional original price (rendered struck through).
+    badge         {String}  optional savings/label badge (e.g. "-30%", "Populaire").
+    eager         {Boolean} true = loading=eager + fetchpriority=high. Default false.
+    alt           {String}  alt text.
+{%- endcomment -%}
+{%- liquid
+  assign bc_ratio = ratio | default: '4-5'
+  assign bc_alt = alt | default: title
+  if eager
+    assign bc_loading = 'eager'
+    assign bc_fetch = 'high'
+  else
+    assign bc_loading = 'lazy'
+    assign bc_fetch = 'auto'
+  endif
+-%}
+<div class="beauty-card">
+  <div class="beauty-card__media" data-ratio="{{ bc_ratio }}">
+    {%- if badge != blank -%}<span class="beauty-card__badge">{{ badge }}</span>{%- endif -%}
+    {%- if image != blank -%}
+      <img
+        src="{{ image | image_url: width: 700 }}"
+        srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 700 }} 700w, {{ image | image_url: width: 1000 }} 1000w"
+        sizes="(min-width: 720px) 340px, 86vw"
+        width="{{ image.width | default: 700 }}"
+        height="{{ image.height | default: 875 }}"
+        alt="{{ bc_alt | escape }}"
+        loading="{{ bc_loading }}"
+        fetchpriority="{{ bc_fetch }}"
+        decoding="async">
+    {%- else -%}
+      <span class="beauty-card__ph"></span>
+    {%- endif -%}
+  </div>
+  {%- if title != blank or text != blank or price != blank -%}
+  <div class="beauty-card__body">
+    {%- if title != blank -%}<h3 class="beauty-card__title">{{ title }}</h3>{%- endif -%}
+    {%- if text != blank -%}<p class="beauty-card__text">{{ text }}</p>{%- endif -%}
+    {%- if price != blank -%}
+    <div class="beauty-card__price">
+      <b>{{ price }}</b>
+      {%- if compare_price != blank -%}<s>{{ compare_price }}</s>{%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,13 @@
+{%- comment -%}
+  beauty-badge
+  Small pill/trust badge: icon + text. Used in hero + trust row.
+
+  Params:
+    icon        {String} icon token, see beauty-icons.liquid. Default 'shield'.
+    icon_image  {Image}  optional icon override image.
+    text        {String} badge text.
+{%- endcomment -%}
+<span class="beauty-badge">
+  {%- render 'beauty-icons', icon: icon, image: icon_image, size: 16 -%}
+  <span>{{ text }}</span>
+</span>

@@ -1,0 +1,150 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "beauty_hero": {
+      "type": "beauty-hero",
+      "blocks": {
+        "tb1": { "type": "trust_badge", "settings": { "icon": "cash", "text": "Paiement à la livraison" } },
+        "tb2": { "type": "trust_badge", "settings": { "icon": "truck", "text": "Livraison gratuite" } },
+        "tb3": { "type": "trust_badge", "settings": { "icon": "shield", "text": "Satisfaite ou remboursée" } }
+      },
+      "block_order": ["tb1", "tb2", "tb3"],
+      "settings": {}
+    },
+    "beauty_benefits": {
+      "type": "beauty-benefits",
+      "blocks": {
+        "b1": { "type": "benefit", "settings": { "icon": "leaf", "title": "Ingrédients doux", "text": "Formules douces, sans agression, adaptées à tous types de peau." } },
+        "b2": { "type": "benefit", "settings": { "icon": "sparkle", "title": "Résultats visibles", "text": "Une routine simple, des résultats qui se voient dès les premières semaines." } },
+        "b3": { "type": "benefit", "settings": { "icon": "gift", "title": "Packs curés", "text": "Des routines complètes pensées ensemble, prêtes à offrir ou à s'offrir." } }
+      },
+      "block_order": ["b1", "b2", "b3"],
+      "settings": {}
+    },
+    "beauty_gallery": {
+      "type": "beauty-product-gallery",
+      "blocks": {
+        "p1": { "type": "product_item", "settings": { "title": "Papaya Face Wash", "text": "Nettoyant doux illuminateur." } },
+        "p2": { "type": "product_item", "settings": { "title": "Aloe Vera Scrub", "text": "Exfoliant apaisant visage." } },
+        "p3": { "type": "product_item", "settings": { "title": "Rose Cream", "text": "Crème hydratante à la rose." } },
+        "p4": { "type": "product_item", "settings": { "title": "Perfume Mist", "text": "Brume parfumée longue tenue." } },
+        "p5": { "type": "product_item", "settings": { "title": "Lip Oil", "text": "Soin lèvres nourrissant et brillant." } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5"],
+      "settings": {}
+    },
+    "beauty_packs": {
+      "type": "beauty-pack-builder",
+      "blocks": {
+        "bd1": { "type": "bundle_option", "settings": { "name": "Starter Pack", "discount": "-29%", "price": "249 DH", "price_value": 249, "compare_price": "349 DH", "compare_value": 349, "save_label": "Économisez 100 DH", "included": "Papaya Face Wash\nAloe Vera Scrub\nRose Cream" } },
+        "bd2": { "type": "bundle_option", "settings": { "name": "Glow Pack", "badge": "Populaire", "best_seller": true, "discount": "-27%", "price": "399 DH", "price_value": 399, "compare_price": "549 DH", "compare_value": 549, "save_label": "Économisez 150 DH", "included": "Papaya Face Wash\nAloe Vera Scrub\nRose Cream\nBody Lotion\nPerfume Mist\nLip Oil" } },
+        "bd3": { "type": "bundle_option", "settings": { "name": "Luxury Pack", "badge": "Meilleure valeur", "discount": "-28%", "price": "899 DH", "price_value": 899, "compare_price": "1249 DH", "compare_value": 1249, "save_label": "Économisez 350 DH", "included": "Toute la gamme Glow\nBody Scrub\nLipstick Set\nMakeup Palette\nHair Cream\nCoffret cadeau premium" } }
+      },
+      "block_order": ["bd1", "bd2", "bd3"],
+      "settings": {}
+    },
+    "beauty_lifestyle": {
+      "type": "beauty-lifestyle",
+      "blocks": {
+        "l1": { "type": "photo", "settings": { "size": "wide", "caption": "Salle de bain lumineuse" } },
+        "l2": { "type": "photo", "settings": { "size": "tall" } },
+        "l3": { "type": "photo", "settings": { "size": "normal" } },
+        "l4": { "type": "photo", "settings": { "size": "normal" } },
+        "l5": { "type": "photo", "settings": { "size": "normal", "caption": "Coiffeuse minimaliste" } }
+      },
+      "block_order": ["l1", "l2", "l3", "l4", "l5"],
+      "settings": {}
+    },
+    "beauty_compare": {
+      "type": "beauty-compare",
+      "blocks": {
+        "c1": { "type": "compare_row", "settings": { "feature": "Paiement à la livraison", "us": "yes", "them": "no" } },
+        "c2": { "type": "compare_row", "settings": { "feature": "Packs soin curés", "us": "yes", "them": "no" } },
+        "c3": { "type": "compare_row", "settings": { "feature": "Ingrédients doux testés", "us": "yes", "them": "no" } },
+        "c4": { "type": "compare_row", "settings": { "feature": "Livraison 24-72h", "us": "yes", "them": "text", "them_text": "5-7j" } },
+        "c5": { "type": "compare_row", "settings": { "feature": "Prix bundle avantageux", "us": "yes", "them": "no" } },
+        "c6": { "type": "compare_row", "settings": { "feature": "Satisfaite ou remboursée", "us": "yes", "them": "no" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "settings": {}
+    },
+    "beauty_ingredients": {
+      "type": "beauty-ingredients",
+      "blocks": {
+        "i1": { "type": "ingredient_point", "settings": { "text": "Sans paraben, sans sulfate" } },
+        "i2": { "type": "ingredient_point", "settings": { "text": "Testé dermatologiquement" } },
+        "i3": { "type": "ingredient_point", "settings": { "text": "Non testé sur les animaux" } }
+      },
+      "block_order": ["i1", "i2", "i3"],
+      "settings": {}
+    },
+    "beauty_results": {
+      "type": "beauty-results",
+      "settings": {}
+    },
+    "beauty_testimonials": {
+      "type": "beauty-testimonials",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "name": "Salma K.", "city": "Casablanca", "text": "Ma peau est visiblement plus lumineuse après 2 semaines. Livraison rapide et pack magnifique." } },
+        "r2": { "type": "review", "settings": { "name": "Imane R.", "city": "Rabat", "text": "Le Glow Pack sent divinement bon, texture très agréable. Je recommande." } },
+        "r3": { "type": "review", "settings": { "name": "Fatima Z.", "city": "Marrakech", "text": "Parfait comme cadeau, emballage soigné. Paiement à la livraison très pratique." } }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": {}
+    },
+    "beauty_how_to_use": {
+      "type": "beauty-how-to-use",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Nettoyer", "text": "Appliquez le nettoyant matin et soir sur peau humide." } },
+        "s2": { "type": "step", "settings": { "title": "Exfolier", "text": "2 à 3 fois par semaine pour une peau lisse et nette." } },
+        "s3": { "type": "step", "settings": { "title": "Hydrater", "text": "Terminez avec la crème pour sceller l'hydratation." } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {}
+    },
+    "beauty_faq": {
+      "type": "beauty-faq",
+      "blocks": {
+        "f1": { "type": "faq", "settings": { "q": "Le paiement à la livraison est-il disponible ?", "a": "Oui, vous payez uniquement à la réception de votre colis." } },
+        "f2": { "type": "faq", "settings": { "q": "Quel est le délai de livraison ?", "a": "Entre 24 et 72 heures selon votre ville." } },
+        "f3": { "type": "faq", "settings": { "q": "Les produits conviennent-ils à peau sensible ?", "a": "Oui, nos formules sont douces et adaptées à tous types de peau." } },
+        "f4": { "type": "faq", "settings": { "q": "Puis-je échanger un produit ?", "a": "Oui, contactez-nous dans les 7 jours suivant la réception." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": {}
+    },
+    "beauty_order": {
+      "type": "beauty-cod-form",
+      "settings": {
+        "form_action": "#"
+      }
+    },
+    "beauty_sticky": {
+      "type": "beauty-sticky-buy",
+      "settings": {}
+    }
+  },
+  "order": [
+    "beauty_hero",
+    "beauty_packs",
+    "beauty_gallery",
+    "beauty_benefits",
+    "beauty_ingredients",
+    "beauty_how_to_use",
+    "beauty_lifestyle",
+    "beauty_results",
+    "beauty_testimonials",
+    "beauty_compare",
+    "beauty_faq",
+    "beauty_order",
+    "beauty_sticky"
+  ]
+}

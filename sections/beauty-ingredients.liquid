@@ -1,0 +1,68 @@
+{%- comment -%}
+  Beauty Care — Ingredients / quality callouts.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'La qualité avant tout' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Des ingrédients en qui vous pouvez avoir confiance' }}</h2>
+      <div class="beauty-grid beauty-grid--2 beauty-mt-24">
+        {%- render 'beauty-card', image: s.image_1, ratio: '1-1', title: s.point_1_title, text: s.point_1_text -%}
+        {%- render 'beauty-card', image: s.image_2, ratio: '1-1', title: s.point_2_title, text: s.point_2_text -%}
+      </div>
+      <ul class="beauty-bundle__included beauty-mt-24" style="max-width:480px;margin-inline:auto;">
+        {%- assign blocks = section.blocks | where: 'type', 'ingredient_point' -%}
+        {%- if blocks.size > 0 -%}
+          {%- for b in blocks -%}
+            <li {{ b.shopify_attributes }}>{%- render 'beauty-icons', icon: 'check' -%} {{ b.settings.text }}</li>
+          {%- endfor -%}
+        {%- else -%}
+          <li>{%- render 'beauty-icons', icon: 'check' -%} Sans paraben, sans sulfate</li>
+          <li>{%- render 'beauty-icons', icon: 'check' -%} Testé dermatologiquement</li>
+          <li>{%- render 'beauty-icons', icon: 'check' -%} Non testé sur les animaux</li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Ingredients",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "La qualité avant tout" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Des ingrédients en qui vous pouvez avoir confiance" },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+    { "type": "text", "id": "point_1_title", "label": "Titre 1", "default": "Actifs naturels" },
+    { "type": "textarea", "id": "point_1_text", "label": "Texte 1", "default": "Papaye, aloe vera, rose — des actifs reconnus pour leurs bienfaits." },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+    { "type": "text", "id": "point_2_title", "label": "Titre 2", "default": "Fabrication soignée" },
+    { "type": "textarea", "id": "point_2_text", "label": "Texte 2", "default": "Chaque produit est sélectionné pour sa qualité et sa texture." },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient_point",
+      "name": "Point qualité",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texte", "default": "Sans paraben, sans sulfate" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Ingredients",
+      "blocks": [
+        { "type": "ingredient_point", "settings": { "text": "Sans paraben, sans sulfate" } },
+        { "type": "ingredient_point", "settings": { "text": "Testé dermatologiquement" } },
+        { "type": "ingredient_point", "settings": { "text": "Non testé sur les animaux" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

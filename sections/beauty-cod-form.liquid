@@ -1,0 +1,110 @@
+{%- comment -%}
+  Beauty Care — COD order form. Reads the bundle selected in
+  sections/beauty-pack-builder.liquid (shared page-level state via
+  assets/beauty-landing.js, cross-section by design — see that file's header comment).
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" id="beauty-order" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Paiement à la livraison' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Finalisez votre commande' }}</h2>
+      <p class="beauty__p">{{ s.intro | default: 'Remplissez vos informations, vous payez uniquement à la réception.' }}</p>
+
+      <div class="beauty-order beauty-mt-16" data-beauty-order>
+        <div class="beauty-order__selected" data-beauty-sum>
+          <div class="beauty-order__selected-row"><span>{{ s.pack_label | default: 'Pack sélectionné' }}</span><span data-sum-name></span></div>
+          <div class="beauty-order__selected-row beauty-order__selected-row--total"><span>{{ s.total_label | default: 'Total à payer' }}</span><b data-sum-price></b></div>
+        </div>
+
+        <form class="beauty-order__form" action="{{ s.form_action | default: '#' }}" method="post" novalidate data-beauty-form>
+          <input type="hidden" name="bundle_id" value="" data-beauty-bundle-id>
+          <input type="hidden" name="bundle_name" value="" data-beauty-bundle-name>
+          <input type="hidden" name="total" value="" data-beauty-total>
+          <input type="hidden" name="currency" value="{{ s.currency | default: 'DH' }}">
+
+          <div class="beauty-field" data-field>
+            <label for="beauty-name">{{ s.f_name_label | default: 'Nom complet *' }}</label>
+            <input type="text" id="beauty-name" name="name" autocomplete="name" placeholder="{{ s.f_name_ph | default: 'Votre nom complet' | escape }}" required aria-describedby="beauty-name-err">
+            <span class="beauty-field__err" id="beauty-name-err">{{ s.f_name_err | default: 'Veuillez indiquer votre nom.' }}</span>
+          </div>
+          <div class="beauty-field" data-field>
+            <label for="beauty-phone">{{ s.f_phone_label | default: 'Téléphone *' }}</label>
+            <input type="tel" id="beauty-phone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="{{ s.f_phone_ph | default: '06 12 34 56 78' | escape }}" required aria-describedby="beauty-phone-err">
+            <span class="beauty-field__err" id="beauty-phone-err">{{ s.f_phone_err | default: 'Veuillez indiquer un numéro valide (9 à 12 chiffres).' }}</span>
+          </div>
+          <div class="beauty-field" data-field>
+            <label for="beauty-city">{{ s.f_city_label | default: 'Ville *' }}</label>
+            <input type="text" id="beauty-city" name="city" autocomplete="address-level2" placeholder="{{ s.f_city_ph | default: 'Casablanca, Rabat...' | escape }}" required aria-describedby="beauty-city-err">
+            <span class="beauty-field__err" id="beauty-city-err">{{ s.f_city_err | default: 'Veuillez indiquer votre ville.' }}</span>
+          </div>
+          <div class="beauty-field" data-field>
+            <label for="beauty-address">{{ s.f_address_label | default: 'Adresse *' }}</label>
+            <textarea id="beauty-address" name="address" rows="2" autocomplete="street-address" placeholder="{{ s.f_address_ph | default: 'Adresse complète de livraison' | escape }}" required aria-describedby="beauty-address-err"></textarea>
+            <span class="beauty-field__err" id="beauty-address-err">{{ s.f_address_err | default: 'Veuillez indiquer votre adresse.' }}</span>
+          </div>
+
+          <button type="submit" class="beauty-btn beauty-mt-16">{{ s.order_btn | default: 'Confirmer ma commande — COD' }}</button>
+
+          <div class="beauty-order__reassure beauty-mt-16" style="display:grid;gap:8px;">
+            <span style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--beauty-text-soft);">{{ s.reassure_1 | default: 'Paiement à la livraison' }}</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--beauty-text-soft);">{{ s.reassure_2 | default: 'Livraison gratuite partout au Maroc' }}</span>
+          </div>
+        </form>
+
+        <div class="beauty-order__success" role="status" tabindex="-1">
+          {%- render 'beauty-icons', icon: 'shield' -%}
+          <h3 class="beauty__h3">{{ s.success_title | default: 'Merci ! Commande confirmée' }}</h3>
+          <p class="beauty__p beauty-mb-0">{{ s.success_text | default: 'Votre commande est bien reçue. Nous vous contactons rapidement pour confirmer.' }}</p>
+        </div>
+
+        <div class="beauty-order__error" role="alert" hidden>
+          {%- render 'beauty-icons', icon: 'x' -%}
+          <h3 class="beauty__h3">{{ s.error_title | default: 'Erreur — réessayez' }}</h3>
+          <p class="beauty__p beauty-mb-0">{{ s.error_text | default: "La commande n'a pas pu être envoyée. Merci de réessayer." }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty COD Form",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Paiement à la livraison" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Finalisez votre commande" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Remplissez vos informations, vous payez uniquement à la réception." },
+    { "type": "text", "id": "pack_label", "label": "Label 'pack sélectionné'", "default": "Pack sélectionné" },
+    { "type": "text", "id": "total_label", "label": "Label total", "default": "Total à payer" },
+    { "type": "text", "id": "currency", "label": "Devise", "default": "DH" },
+    { "type": "text", "id": "order_btn", "label": "Texte bouton", "default": "Confirmer ma commande — COD" },
+    { "type": "text", "id": "form_action", "label": "Google Sheet webhook URL", "info": "URL Apps Script déployé. Laisser # pour mode démo (pas de POST).", "default": "#" },
+    { "type": "header", "content": "Champs du formulaire" },
+    { "type": "text", "id": "f_name_label", "label": "Nom — label", "default": "Nom complet *" },
+    { "type": "text", "id": "f_name_ph", "label": "Nom — placeholder", "default": "Votre nom complet" },
+    { "type": "text", "id": "f_name_err", "label": "Nom — erreur", "default": "Veuillez indiquer votre nom." },
+    { "type": "text", "id": "f_phone_label", "label": "Téléphone — label", "default": "Téléphone *" },
+    { "type": "text", "id": "f_phone_ph", "label": "Téléphone — placeholder", "default": "06 12 34 56 78" },
+    { "type": "text", "id": "f_phone_err", "label": "Téléphone — erreur", "default": "Veuillez indiquer un numéro valide (9 à 12 chiffres)." },
+    { "type": "text", "id": "f_city_label", "label": "Ville — label", "default": "Ville *" },
+    { "type": "text", "id": "f_city_ph", "label": "Ville — placeholder", "default": "Casablanca, Rabat..." },
+    { "type": "text", "id": "f_city_err", "label": "Ville — erreur", "default": "Veuillez indiquer votre ville." },
+    { "type": "text", "id": "f_address_label", "label": "Adresse — label", "default": "Adresse *" },
+    { "type": "text", "id": "f_address_ph", "label": "Adresse — placeholder", "default": "Adresse complète de livraison" },
+    { "type": "text", "id": "f_address_err", "label": "Adresse — erreur", "default": "Veuillez indiquer votre adresse." },
+    { "type": "text", "id": "reassure_1", "label": "Réassurance 1", "default": "Paiement à la livraison" },
+    { "type": "text", "id": "reassure_2", "label": "Réassurance 2", "default": "Livraison gratuite partout au Maroc" },
+    { "type": "text", "id": "success_title", "label": "Succès — titre", "default": "Merci ! Commande confirmée" },
+    { "type": "textarea", "id": "success_text", "label": "Succès — texte", "default": "Votre commande est bien reçue. Nous vous contactons rapidement pour confirmer." },
+    { "type": "text", "id": "error_title", "label": "Erreur — titre", "default": "Erreur — réessayez" },
+    { "type": "textarea", "id": "error_text", "label": "Erreur — texte", "default": "La commande n'a pas pu être envoyée. Merci de réessayer." },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [{ "name": "Beauty COD Form" }]
+}
+{% endschema %}

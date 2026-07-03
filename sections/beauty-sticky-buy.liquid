@@ -1,0 +1,28 @@
+{%- comment -%}
+  Beauty Care — Sticky bottom buy bar. Visible once the hero scrolls out and
+  hidden again once the COD form scrolls into view (JS in beauty-landing.js).
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <div class="beauty-sticky" data-beauty-sticky aria-hidden="true">
+    <div class="beauty-sticky__price">
+      <b data-beauty-sticky-price>{{ s.price | default: '' }}</b>
+      <small>{{ s.sticky_sub | default: 'COD · Livraison gratuite' }}</small>
+    </div>
+    <a href="#beauty-order" class="beauty-btn" data-beauty-scroll>{{ s.sticky_btn | default: 'Commander' }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Sticky Buy",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "text", "id": "price", "label": "Prix affiché (optionnel)" },
+    { "type": "text", "id": "sticky_sub", "label": "Sous-texte", "default": "COD · Livraison gratuite" },
+    { "type": "text", "id": "sticky_btn", "label": "Texte bouton", "default": "Commander" }
+  ],
+  "presets": [{ "name": "Beauty Sticky Buy" }]
+}
+{% endschema %}

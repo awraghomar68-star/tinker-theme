@@ -1,0 +1,58 @@
+{%- comment -%}
+  Beauty Care — Results / before-after section. Optional (show_results toggle).
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+{%- unless s.show_results == false -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Résultats' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Une peau visiblement transformée' }}</h2>
+      <div class="beauty-results beauty-mt-24">
+        <div class="beauty-results__col">
+          <p class="beauty-results__tag">{{ s.before_label | default: 'Avant' }}</p>
+          {%- if s.before_image != blank -%}
+            <img src="{{ s.before_image | image_url: width: 700 }}" srcset="{{ s.before_image | image_url: width: 400 }} 400w, {{ s.before_image | image_url: width: 700 }} 700w" sizes="(min-width: 680px) 340px, 45vw" width="{{ s.before_image.width }}" height="{{ s.before_image.height }}" alt="{{ s.before_label | default: 'Avant' | escape }}" loading="lazy" decoding="async">
+          {%- else -%}
+            <span class="beauty-ph" style="display:block;aspect-ratio:4/5;"></span>
+          {%- endif -%}
+        </div>
+        <div class="beauty-results__col">
+          <p class="beauty-results__tag">{{ s.after_label | default: 'Après' }}</p>
+          {%- if s.after_image != blank -%}
+            <img src="{{ s.after_image | image_url: width: 700 }}" srcset="{{ s.after_image | image_url: width: 400 }} 400w, {{ s.after_image | image_url: width: 700 }} 700w" sizes="(min-width: 680px) 340px, 45vw" width="{{ s.after_image.width }}" height="{{ s.after_image.height }}" alt="{{ s.after_label | default: 'Après' | escape }}" loading="lazy" decoding="async">
+          {%- else -%}
+            <span class="beauty-ph" style="display:block;aspect-ratio:4/5;"></span>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- if s.quote != blank -%}
+      <p class="beauty__p beauty-mt-24" style="font-style:italic;">"{{ s.quote }}"{% if s.quote_author != blank %} — <b>{{ s.quote_author }}</b>{% endif %}</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Beauty Results",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "show_results", "label": "Afficher la section", "default": true },
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Résultats" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Une peau visiblement transformée" },
+    { "type": "text", "id": "before_label", "label": "Étiquette 'avant'", "default": "Avant" },
+    { "type": "image_picker", "id": "before_image", "label": "Image avant" },
+    { "type": "text", "id": "after_label", "label": "Étiquette 'après'", "default": "Après" },
+    { "type": "image_picker", "id": "after_image", "label": "Image après" },
+    { "type": "textarea", "id": "quote", "label": "Citation cliente (optionnel)" },
+    { "type": "text", "id": "quote_author", "label": "Auteur de la citation" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [{ "name": "Beauty Results" }]
+}
+{% endschema %}

@@ -1,0 +1,42 @@
+{%- comment -%}
+  rbx-placeholder
+  Renders a product/lifestyle image, or a styled dashed placeholder box when none is set.
+  Markup matches .rbx-ph / .rbx-ph__label / .rbx-ph > img in rbx-landing-page.css.
+
+  Params:
+    image  {Image}   Shopify image object (or blank) — when present, rendered responsively.
+    ratio  {String}  Aspect ratio token: '1-1' | '4-5' | '3-2' | '16-9' | '3-4'. Default '1-1'.
+    label  {String}  Text shown in the empty-state box. Default 'image'.
+    eager  {Boolean} When true → loading="eager" + fetchpriority="high" (above-the-fold). Default false.
+    alt    {String}  Alt text for the <img>. Default ''.
+    asset  {String}  (ignored) legacy param from the static section; theme assets are not used here.
+{%- endcomment -%}
+
+{%- liquid
+  assign ph_ratio = ratio | default: '1-1'
+  assign ph_label = label | default: 'image'
+  assign ph_alt = alt | default: ''
+  if eager
+    assign ph_loading = 'eager'
+    assign ph_fetch = 'high'
+  else
+    assign ph_loading = 'lazy'
+    assign ph_fetch = 'auto'
+  endif
+-%}
+<div class="rbx-ph" data-ratio="{{ ph_ratio }}">
+  {%- if image != blank -%}
+    <img
+      src="{{ image | image_url: width: 800 }}"
+      srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w"
+      sizes="(max-width: 600px) 100vw, 600px"
+      width="{{ image.width | default: 800 }}"
+      height="{{ image.height | default: 800 }}"
+      alt="{{ ph_alt | escape }}"
+      loading="{{ ph_loading }}"
+      fetchpriority="{{ ph_fetch }}"
+      decoding="async">
+  {%- else -%}
+    <span class="rbx-ph__label">{{ ph_label }}</span>
+  {%- endif -%}
+</div>

@@ -1,0 +1,71 @@
+{%- comment -%}
+  Beauty Care — Benefits / "Why choose our packs" section.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Pourquoi nous choisir' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Le soin que votre peau mérite' }}</h2>
+      {%- if s.text != blank -%}<p class="beauty__p">{{ s.text }}</p>{%- endif -%}
+      <div class="beauty-grid beauty-grid--3 beauty-mt-24">
+        {%- assign blocks = section.blocks | where: 'type', 'benefit' -%}
+        {%- if blocks.size > 0 -%}
+          {%- for b in blocks -%}
+            <div class="beauty-benefit" {{ b.shopify_attributes }}>
+              <div class="beauty-benefit__icon">{%- render 'beauty-icons', icon: b.settings.icon, image: b.settings.icon_image -%}</div>
+              <h3 class="beauty__h3">{{ b.settings.title }}</h3>
+              <p class="beauty__p beauty-mb-0">{{ b.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="beauty-benefit"><div class="beauty-benefit__icon">{%- render 'beauty-icons', icon: 'leaf' -%}</div><h3 class="beauty__h3">Ingrédients doux</h3><p class="beauty__p beauty-mb-0">Formules douces, sans agression, adaptées à tous types de peau.</p></div>
+          <div class="beauty-benefit"><div class="beauty-benefit__icon">{%- render 'beauty-icons', icon: 'sparkle' -%}</div><h3 class="beauty__h3">Résultats visibles</h3><p class="beauty__p beauty-mb-0">Une routine simple, des résultats qui se voient dès les premières semaines.</p></div>
+          <div class="beauty-benefit"><div class="beauty-benefit__icon">{%- render 'beauty-icons', icon: 'gift' -%}</div><h3 class="beauty__h3">Packs curés</h3><p class="beauty__p beauty-mb-0">Des routines complètes pensées ensemble, prêtes à offrir ou à s'offrir.</p></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Benefits",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pourquoi nous choisir" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Le soin que votre peau mérite" },
+    { "type": "textarea", "id": "text", "label": "Texte (optionnel)" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "leaf",
+          "options": [
+            { "value": "leaf", "label": "Naturel" }, { "value": "sparkle", "label": "Éclat" }, { "value": "drop", "label": "Hydratation" },
+            { "value": "gift", "label": "Cadeau" }, { "value": "shield", "label": "Garantie" }, { "value": "heart", "label": "Cœur" }, { "value": "flower", "label": "Fleur" }
+          ] },
+        { "type": "image_picker", "id": "icon_image", "label": "Icône — image (override)" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Ingrédients doux" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Formules douces, sans agression, adaptées à tous types de peau." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "leaf", "title": "Ingrédients doux", "text": "Formules douces, sans agression, adaptées à tous types de peau." } },
+        { "type": "benefit", "settings": { "icon": "sparkle", "title": "Résultats visibles", "text": "Une routine simple, des résultats qui se voient dès les premières semaines." } },
+        { "type": "benefit", "settings": { "icon": "gift", "title": "Packs curés", "text": "Des routines complètes pensées ensemble, prêtes à offrir ou à s'offrir." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

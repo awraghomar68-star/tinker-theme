@@ -1,0 +1,611 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "beauty_hero_zdjEVM": {
+      "type": "beauty-hero",
+      "blocks": {
+        "trust_badge_Hnghex": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "gift",
+            "text": "Ajoutez un emballage cadeau à votre commande"
+          }
+        },
+        "trust_badge_NEpg7c": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "cash",
+            "text": "Paiement à la livraison"
+          }
+        },
+        "trust_badge_dWAAmG": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "truck",
+            "text": "Livraison gratuite"
+          }
+        },
+        "trust_badge_7aMWgK": {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "shield",
+            "text": "Satisfaite ou remboursée"
+          }
+        }
+      },
+      "block_order": [
+        "trust_badge_Hnghex",
+        "trust_badge_NEpg7c",
+        "trust_badge_dWAAmG",
+        "trust_badge_7aMWgK"
+      ],
+      "name": "Beauty Hero",
+      "settings": {
+        "hero_image": "shopify://shop_images/ChatGPT_Image_1_juil._2026_16_09_40.png",
+        "eyebrow": "BEAUTY CARE · PACKS SOIN PREMIUM",
+        "hero_title": "Révélez votre éclat naturel",
+        "hero_sub": "Des packs soin curés, ingrédients doux, résultats visibles. Paiement à la livraison.",
+        "price": "",
+        "compare_price": "",
+        "cta_label": "Choisir mon pack",
+        "rating": "",
+        "reviews_count": "",
+        "reviews_word": "avis clientes",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "beauty_pack_builder_p7NWkB": {
+      "type": "beauty-pack-builder",
+      "blocks": {
+        "bundle_option_JNYmXh": {
+          "type": "bundle_option",
+          "disabled": true,
+          "settings": {
+            "name": "Starter Pack",
+            "badge": "",
+            "best_seller": false,
+            "best_label": "Best Seller",
+            "discount": "-29%",
+            "price": "249 DH",
+            "price_value": 249,
+            "compare_price": "349 DH",
+            "compare_value": 349,
+            "save_label": "Économisez 100 DH",
+            "included": "🧼 Disaar Papaya Facial Wash — \n\n🛁 Elba Raspberry Body Wash — \n\n✨ Disaar Aloe Vera Scrub —\n\n💧 Santo Lauren Rosehip Cream — \n\n💄 Chanlany Lip Oil — \n\n🖊️ Flower Eyeliner Pencil —\n\n🖊️ Eyebrow Pencil —",
+            "cta": ""
+          }
+        },
+        "bundle_option_xEHbKR": {
+          "type": "bundle_option",
+          "settings": {
+            "name": "Glow Pack",
+            "badge": "Populaire",
+            "best_seller": true,
+            "best_label": "Best Seller",
+            "discount": "-27%",
+            "price": "399 DH",
+            "price_value": 399,
+            "compare_price": "549 DH",
+            "compare_value": 549,
+            "save_label": "Économisez 150 DH",
+            "included": "💖 Gel Nettoyant Visage Disaar Papaye + Vitamine E (100 ml)\n\n🛁 Gel Douche Gommant Elba Framboise (250 ml)\n\n✨ Gommage Aloe Vera Disaar (120 ml)\n\n🍓 Gommage Fraise Fruit of the Wokali (500 g)\n\n💧 Crème Hydratante Santo Lauren à l'Huile de Rose Musquée (120 ml)\n\n💧 Crème à la Glycérine Santo Lauren (120 ml)\n\n🌸 Brume Parfumée Davinci (250 ml)\n\n💋 Huile à Lèvres Chanlany Shiny (5 ml)\n\n🖊️ Crayon Eyeliner Noir\n\n✏️ Crayon à Sourcils\n\n💄 Crayon Contour des Lèvres Longue Tenue\n\n🎨 Palette Professionnelle Highlighter & Contour AnyLady (6 teintes)",
+            "cta": ""
+          }
+        },
+        "bundle_option_LxKbH4": {
+          "type": "bundle_option",
+          "settings": {
+            "name": "Luxury Pack",
+            "badge": "Meilleure valeur",
+            "best_seller": false,
+            "best_label": "Best Seller",
+            "discount": "-28%",
+            "price": "599 DH",
+            "price_value": 599,
+            "compare_price": "899 DH",
+            "compare_value": 899,
+            "save_label": "Économisez 350 DH",
+            "included": "🧼 Gel Douche Gommant Elba Framboise — 250 ml\n\n🧼 Gel Nettoyant Visage Disaar Papaye + Vitamine E — 100 ml\n\n✨ Gommage Aloe Vera Disaar — 120 ml\n\n🍓 Gommage Fraise Fruit of the Wokali — 500 g\n\n💧 Crème Hydratante Santo Lauren à l'Huile de Rose Musquée — 120 ml\n\n💧 Crème à la Glycérine Santo Lauren — 120 ml\n\n💇 Crème Définition des Boucles Elba au Beurre de Karité — 250 ml\n\n🌸 Brume Parfumée Davinci — 250 ml\n\n🌸 Brume Parfumée Rouh Beauty – 65 Lou (I Am The One) — 250 ml\n\n🎨 Palette Professionnelle Contour & Highlighter AnyLady — 6 Teintes\n\n💄 Huile à Lèvres Chanlany Shiny — 5 ml\n\n🖊️ Crayon Eyeliner Noir — 10 pièce\n\n🖊️ Crayon à Sourcils — 10 pièce\n\n🖊️ Crayon Contour des Lèvres Longue Tenue — 10 pièce",
+            "cta": ""
+          }
+        }
+      },
+      "block_order": [
+        "bundle_option_JNYmXh",
+        "bundle_option_xEHbKR",
+        "bundle_option_LxKbH4"
+      ],
+      "name": "Beauty Pack Builder",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Choisissez votre pack",
+        "title": "Composez votre routine",
+        "text": "",
+        "currency": "DH",
+        "included_title": "Votre pack sélectionné",
+        "card_cta": "Commander ce pack",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_sticky_buy_prU49h": {
+      "type": "beauty-sticky-buy",
+      "name": "Beauty Sticky Buy",
+      "settings": {
+        "price": "",
+        "sticky_sub": "COD · Livraison gratuite",
+        "sticky_btn": "Commander"
+      }
+    },
+    "beauty_product_gallery_6g4TkJ": {
+      "type": "beauty-product-gallery",
+      "blocks": {
+        "product_item_LhdVfJ": {
+          "type": "product_item",
+          "settings": {
+            "image": "shopify://shop_images/Use_AI_Image_Jul_1_2026_18_15_59.png",
+            "title": "Papaya Face Wash",
+            "text": "Nettoyant doux illuminateur."
+          }
+        },
+        "product_item_EUE8XQ": {
+          "type": "product_item",
+          "settings": {
+            "image": "shopify://shop_images/Use_AI_Image_Jul_1_2026_18_19_12.png",
+            "title": "Aloe Vera Scrub",
+            "text": "Exfoliant apaisant visage."
+          }
+        },
+        "product_item_VRJeaC": {
+          "type": "product_item",
+          "settings": {
+            "title": "Rose Cream",
+            "text": "Crème hydratante à la rose."
+          }
+        },
+        "product_item_zH9wE8": {
+          "type": "product_item",
+          "settings": {
+            "title": "Perfume Mist",
+            "text": "Brume parfumée longue tenue."
+          }
+        }
+      },
+      "block_order": [
+        "product_item_LhdVfJ",
+        "product_item_EUE8XQ",
+        "product_item_VRJeaC",
+        "product_item_zH9wE8"
+      ],
+      "name": "Beauty Product Gallery",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Nos essentiels",
+        "title": "Les produits de vos packs",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "beauty_sticky_buy_LDKeDC": {
+      "type": "beauty-sticky-buy",
+      "name": "Beauty Sticky Buy",
+      "settings": {
+        "price": "",
+        "sticky_sub": "COD · Livraison gratuite",
+        "sticky_btn": "Commander"
+      }
+    },
+    "beauty_benefits_QXNJaV": {
+      "type": "beauty-benefits",
+      "blocks": {
+        "benefit_CCzhtd": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "Ingrédients doux",
+            "text": "Formules douces, sans agression, adaptées à tous types de peau."
+          }
+        },
+        "benefit_PWPd7k": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Résultats visibles",
+            "text": "Une routine simple, des résultats qui se voient dès les premières semaines."
+          }
+        },
+        "benefit_bdDK3Y": {
+          "type": "benefit",
+          "settings": {
+            "icon": "gift",
+            "title": "Packs curés",
+            "text": "Des routines complètes pensées ensemble, prêtes à offrir ou à s'offrir."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_CCzhtd",
+        "benefit_PWPd7k",
+        "benefit_bdDK3Y"
+      ],
+      "name": "Beauty Benefits",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Pourquoi nous choisir",
+        "title": "Le soin que votre peau mérite",
+        "text": "",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_sticky_buy_KNkEBr": {
+      "type": "beauty-sticky-buy",
+      "name": "Beauty Sticky Buy",
+      "settings": {
+        "price": "COMMANDER",
+        "sticky_sub": "COD · Livraison gratuite",
+        "sticky_btn": "Commander"
+      }
+    },
+    "beauty_how_to_use_yLpg8n": {
+      "type": "beauty-how-to-use",
+      "blocks": {
+        "step_fcpXGF": {
+          "type": "step",
+          "settings": {
+            "title": "Nettoyage",
+            "text": "*Gel Nettoyant Papaya (Visage)*                                    \n*Gel Douche Raspberry (Corps)*"
+          }
+        },
+        "step_hj6afn": {
+          "type": "step",
+          "settings": {
+            "title": "Exfoliation (2 à 3 fois par semaine)",
+            "text": "*Gommage Aloe Vera*\n*Gommage Strawberry*\n*Gel Douche Raspberry (exfoliation douce du corps)*"
+          }
+        },
+        "step_BbgamQ": {
+          "type": "step",
+          "settings": {
+            "title": "Hydratation",
+            "text": "*Crème Rose Musquée*\n*Crème Glycérine*\n*Crème Boucles (Cheveux)*"
+          }
+        },
+        "step_KiGEGP": {
+          "type": "step",
+          "settings": {
+            "title": "Parfum",
+            "text": "*Davinci Fragrance Mist – Brume parfumée pour le corps*\n*Rouh Beauty Fragrance Mist – Brume parfumée pour le corps*"
+          }
+        },
+        "step_6RCAYY": {
+          "type": "step",
+          "settings": {
+            "title": "Maquillage",
+            "text": "*Palette Highlighter & Contour*\n*Mascara*\n*Rouges à lèvres Matte Velvet*\n*Lip Oil*\n*Eyeliner*\n*Crayon à sourcils*\n*Crayon contour des lèvres*"
+          }
+        }
+      },
+      "block_order": [
+        "step_fcpXGF",
+        "step_hj6afn",
+        "step_BbgamQ",
+        "step_KiGEGP",
+        "step_6RCAYY"
+      ],
+      "name": "Beauty How To Use",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Routine simple",
+        "title": "Comment utiliser votre pack",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_sticky_buy_r6cbci": {
+      "type": "beauty-sticky-buy",
+      "name": "Beauty Sticky Buy",
+      "settings": {
+        "price": "",
+        "sticky_sub": "COD · Livraison gratuite",
+        "sticky_btn": "Commander"
+      }
+    },
+    "beauty_lifestyle_P8LWEH": {
+      "type": "beauty-lifestyle",
+      "blocks": {
+        "photo_RpnCNF": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_1_juil._2026_16_06_49_24910727-b23b-4f9e-9cba-e33a6fd69306.png",
+            "size": "wide",
+            "caption": "Salle de bain lumineuse"
+          }
+        },
+        "photo_yPfqWq": {
+          "type": "photo",
+          "settings": {
+            "size": "tall",
+            "caption": ""
+          }
+        },
+        "photo_9zyzgH": {
+          "type": "photo",
+          "settings": {
+            "size": "normal",
+            "caption": ""
+          }
+        },
+        "photo_bnANbj": {
+          "type": "photo",
+          "settings": {
+            "size": "normal",
+            "caption": ""
+          }
+        },
+        "photo_CPfjcc": {
+          "type": "photo",
+          "settings": {
+            "size": "normal",
+            "caption": "Coiffeuse minimaliste"
+          }
+        }
+      },
+      "block_order": [
+        "photo_RpnCNF",
+        "photo_yPfqWq",
+        "photo_9zyzgH",
+        "photo_bnANbj",
+        "photo_CPfjcc"
+      ],
+      "disabled": true,
+      "name": "Beauty Lifestyle",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "L'art du soin",
+        "title": "Un rituel qui vous ressemble",
+        "text": "",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_testimonials_XzbQRJ": {
+      "type": "beauty-testimonials",
+      "blocks": {
+        "review_E3rEA3": {
+          "type": "review",
+          "settings": {
+            "name": "Salma K.",
+            "city": "Casablanca",
+            "text": "Ma peau est visiblement plus lumineuse après 2 semaines. Livraison rapide et pack magnifique."
+          }
+        },
+        "review_QG7XyQ": {
+          "type": "review",
+          "settings": {
+            "name": "Imane R.",
+            "city": "Rabat",
+            "text": "Le Glow Pack sent divinement bon, texture très agréable. Je recommande."
+          }
+        },
+        "review_6HaXDj": {
+          "type": "review",
+          "settings": {
+            "name": "Fatima Z.",
+            "city": "Marrakech",
+            "text": "Parfait comme cadeau, emballage soigné. Paiement à la livraison très pratique."
+          }
+        }
+      },
+      "block_order": [
+        "review_E3rEA3",
+        "review_QG7XyQ",
+        "review_6HaXDj"
+      ],
+      "name": "Beauty Testimonials",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Elles nous font confiance",
+        "title": "Ce que disent nos clientes",
+        "rating": "",
+        "reviews_count": "",
+        "reviews_word": "avis vérifiés",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_compare_D7jixj": {
+      "type": "beauty-compare",
+      "blocks": {
+        "compare_row_Y3F8Kb": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Paiement à la livraison",
+            "us": "yes",
+            "us_text": "",
+            "them": "no",
+            "them_text": ""
+          }
+        },
+        "compare_row_VPMpC3": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Packs soin curés",
+            "us": "yes",
+            "us_text": "",
+            "them": "no",
+            "them_text": ""
+          }
+        },
+        "compare_row_4CefKU": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Ingrédients doux testés",
+            "us": "yes",
+            "us_text": "",
+            "them": "no",
+            "them_text": ""
+          }
+        },
+        "compare_row_XNPVfH": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Livraison 24-72h",
+            "us": "yes",
+            "us_text": "",
+            "them": "text",
+            "them_text": "5-7j"
+          }
+        },
+        "compare_row_m6RAmk": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Prix bundle avantageux",
+            "us": "yes",
+            "us_text": "",
+            "them": "no",
+            "them_text": ""
+          }
+        },
+        "compare_row_nRmxtP": {
+          "type": "compare_row",
+          "settings": {
+            "feature": "Satisfaite ou remboursée",
+            "us": "yes",
+            "us_text": "",
+            "them": "no",
+            "them_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "compare_row_Y3F8Kb",
+        "compare_row_VPMpC3",
+        "compare_row_4CefKU",
+        "compare_row_XNPVfH",
+        "compare_row_m6RAmk",
+        "compare_row_nRmxtP"
+      ],
+      "name": "Beauty Compare",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Pourquoi nous choisir",
+        "title": "RBX vs les autres",
+        "text": "",
+        "feature_head": "Critère",
+        "us_head": "RBX",
+        "them_head": "Autres",
+        "show_cta": true,
+        "cta_label": "Commander maintenant",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_faq_TYWinR": {
+      "type": "beauty-faq",
+      "blocks": {
+        "faq_FdFpe7": {
+          "type": "faq",
+          "settings": {
+            "q": "Le paiement à la livraison est-il disponible ?",
+            "a": "Oui, vous payez uniquement à la réception de votre colis."
+          }
+        },
+        "faq_nb4Brx": {
+          "type": "faq",
+          "settings": {
+            "q": "Quel est le délai de livraison ?",
+            "a": "Entre 24 et 72 heures selon votre ville."
+          }
+        },
+        "faq_GTrNdR": {
+          "type": "faq",
+          "settings": {
+            "q": "Les produits conviennent-ils à peau sensible ?",
+            "a": "Oui, nos formules sont douces et adaptées à tous types de peau."
+          }
+        },
+        "faq_WNVVpB": {
+          "type": "faq",
+          "settings": {
+            "q": "Puis-je échanger un produit ?",
+            "a": "Oui, contactez-nous dans les 7 jours suivant la réception."
+          }
+        }
+      },
+      "block_order": [
+        "faq_FdFpe7",
+        "faq_nb4Brx",
+        "faq_GTrNdR",
+        "faq_WNVVpB"
+      ],
+      "name": "Beauty FAQ",
+      "settings": {
+        "alt_bg": false,
+        "title": "Questions fréquentes",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "beauty_cod_form_wnmxiU": {
+      "type": "beauty-cod-form",
+      "name": "Beauty COD Form",
+      "settings": {
+        "alt_bg": false,
+        "eyebrow": "Paiement à la livraison",
+        "title": "Finalisez votre commande",
+        "intro": "Remplissez vos informations, vous payez uniquement à la réception.",
+        "pack_label": "Pack sélectionné",
+        "total_label": "Total à payer",
+        "currency": "DH",
+        "order_btn": "Confirmer ma commande — COD",
+        "form_action": "#",
+        "f_name_label": "Nom complet *",
+        "f_name_ph": "Votre nom complet",
+        "f_name_err": "Veuillez indiquer votre nom.",
+        "f_phone_label": "Téléphone *",
+        "f_phone_ph": "06 12 34 56 78",
+        "f_phone_err": "Veuillez indiquer un numéro valide (9 à 12 chiffres).",
+        "f_city_label": "Ville *",
+        "f_city_ph": "Casablanca, Rabat...",
+        "f_city_err": "Veuillez indiquer votre ville.",
+        "f_address_label": "Adresse *",
+        "f_address_ph": "Adresse complète de livraison",
+        "f_address_err": "Veuillez indiquer votre adresse.",
+        "reassure_1": "Paiement à la livraison",
+        "reassure_2": "Livraison gratuite partout au Maroc",
+        "success_title": "Merci ! Commande confirmée",
+        "success_text": "Votre commande est bien reçue. Nous vous contactons rapidement pour confirmer.",
+        "error_title": "Erreur — réessayez",
+        "error_text": "La commande n'a pas pu être envoyée. Merci de réessayer.",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "beauty_hero_zdjEVM",
+    "beauty_pack_builder_p7NWkB",
+    "beauty_sticky_buy_prU49h",
+    "beauty_product_gallery_6g4TkJ",
+    "beauty_sticky_buy_LDKeDC",
+    "beauty_benefits_QXNJaV",
+    "beauty_sticky_buy_KNkEBr",
+    "beauty_how_to_use_yLpg8n",
+    "beauty_sticky_buy_r6cbci",
+    "beauty_lifestyle_P8LWEH",
+    "beauty_testimonials_XzbQRJ",
+    "beauty_compare_D7jixj",
+    "beauty_faq_TYWinR",
+    "beauty_cod_form_wnmxiU"
+  ]
+}

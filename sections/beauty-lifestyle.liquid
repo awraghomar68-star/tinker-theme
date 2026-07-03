@@ -1,0 +1,72 @@
+{%- comment -%}
+  Beauty Care — Lifestyle gallery: large editorial photography (bathroom / vanity /
+  natural-light scenes). Image blocks with optional size modifier + caption.
+  Aspect-ratios are locked in CSS to avoid layout shift; images lazy-load.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" id="beauty-lifestyle" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      {%- if s.eyebrow != blank -%}<p class="beauty__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="beauty__h2">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<p class="beauty__p">{{ s.text }}</p>{%- endif -%}
+
+      <div class="beauty-lifestyle beauty-mt-24">
+        {%- assign items = section.blocks | where: 'type', 'photo' -%}
+        {%- for i in items -%}
+          <figure class="beauty-lifestyle__item beauty-lifestyle__item--{{ i.settings.size | default: 'normal' }}" {{ i.shopify_attributes }}>
+            {%- if i.settings.image != blank -%}
+              <img src="{{ i.settings.image | image_url: width: 900 }}"
+                   srcset="{{ i.settings.image | image_url: width: 500 }} 500w, {{ i.settings.image | image_url: width: 900 }} 900w, {{ i.settings.image | image_url: width: 1400 }} 1400w"
+                   sizes="(min-width: 720px) 45vw, 92vw"
+                   width="{{ i.settings.image.width | default: 900 }}" height="{{ i.settings.image.height | default: 1200 }}"
+                   alt="{{ i.settings.caption | default: s.title | escape }}" loading="lazy" decoding="async">
+            {%- else -%}
+              <span class="beauty-ph"></span>
+            {%- endif -%}
+            {%- if i.settings.caption != blank -%}<figcaption class="beauty-lifestyle__cap">{{ i.settings.caption }}</figcaption>{%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Lifestyle",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "L'art du soin" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Un rituel qui vous ressemble" },
+    { "type": "textarea", "id": "text", "label": "Texte (optionnel)" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "select", "id": "size", "label": "Taille", "default": "normal", "options": [ { "value": "normal", "label": "Normale" }, { "value": "wide", "label": "Large (2 colonnes)" }, { "value": "tall", "label": "Haute (2 rangées)" } ] },
+        { "type": "text", "id": "caption", "label": "Légende (optionnelle)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Lifestyle",
+      "blocks": [
+        { "type": "photo", "settings": { "size": "wide", "caption": "Salle de bain lumineuse" } },
+        { "type": "photo", "settings": { "size": "tall" } },
+        { "type": "photo", "settings": { "size": "normal" } },
+        { "type": "photo", "settings": { "size": "normal" } },
+        { "type": "photo", "settings": { "size": "normal", "caption": "Coiffeuse minimaliste" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

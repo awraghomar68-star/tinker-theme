@@ -1,0 +1,134 @@
+{%- comment -%}
+  Beauty Care — Pack builder: 3 premium bundle cards (Starter / Glow / Luxury).
+  Each card = a <label> wrapping a hidden radio (input[name="bundle"]) + data-bundle-*
+  attributes read by assets/beauty-landing.js to sync the COD form total in
+  sections/beauty-cod-form.liquid (same page, shared data attributes / hidden fields).
+  The per-card "Buy" button ([data-beauty-buy]) selects that bundle then scrolls to the form.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" id="beauty-packs" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Choisissez votre pack' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'Composez votre routine' }}</h2>
+      {%- if s.text != blank -%}<p class="beauty__p">{{ s.text }}</p>{%- endif -%}
+
+      <div class="beauty-bundles beauty-mt-24" role="radiogroup" aria-label="{{ s.title | default: 'Composez votre routine' | escape }}">
+        {%- assign blocks = section.blocks | where: 'type', 'bundle_option' -%}
+        {%- for b in blocks -%}
+          {%- liquid
+            assign included_str = ''
+            assign included_lines = b.settings.included | newline_to_br | split: '<br />'
+            for line in included_lines
+              assign trimmed = line | strip
+              if trimmed != blank
+                assign included_str = included_str | append: trimmed | append: '|'
+              endif
+            endfor
+          -%}
+          <label class="beauty-bundle{% if b.settings.best_seller %} beauty-bundle--best{% endif %}{% if forloop.first %} is-active{% endif %}"
+                 data-bundle-name="{{ b.settings.name | escape }}"
+                 data-bundle-price="{{ b.settings.price_value }}"
+                 data-bundle-compare="{{ b.settings.compare_value }}"
+                 data-bundle-currency="{{ s.currency | default: 'DH' }}"
+                 data-bundle-included="{{ included_str | escape }}"
+                 {{ b.shopify_attributes }}>
+            <input type="radio" name="bundle" value="{{ b.id }}"{% if forloop.first %} checked{% endif %} required>
+            <div class="beauty-bundle__media" data-ratio="4-3">
+              {%- if b.settings.best_seller -%}<span class="beauty-bundle__ribbon">{%- render 'beauty-icons', icon: 'star' -%} {{ b.settings.best_label | default: 'Best Seller' }}</span>{%- endif -%}
+              {%- if b.settings.discount != blank -%}<span class="beauty-bundle__discount">{{ b.settings.discount }}</span>{%- endif -%}
+              {%- if b.settings.image != blank -%}
+                <img src="{{ b.settings.image | image_url: width: 700 }}"
+                     srcset="{{ b.settings.image | image_url: width: 400 }} 400w, {{ b.settings.image | image_url: width: 700 }} 700w, {{ b.settings.image | image_url: width: 1000 }} 1000w"
+                     sizes="(min-width: 720px) 340px, 92vw"
+                     width="{{ b.settings.image.width | default: 700 }}" height="{{ b.settings.image.height | default: 525 }}"
+                     alt="{{ b.settings.name | escape }}" loading="lazy" decoding="async">
+              {%- else -%}
+                <span class="beauty-ph"></span>
+              {%- endif -%}
+            </div>
+            <div class="beauty-bundle__body">
+              <div class="beauty-bundle__top">
+                <span class="beauty-bundle__name">{{ b.settings.name }}</span>
+                {%- if b.settings.badge != blank -%}<span class="beauty-bundle__badge">{{ b.settings.badge }}</span>{%- endif -%}
+              </div>
+              <div class="beauty-bundle__price">
+                <b>{{ b.settings.price }}</b>
+                {%- if b.settings.compare_price != blank -%}<s>{{ b.settings.compare_price }}</s>{%- endif -%}
+              </div>
+              {%- if b.settings.save_label != blank -%}<p class="beauty-bundle__save">{{ b.settings.save_label }}</p>{%- endif -%}
+              {%- if included_lines.size > 0 -%}
+              <ul class="beauty-bundle__included">
+                {%- for line in included_lines -%}
+                  {%- assign trimmed = line | strip -%}
+                  {%- if trimmed != blank -%}<li>{%- render 'beauty-icons', icon: 'check' -%} {{ trimmed }}</li>{%- endif -%}
+                {%- endfor -%}
+              </ul>
+              {%- endif -%}
+              <div class="beauty-bundle__buy">
+                <a href="#beauty-order" class="beauty-btn beauty-btn--rose beauty-btn--sm" data-beauty-buy>{{ b.settings.cta | default: s.card_cta | default: 'Commander ce pack' }}</a>
+              </div>
+            </div>
+          </label>
+        {%- else -%}
+          <p class="beauty__p">{{ 'Ajoutez des packs depuis l’éditeur de thème.' }}</p>
+        {%- endfor -%}
+      </div>
+
+      <div class="beauty-included beauty-mt-24" data-beauty-included>
+        <p class="beauty-included__title">{{ s.included_title | default: 'Votre pack sélectionné' }}</p>
+        <ul class="beauty-included__list" data-beauty-included-list></ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Pack Builder",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Choisissez votre pack" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Composez votre routine" },
+    { "type": "textarea", "id": "text", "label": "Texte (optionnel)" },
+    { "type": "text", "id": "currency", "label": "Devise", "default": "DH" },
+    { "type": "text", "id": "included_title", "label": "Titre 'pack sélectionné'", "default": "Votre pack sélectionné" },
+    { "type": "text", "id": "card_cta", "label": "Texte bouton (défaut cartes)", "default": "Commander ce pack" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_option",
+      "name": "Pack",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image du pack (arrangement produits)" },
+        { "type": "text", "id": "name", "label": "Nom du pack", "default": "Starter Pack" },
+        { "type": "text", "id": "badge", "label": "Badge (optionnel)", "info": "Ex: Populaire, Meilleure valeur." },
+        { "type": "checkbox", "id": "best_seller", "label": "Badge 'Best Seller'", "default": false },
+        { "type": "text", "id": "best_label", "label": "Texte badge best seller", "default": "Best Seller" },
+        { "type": "text", "id": "discount", "label": "Badge remise (ex: -30%)" },
+        { "type": "text", "id": "price", "label": "Prix pack (affiché)", "default": "249 DH" },
+        { "type": "number", "id": "price_value", "label": "Prix pack (valeur numérique)", "default": 249 },
+        { "type": "text", "id": "compare_price", "label": "Prix original (affiché, barré)", "default": "349 DH" },
+        { "type": "number", "id": "compare_value", "label": "Prix original (valeur numérique)", "default": 349 },
+        { "type": "text", "id": "save_label", "label": "Ligne d'économie (optionnel)", "info": "Ex: Économisez 100 DH." },
+        { "type": "textarea", "id": "included", "label": "Produits inclus", "info": "Un produit par ligne.", "default": "Papaya Face Wash\nAloe Vera Scrub\nRose Cream" },
+        { "type": "text", "id": "cta", "label": "Texte bouton (override)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Pack Builder",
+      "blocks": [
+        { "type": "bundle_option", "settings": { "name": "Starter Pack", "discount": "-29%", "price": "249 DH", "price_value": 249, "compare_price": "349 DH", "compare_value": 349, "save_label": "Économisez 100 DH", "included": "Papaya Face Wash\nAloe Vera Scrub\nRose Cream" } },
+        { "type": "bundle_option", "settings": { "name": "Glow Pack", "badge": "Populaire", "best_seller": true, "discount": "-27%", "price": "399 DH", "price_value": 399, "compare_price": "549 DH", "compare_value": 549, "save_label": "Économisez 150 DH", "included": "Papaya Face Wash\nAloe Vera Scrub\nRose Cream\nBody Lotion\nPerfume Mist\nLip Oil" } },
+        { "type": "bundle_option", "settings": { "name": "Luxury Pack", "badge": "Meilleure valeur", "discount": "-28%", "price": "899 DH", "price_value": 899, "compare_price": "1249 DH", "compare_value": 1249, "save_label": "Économisez 350 DH", "included": "Toute la gamme Glow\nBody Scrub\nLipstick Set\nMakeup Palette\nHair Cream\nCoffret cadeau premium" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

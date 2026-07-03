@@ -1,0 +1,95 @@
+{%- comment -%}
+  Beauty Care — Why Choose Us: "RBX vs Others" comparison table.
+  Rows are `compare_row` blocks. Each row: feature label + us value + others value.
+  Values: "yes" -> gold check, "no" -> muted x, otherwise the free text is shown.
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" id="beauty-compare" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <p class="beauty__eyebrow">{{ s.eyebrow | default: 'Pourquoi nous choisir' }}</p>
+      <h2 class="beauty__h2">{{ s.title | default: 'RBX vs les autres' }}</h2>
+      {%- if s.text != blank -%}<p class="beauty__p">{{ s.text }}</p>{%- endif -%}
+
+      <div class="beauty-compare beauty-mt-24">
+        <div class="beauty-compare__row beauty-compare__row--head">
+          <span class="beauty-compare__feature">{{ s.feature_head | default: 'Critère' }}</span>
+          <span class="beauty-compare__cell beauty-compare__cell--us">{{ s.us_head | default: 'RBX' }}</span>
+          <span class="beauty-compare__cell beauty-compare__cell--them">{{ s.them_head | default: 'Autres' }}</span>
+        </div>
+        {%- assign rows = section.blocks | where: 'type', 'compare_row' -%}
+        {%- for r in rows -%}
+          <div class="beauty-compare__row" {{ r.shopify_attributes }}>
+            <span class="beauty-compare__feature">{{ r.settings.feature }}</span>
+            <span class="beauty-compare__cell beauty-compare__cell--us beauty-compare__col-us">
+              {%- if r.settings.us == 'yes' -%}{%- render 'beauty-icons', icon: 'check' -%}
+              {%- elsif r.settings.us == 'no' -%}{%- render 'beauty-icons', icon: 'x' -%}
+              {%- else -%}{{ r.settings.us_text | default: r.settings.us }}{%- endif -%}
+            </span>
+            <span class="beauty-compare__cell beauty-compare__cell--them">
+              {%- if r.settings.them == 'yes' -%}{%- render 'beauty-icons', icon: 'check' -%}
+              {%- elsif r.settings.them == 'no' -%}{%- render 'beauty-icons', icon: 'x' -%}
+              {%- else -%}{{ r.settings.them_text | default: r.settings.them }}{%- endif -%}
+            </span>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if s.show_cta -%}
+      <div class="beauty-cta-block beauty-mt-24">
+        <a href="#beauty-order" class="beauty-btn beauty-btn--rose" data-beauty-scroll>{{ s.cta_label | default: 'Commander maintenant' }}</a>
+      </div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Beauty Compare",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pourquoi nous choisir" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "RBX vs les autres" },
+    { "type": "textarea", "id": "text", "label": "Texte (optionnel)" },
+    { "type": "header", "content": "En-têtes de colonnes" },
+    { "type": "text", "id": "feature_head", "label": "En-tête critère", "default": "Critère" },
+    { "type": "text", "id": "us_head", "label": "En-tête nous", "default": "RBX" },
+    { "type": "text", "id": "them_head", "label": "En-tête autres", "default": "Autres" },
+    { "type": "header", "content": "CTA" },
+    { "type": "checkbox", "id": "show_cta", "label": "Afficher le bouton", "default": true },
+    { "type": "text", "id": "cta_label", "label": "Texte CTA", "default": "Commander maintenant" },
+    { "type": "header", "content": "Espacement" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "compare_row",
+      "name": "Ligne",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Critère", "default": "Paiement à la livraison" },
+        { "type": "select", "id": "us", "label": "RBX", "default": "yes", "options": [ { "value": "yes", "label": "Oui (✓)" }, { "value": "no", "label": "Non (✗)" }, { "value": "text", "label": "Texte libre" } ] },
+        { "type": "text", "id": "us_text", "label": "RBX — texte libre" },
+        { "type": "select", "id": "them", "label": "Autres", "default": "no", "options": [ { "value": "yes", "label": "Oui (✓)" }, { "value": "no", "label": "Non (✗)" }, { "value": "text", "label": "Texte libre" } ] },
+        { "type": "text", "id": "them_text", "label": "Autres — texte libre" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty Compare",
+      "blocks": [
+        { "type": "compare_row", "settings": { "feature": "Paiement à la livraison", "us": "yes", "them": "no" } },
+        { "type": "compare_row", "settings": { "feature": "Packs soin curés", "us": "yes", "them": "no" } },
+        { "type": "compare_row", "settings": { "feature": "Ingrédients doux testés", "us": "yes", "them": "no" } },
+        { "type": "compare_row", "settings": { "feature": "Livraison 24-72h", "us": "yes", "them": "text", "them_text": "5-7j" } },
+        { "type": "compare_row", "settings": { "feature": "Prix bundle avantageux", "us": "yes", "them": "no" } },
+        { "type": "compare_row", "settings": { "feature": "Satisfaite ou remboursée", "us": "yes", "them": "no" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

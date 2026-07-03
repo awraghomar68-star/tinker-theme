@@ -1,0 +1,85 @@
+{%- comment -%}
+  Beauty Care — FAQ accordion + matching FAQPage JSON-LD (SEO).
+{%- endcomment -%}
+{%- liquid assign s = section.settings -%}
+<div class="beauty">
+  <section class="beauty__section{% if s.alt_bg %} beauty__section--alt{% endif %}" style="padding-top:{{ s.padding_top | default: 48 }}px;padding-bottom:{{ s.padding_bottom | default: 48 }}px;">
+    <div class="beauty__wrap">
+      <h2 class="beauty__h2">{{ s.title | default: 'Questions fréquentes' }}</h2>
+      <div class="beauty-mt-16" data-beauty-faq style="text-align:left;">
+        {%- assign blocks = section.blocks | where: 'type', 'faq' -%}
+        {%- if blocks.size > 0 -%}
+          {%- for f in blocks -%}
+            <div class="beauty-faq__item" {{ f.shopify_attributes }}>
+              <button class="beauty-faq__q" aria-expanded="false">{{ f.settings.q }}<span class="beauty-faq__sign">+</span></button>
+              <div class="beauty-faq__a"><div>{{ f.settings.a }}</div></div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign def_q = "Le paiement à la livraison est-il disponible ?|Quel est le délai de livraison ?|Les produits conviennent-ils à peau sensible ?|Puis-je échanger un produit ?" | split: '|' -%}
+          {%- assign def_a = "Oui, vous payez uniquement à la réception de votre colis.|Entre 24 et 72 heures selon votre ville.|Oui, nos formules sont douces et adaptées à tous types de peau.|Oui, contactez-nous dans les 7 jours suivant la réception." | split: '|' -%}
+          {%- for q in def_q -%}
+            <div class="beauty-faq__item">
+              <button class="beauty-faq__q" aria-expanded="false">{{ q }}<span class="beauty-faq__sign">+</span></button>
+              <div class="beauty-faq__a"><div>{{ def_a[forloop.index0] }}</div></div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{%- assign faq_sd = section.blocks | where: 'type', 'faq' -%}
+{%- if faq_sd.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for f in faq_sd -%}
+    {
+      "@type": "Question",
+      "name": {{ f.settings.q | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ f.settings.a | strip_html | json }} }
+    }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Beauty FAQ",
+  "tag": "section",
+  "class": "beauty-section",
+  "settings": [
+    { "type": "checkbox", "id": "alt_bg", "label": "Fond alterné (blanc)", "default": false },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Questions fréquentes" },
+    { "type": "range", "id": "padding_top", "label": "Espace haut", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Espace bas", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "Le paiement à la livraison est-il disponible ?" },
+        { "type": "textarea", "id": "a", "label": "Réponse", "default": "Oui, vous payez uniquement à la réception de votre colis." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beauty FAQ",
+      "blocks": [
+        { "type": "faq", "settings": { "q": "Le paiement à la livraison est-il disponible ?", "a": "Oui, vous payez uniquement à la réception de votre colis." } },
+        { "type": "faq", "settings": { "q": "Quel est le délai de livraison ?", "a": "Entre 24 et 72 heures selon votre ville." } },
+        { "type": "faq", "settings": { "q": "Les produits conviennent-ils à peau sensible ?", "a": "Oui, nos formules sont douces et adaptées à tous types de peau." } },
+        { "type": "faq", "settings": { "q": "Puis-je échanger un produit ?", "a": "Oui, contactez-nous dans les 7 jours suivant la réception." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

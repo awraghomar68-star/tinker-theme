@@ -1,0 +1,837 @@
+{%- comment -%}
+  RBX MOROCCO — Dynamic-product COD landing page section.
+  Bind a Shopify product (schema "product" picker) and the hero/price/images/sizes
+  pull live from it. With no product selected it falls back to schema defaults +
+  snippets/rbx-placeholder.liquid so the page always builds.
+{%- endcomment -%}
+
+{{ 'rbx-landing-page.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign p = s.product
+
+  # --- Price (prefer product, else setting, else hard default) ---
+  assign price = blank
+  assign compare = blank
+  assign unit_value = blank
+  if p != blank
+    assign price = p.price | money
+    if p.compare_at_price > p.price
+      assign compare = p.compare_at_price | money
+    endif
+    assign unit_value = p.price | divided_by: 100
+  endif
+  assign price = price | default: s.price | default: '299 DH'
+  assign compare = compare | default: s.compare_price | default: '399 DH'
+  assign unit_value = unit_value | default: s.price_value | default: 299
+
+  # --- Product copy fallbacks ---
+  assign prod_title = p.title | default: s.hero_title | default: 'RBX Ensemble 2-en-1 Pro'
+  assign prod_desc = p.description | default: blank
+
+  # --- Images: prefer product, else setting, else placeholder ---
+  assign hero_img = p.featured_image | default: s.hero_image
+  assign img0 = p.images[0] | default: s.incl_image_1
+  assign img1 = p.images[1] | default: s.incl_image_2
+  assign img2 = p.images[2] | default: s.incl_image_3
+  assign fab0 = p.images[3] | default: s.fabric_image_1
+  assign fab1 = p.images[4] | default: s.fabric_image_2
+
+  # --- Size option (variant-driven) ---
+  assign size_opt = blank
+  if p != blank
+    for opt in p.options_with_values
+      assign oname = opt.name | downcase
+      if oname contains 'size' or oname contains 'taille'
+        assign size_opt = opt
+      endif
+    endfor
+  endif
+
+  # --- Ratings / counts (no fabricated defaults — blank = hidden) ---
+  assign rating = s.rating
+  assign reviews_count = s.reviews_count
+  assign orders_count = s.orders_count
+  assign recommend_pct = s.recommend_pct
+
+  # --- WhatsApp ---
+  assign wa_raw = s.whatsapp | default: '212600000000'
+  assign wa_num = wa_raw | remove: '+' | remove: ' ' | remove: '-'
+  assign wa_msg = s.whatsapp_msg | default: 'Salam, bghit ncommandi RBX Kit (COD)'
+-%}
+{%- capture wa_link -%}https://wa.me/{{ wa_num }}?text={{ wa_msg | url_encode }}{%- endcapture -%}
+
+{%- comment -%} --- Inline SVG icon set (capture once, reuse) --- {%- endcomment -%}
+{%- capture ic_check -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>{%- endcapture -%}
+{%- capture ic_x -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>{%- endcapture -%}
+{%- capture ic_truck -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>{%- endcapture -%}
+{%- capture ic_cash -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>{%- endcapture -%}
+{%- capture ic_shield -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>{%- endcapture -%}
+{%- capture ic_swap -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>{%- endcapture -%}
+{%- capture ic_bolt -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>{%- endcapture -%}
+{%- capture ic_drop -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>{%- endcapture -%}
+{%- capture ic_muscle -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-2 4 4 2-6"/><path d="M3 12v4a4 4 0 0 0 4 4h7a6 6 0 0 0 6-6V7"/></svg>{%- endcapture -%}
+{%- capture ic_gem -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/></svg>{%- endcapture -%}
+{%- capture ic_gift -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>{%- endcapture -%}
+{%- capture ic_star -%}<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{%- endcapture -%}
+{%- capture ic_wa -%}<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0 0 12.04 2zm0 18.13c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>{%- endcapture -%}
+{%- capture ic_ruler -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4z"/><path d="M7.5 10.5l2 2M10.5 7.5l2 2M13.5 4.5l2 2"/></svg>{%- endcapture -%}
+{%- capture ic_clock -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>{%- endcapture -%}
+{%- capture stars5 -%}<span class="rbx-stars">{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}</span>{%- endcapture -%}
+
+<div class="rbx rbx-pb-sticky" id="rbx-top">
+
+  {%- comment -%} ============ 0. ANNOUNCEMENT BAR ============ {%- endcomment -%}
+  <div class="rbx-announce">
+    <div class="rbx-announce__track">
+      <span>{{ ic_cash }} {{ s.announce_1 | default: 'Paiement à la livraison' }}</span>
+      <span>{{ ic_truck }} {{ s.announce_2 | default: 'Livraison GRATUITE partout au Maroc' }}</span>
+      <span>{{ ic_bolt }} {{ s.announce_3 | default: 'Offre limitée — stock 9lil' }}</span>
+    </div>
+  </div>
+
+  {%- comment -%} ============ 1. HERO ============ {%- endcomment -%}
+  {%- if hero_img != blank -%}<link rel="preload" as="image" href="{{ hero_img | image_url: width: 1200 }}" fetchpriority="high">{%- endif -%}
+  <section class="rbx-hero">
+    <div class="rbx-hero__media">
+      {%- render 'rbx-placeholder', image: hero_img, label: 'hero-bodybuilder-1', ratio: '3-4', eager: true, alt: prod_title -%}
+    </div>
+    <div class="rbx-hero__inner">
+      <p class="rbx__eyebrow">{{ s.hero_eyebrow | default: 'RBX MOROCCO · PREMIUM SPORTSWEAR' }}</p>
+      <h1 class="rbx__h1">{{ s.hero_title | default: 'LBES LI YBAYAN M3ADAD DYALK' }}</h1>
+
+      {%- if rating != blank or reviews_count != blank -%}
+      <div class="rbx-rating rbx-hero__rating">
+        {%- if rating != blank -%}{{ stars5 }}{%- endif -%}
+        <span class="rbx-rating__txt">{%- if rating != blank -%}<b>{{ rating }}/5</b>{%- endif -%}{%- if rating != blank and reviews_count != blank -%} · {% endif %}{%- if reviews_count != blank -%}{{ reviews_count }} {{ s.reviews_word | default: 'avis vérifiés' }}{%- endif -%}</span>
+      </div>
+      {%- endif -%}
+
+      <p class="rbx__lead">{{ s.hero_sub | default: "Ensemble compression 2-en-1. Kaybayan m3adad dyalk, look athlétique, confiance f kola séance. Paiement à la livraison." }}</p>
+
+      <div class="rbx-hero__price">
+        <b>{{ price }}</b>
+        {%- if compare != blank -%}<s>{{ compare }}</s>{%- endif -%}
+        {%- if s.discount_badge != blank -%}<span class="rbx-badge-off">{{ s.discount_badge }}</span>{%- else -%}<span class="rbx-badge-off">-25%</span>{%- endif -%}
+      </div>
+
+      <div class="rbx-cta-block">
+        <a href="#rbx-order" class="rbx-btn" data-rbx-scroll>{{ s.cta_primary | default: 'COMMANDER MAINTENANT' }}</a>
+        {%- if wa_num != blank and wa_num != '212600000000' -%}
+          <a href="{{ wa_link }}" class="rbx-btn rbx-btn--wa" target="_blank" rel="nofollow noopener">{{ ic_wa }} {{ s.wa_btn | default: 'Commander via WhatsApp' }}</a>
+        {%- endif -%}
+        <p class="rbx__p rbx-mb-0 rbx-mt-8" style="font-size:13px">{{ ic_cash }} {{ s.cta_micro | default: 'Khalas mnin toselek · ماشي خلاص قبل · Échange gratuit' }}</p>
+      </div>
+
+      <div class="rbx-strip">
+        <span class="rbx-strip__item">{{ ic_cash }} Paiement à la livraison</span>
+        <span class="rbx-strip__item">{{ ic_truck }} Livraison gratuite</span>
+        <span class="rbx-strip__item">{{ ic_shield }} Garantie 30 jours</span>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 1b. PRODUCT GALLERY (real images only) ============ {%- endcomment -%}
+  {%- if p != blank and p.images.size > 1 -%}
+  <section class="rbx__section--tight">
+    <div class="rbx__wrap">
+      <div class="rbx-gallery" role="list" aria-label="{{ prod_title | escape }}">
+        {%- for image in p.images limit: 6 -%}
+          <div class="rbx-gallery__item" role="listitem">
+            <img
+              src="{{ image | image_url: width: 800 }}"
+              srcset="{{ image | image_url: width: 500 }} 500w, {{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1100 }} 1100w"
+              sizes="(min-width: 680px) 320px, 80vw"
+              alt="{{ image.alt | default: prod_title | escape }}"
+              loading="lazy" width="800" height="1000">
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} ============ 2. WHY ATHLETES CHOOSE RBX ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow rbx__center">3awtani</p>
+      <h2 class="rbx__h2 rbx__center">{{ s.why_title | default: 'علاش les athlètes كيختارو RBX' }}</h2>
+      <div class="rbx-grid rbx-grid--2 rbx-grid--cards4 rbx-mt-24">
+        {%- assign benefit_blocks = section.blocks | where: 'type', 'benefit' -%}
+        {%- if benefit_blocks.size > 0 -%}
+          {%- for b in benefit_blocks -%}
+            <div class="rbx-card" {{ b.shopify_attributes }}>
+              <div class="rbx-card__icon">
+                {%- case b.settings.icon -%}
+                  {%- when 'gem' -%}{{ ic_gem }}
+                  {%- when 'drop' -%}{{ ic_drop }}
+                  {%- when 'shield' -%}{{ ic_shield }}
+                  {%- when 'muscle' -%}{{ ic_muscle }}
+                  {%- when 'bolt' -%}{{ ic_bolt }}
+                  {%- else -%}{{ ic_check }}
+                {%- endcase -%}
+              </div>
+              <h3 class="rbx__h3">{{ b.settings.title }}</h3>
+              <p class="rbx__p rbx-mb-0">{{ b.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="rbx-card"><div class="rbx-card__icon">{{ ic_gem }}</div><h3 class="rbx__h3">Qualité Premium</h3><p class="rbx__p rbx-mb-0">Tissu compression importé, finition premium. Machi cheap marketplace.</p></div>
+          <div class="rbx-card"><div class="rbx-card__icon">{{ ic_muscle }}</div><h3 class="rbx__h3">Fit Parfait</h3><p class="rbx__p rbx-mb-0">Coupe athletic li katbayan l'muscles. Kayban 3lik m3adad.</p></div>
+          <div class="rbx-card"><div class="rbx-card__icon">{{ ic_shield }}</div><h3 class="rbx__h3">Durable</h3><p class="rbx__p rbx-mb-0">Kayb9a lawn w forme mn b3d ghasil. Ma kaytl9ach.</p></div>
+          <div class="rbx-card"><div class="rbx-card__icon">{{ ic_drop }}</div><h3 class="rbx__h3">Anti-Transpiration</h3><p class="rbx__p rbx-mb-0">Tissu respirant kaymtass l3rg. Confort f kola séance.</p></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 3. TRANSFORMATION BENEFITS ============ {%- endcomment -%}
+  <section class="rbx__section">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow">La transformation</p>
+      <h2 class="rbx__h2">{{ s.transform_title | default: "MACHI غير tenue. هادشي confiance." }}</h2>
+      <p class="rbx__p">{{ s.transform_text | default: prod_desc | default: "Melli katlbess RBX, katban أقوى, plus athletic, w plus professional. Corps dyalk kaybayan ahsan, w nta kathss b confiance kbira f gym wla f terrain." }}</p>
+      <div class="rbx-grid rbx-grid--2 rbx-grid--stack-sm rbx-mt-16">
+        {%- render 'rbx-placeholder', image: s.transform_image_1, label: 'gym-scene-1', ratio: '4-5', alt: 'Athlète en RBX à la salle' -%}
+        {%- render 'rbx-placeholder', image: s.transform_image_2, label: 'football-scene', ratio: '4-5', alt: 'Athlète en RBX sur le terrain' -%}
+      </div>
+      <ul class="rbx-list rbx-list--good rbx-mt-24">
+        <li>{{ ic_check }} Kaban 3lik plus musclé</li>
+        <li>{{ ic_check }} Look athletic w professional</li>
+        <li>{{ ic_check }} Confiance f kola entrainement</li>
+        <li>{{ ic_check }} Style fitness influencer</li>
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} CTA #1 {%- endcomment -%}
+  <section class="rbx__section--tight"><div class="rbx__wrap rbx-cta-block">
+    <a href="#rbx-order" class="rbx-btn" data-rbx-scroll>{{ s.cta_secondary | default: 'بغيت نشري دابا' }} — {{ price }}</a>
+  </div></section>
+
+  {%- comment -%} ============ 4. PREMIUM FABRIC SHOWCASE ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow">Le tissu</p>
+      <h2 class="rbx__h2">{{ s.fabric_title | default: 'TISSU COMPRESSION PREMIUM' }}</h2>
+      <div class="rbx-grid rbx-grid--2 rbx-grid--stack-sm">
+        {%- render 'rbx-placeholder', image: fab0, label: 'fabric-closeup-1', ratio: '1-1', alt: 'Tissu compression RBX en gros plan' -%}
+        {%- render 'rbx-placeholder', image: fab1, label: 'fabric-closeup-2', ratio: '1-1', alt: 'Détail couture tissu RBX' -%}
+      </div>
+      <ul class="rbx-list rbx-list--good rbx-mt-24">
+        <li>{{ ic_check }} Compression li katsupport l'muscles</li>
+        <li>{{ ic_check }} Respirant — ma kay3reqch</li>
+        <li>{{ ic_check }} Kayhfad forme — ma kaytmddch</li>
+        <li>{{ ic_check }} Matériaux importés premium</li>
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 5. BEFORE / AFTER FEELING ============ {%- endcomment -%}
+  <section class="rbx__section">
+    <div class="rbx__wrap">
+      <h2 class="rbx__h2 rbx__center">{{ s.ba_title | default: 'الفرق كاين' }}</h2>
+      <div class="rbx-ba rbx-mt-24">
+        <div class="rbx-ba__col rbx-ba__col--bad">
+          <p class="rbx-ba__tag">9bel · sportswear cheap</p>
+          <ul class="rbx-list rbx-list--bad">
+            <li>{{ ic_x }} Kaytl9 forme mn b3d ghasil</li>
+            <li>{{ ic_x }} Taille ghalta</li>
+            <li>{{ ic_x }} Tissu khayb kay3req</li>
+            <li>{{ ic_x }} Walou confiance</li>
+          </ul>
+        </div>
+        <div class="rbx-ba__col rbx-ba__col--good">
+          <p class="rbx-ba__tag">m3a RBX</p>
+          <ul class="rbx-list rbx-list--good">
+            <li>{{ ic_check }} Kayb9a parfait dima</li>
+            <li>{{ ic_check }} Fit athletic mzyan</li>
+            <li>{{ ic_check }} Respirant w confortable</li>
+            <li>{{ ic_check }} Confiance 100%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 5b. SOCIAL PROOF / REVIEWS ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow rbx__center">{{ s.reviews_eyebrow | default: 'Ils nous font confiance' }}</p>
+      <h2 class="rbx__h2 rbx__center">{{ s.reviews_title | default: 'شنو كيقولو الرياضيين' }}</h2>
+
+      {%- if orders_count != blank or rating != blank or recommend_pct != blank -%}
+      <div class="rbx-proofbar">
+        {%- if orders_count != blank -%}
+        <div class="rbx-proofbar__cell">
+          <span class="rbx-proofbar__num">{{ orders_count }}</span>
+          <span class="rbx-proofbar__lbl">{{ s.orders_word | default: 'commandes livrées' }}</span>
+        </div>
+        {%- endif -%}
+        {%- if rating != blank -%}
+        <div class="rbx-proofbar__cell">
+          <div class="rbx-rating">{{ stars5 }}</div>
+          <span class="rbx-proofbar__lbl">{{ rating }}/5{% if reviews_count != blank %} · {{ reviews_count }} {{ s.reviews_word | default: 'avis vérifiés' }}{% endif %}</span>
+        </div>
+        {%- endif -%}
+        {%- if recommend_pct != blank -%}
+        <div class="rbx-proofbar__cell">
+          <span class="rbx-proofbar__num">{{ recommend_pct }}</span>
+          <span class="rbx-proofbar__lbl">{{ s.recommend_word | default: 'le recommandent' }}</span>
+        </div>
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+
+      <div class="rbx-reviews rbx-mt-24">
+        {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+        {%- if review_blocks.size > 0 -%}
+          {%- for r in review_blocks -%}
+            <div class="rbx-review" {{ r.shopify_attributes }}>
+              <div class="rbx-review__top">
+                <div class="rbx-review__av">{%- render 'rbx-placeholder', image: r.settings.photo, label: 'review', ratio: '1-1' -%}</div>
+                <div class="rbx-review__who">
+                  <b>{{ r.settings.name }}</b>
+                  <span>{{ r.settings.city }}</span>
+                  {%- if r.settings.verified -%}<span class="rbx-review__verified">{{ ic_check }} {{ s.verified_word | default: 'Achat vérifié' }}</span>{%- endif -%}
+                </div>
+              </div>
+              {{ stars5 }}
+              <p class="rbx-review__txt">{{ r.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="rbx-review"><div class="rbx-review__top"><div class="rbx-review__av">{%- render 'rbx-placeholder', image: blank, label: 'review-1', ratio: '1-1' -%}</div><div class="rbx-review__who"><b>Yassine B.</b><span>Casablanca</span></div></div>{{ stars5 }}<p class="rbx-review__txt">Tissu top, kayban m3adad b9el. Manchettes free hadya zwina. Wsalni f 3 ayam, khlast f dar.</p></div>
+          <div class="rbx-review"><div class="rbx-review__top"><div class="rbx-review__av">{%- render 'rbx-placeholder', image: blank, label: 'review-2', ratio: '1-1' -%}</div><div class="rbx-review__who"><b>Mehdi R.</b><span>Rabat</span></div></div>{{ stars5 }}<p class="rbx-review__txt">9addit dial taille mzyana. Tissu ma kay3reqch w kayb9a forme mn b3d ghasil. Nconseille.</p></div>
+          <div class="rbx-review"><div class="rbx-review__top"><div class="rbx-review__av">{%- render 'rbx-placeholder', image: blank, label: 'review-3', ratio: '1-1' -%}</div><div class="rbx-review__who"><b>Anas T.</b><span>Marrakech</span></div></div>{{ stars5 }}<p class="rbx-review__txt">Qualité premium 100%. Khlast mnin wsalni, b9it mrtah. Look pro f gym, confiance kbira.</p></div>
+        {%- endif -%}
+      </div>
+
+      <div class="rbx-cta-block rbx-mt-24">
+        <a href="#rbx-order" class="rbx-btn" data-rbx-scroll>{{ s.cta_reviews | default: 'كمل الطلب ديالك' }}</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 6. WHAT'S INCLUDED ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow">Le pack</p>
+      <h2 class="rbx__h2">{{ s.incl_title | default: 'شنو غادي توصلك' }}</h2>
+      <div class="rbx-incl rbx-mt-16">
+        <div class="rbx-incl__row">
+          {%- render 'rbx-placeholder', image: img0, label: 'product-front', ratio: '1-1', alt: 'T-shirt compression RBX Pro' -%}
+          <div><h3 class="rbx__h3">{{ s.incl_1_title | default: 'T-shirt RBX Pro' }}</h3><p class="rbx__p rbx-mb-0">{{ s.incl_1_text | default: 'Maillot compression premium, coupe athletic.' }}</p></div>
+        </div>
+        <div class="rbx-incl__row">
+          {%- render 'rbx-placeholder', image: img1, label: 'product-back', ratio: '1-1', alt: 'Short RBX Pro assorti' -%}
+          <div><h3 class="rbx__h3">{{ s.incl_2_title | default: 'Short RBX Pro' }}</h3><p class="rbx__p rbx-mb-0">{{ s.incl_2_text | default: 'Short assorti, tissu respirant, liberté totale.' }}</p></div>
+        </div>
+        <div class="rbx-incl__row">
+          {%- render 'rbx-placeholder', image: img2, label: 'free-sleeves', ratio: '1-1', alt: '2 manchettes de compression offertes' -%}
+          <div><span class="rbx-incl__free">+ GRATUIT</span><h3 class="rbx__h3">{{ s.incl_3_title | default: '2 Manchettes Compression' }}</h3><p class="rbx__p rbx-mb-0">{{ s.incl_3_text | default: "Cadeau m3a kola commande. Support l'bras f training." }}</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 7. FREE GIFT ============ {%- endcomment -%}
+  <section class="rbx__section">
+    <div class="rbx__wrap">
+      <div class="rbx-gift">
+        <div class="rbx-card__icon" style="margin:0 auto 14px">{{ ic_gift }}</div>
+        <span class="rbx-gift__badge">Cadeau offert</span>
+        <h2 class="rbx__h2">{{ s.gift_title | default: '2 MANCHETTES DE COMPRESSION — GRATUITES' }}</h2>
+        <p class="rbx__p">{{ s.gift_text | default: "M3a kola RBX kit, kateddi 2 manchettes compression b 0 DH. Support l'muscles dyal draa3, look complet d'athlète pro." }}</p>
+        <div class="rbx-cta-block rbx-mt-8">
+          <a href="#rbx-order" class="rbx-btn" data-rbx-scroll>{{ s.cta_gift | default: 'خود الكيت + الهدية' }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 8. TRUST & GUARANTEES ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt">
+    <div class="rbx__wrap">
+      <h2 class="rbx__h2 rbx__center">{{ s.trust_title | default: 'علاش تثيق فينا' }}</h2>
+      <div class="rbx-trust rbx-mt-24">
+        <div class="rbx-trust__item">{{ ic_cash }}<b>{{ s.trust_1_title | default: 'COD' }}</b><span>{{ s.trust_1_text | default: 'Khalas mnin toselek' }}</span></div>
+        <div class="rbx-trust__item">{{ ic_truck }}<b>{{ s.trust_2_title | default: 'Livraison gratuite' }}</b><span>{{ s.trust_2_text | default: 'Partout au Maroc' }}</span></div>
+        <div class="rbx-trust__item">{{ ic_swap }}<b>{{ s.trust_3_title | default: 'Échange taille' }}</b><span>{{ s.trust_3_text | default: 'Gratuit w facile' }}</span></div>
+        <div class="rbx-trust__item">{{ ic_shield }}<b>{{ s.trust_4_title | default: 'Garantie 30j' }}</b><span>{{ s.trust_4_text | default: 'Satisfait wla remboursé' }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 9. FAQ ============ {%- endcomment -%}
+  <section class="rbx__section">
+    <div class="rbx__wrap">
+      <h2 class="rbx__h2 rbx__center">{{ s.faq_title | default: 'أسئلة كثيرة' }}</h2>
+      <div class="rbx-faq rbx-mt-16" data-rbx-faq>
+        {%- assign faq_blocks = section.blocks | where: 'type', 'faq' -%}
+        {%- if faq_blocks.size > 0 -%}
+          {%- for f in faq_blocks -%}
+            <div class="rbx-faq__item" {{ f.shopify_attributes }}>
+              <button class="rbx-faq__q" aria-expanded="false">{{ f.settings.q }}<span class="rbx-faq__sign">+</span></button>
+              <div class="rbx-faq__a"><div>{{ f.settings.a }}</div></div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign def_q = "Wach qualité mzyana?|Wach taille katji mzyan?|Wach tissu kay3req?|Wach kayb9a lawn?|Wach kayn échange?|Wach nkhales 9bel?" | split: '|' -%}
+          {%- assign def_a = "Oui, tissu premium compression, finition haute qualité.|Oui, guide des tailles disponible (M, L, XL, XXL). Échange gratuit ila bghiti.|Non, tissu respirant kaymtass l3rg.|Oui, haute qualité, kayb9a lawn mn b3d ghasil.|Oui, échange taille gratuit w facile.|Non, paiement à la livraison (COD). Katkhalas mnin toselek commande." | split: '|' -%}
+          {%- for q in def_q -%}
+            <div class="rbx-faq__item">
+              <button class="rbx-faq__q" aria-expanded="false">{{ q }}<span class="rbx-faq__sign">+</span></button>
+              <div class="rbx-faq__a"><div>{{ def_a[forloop.index0] }}</div></div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 10. ORDER FORM (COD) ============ {%- endcomment -%}
+  <section class="rbx__section rbx__section--alt" id="rbx-order">
+    <div class="rbx__wrap">
+      <p class="rbx__eyebrow rbx__center">{{ ic_cash }} Paiement à la livraison</p>
+      <h2 class="rbx__h2 rbx__center">{{ s.order_title | default: 'كمل الطلب ديالك' }}</h2>
+      <p class="rbx__p rbx__center">{{ prod_title }} — 3mmer les informations w ghadi nt9onta3o m3ak l'تأكيد. Katkhalas <b class="rbx__hl">mnin toselek</b>.</p>
+
+      {%- if s.urgency_enable == false -%}{%- else -%}
+      <div class="rbx-urgency">
+        <span class="rbx-urgency__stock"><span class="rbx-urgency__dot"></span>{{ s.stock_left | default: '37' }} {{ s.stock_word | default: 'kits restants — stock 9lil' }}</span>
+        <span class="rbx-urgency__timer">{{ ic_clock }} {{ s.timer_word | default: "L'offre se termine dans" }}
+          <span class="rbx-urgency__clock" data-rbx-countdown data-minutes="{{ s.timer_minutes | default: 120 }}" data-key="offer" data-deadline="{{ s.timer_end }}" aria-hidden="true">
+            <b data-cd-h>00</b><b data-cd-m>00</b><b data-cd-s>00</b>
+          </span>
+        </span>
+      </div>
+      {%- endif -%}
+
+      <div class="rbx-order rbx-mt-16" data-rbx-order>
+        <form class="rbx-order__form" action="{{ s.form_action | default: '#' }}" method="post" novalidate data-rbx-form>
+          {%- if p != blank -%}<input type="hidden" name="product_id" value="{{ p.id }}">{%- endif -%}
+          <input type="hidden" name="variant_id" value="" data-rbx-variant>
+          <input type="hidden" name="product_title" value="{{ prod_title | escape }}">
+          <input type="hidden" name="currency" value="{{ s.currency | default: 'DH' }}">
+          <input type="hidden" name="total" value="{{ unit_value }}" data-rbx-total>
+
+          <div class="rbx-field" data-field>
+            <label for="rbx-name">Nom complet *</label>
+            <input type="text" id="rbx-name" name="name" autocomplete="name" placeholder="Smitek lkamel" required>
+            <span class="rbx-field__err">3afak 3mmer smitek.</span>
+          </div>
+          <div class="rbx-field" data-field>
+            <label for="rbx-phone">Téléphone *</label>
+            <input type="tel" id="rbx-phone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="06 12 34 56 78" required>
+            <span class="rbx-field__err">3afak 3mmer numéro s7i7 (10 chiffres).</span>
+          </div>
+          <div class="rbx-field" data-field>
+            <label for="rbx-city">Ville *</label>
+            <input type="text" id="rbx-city" name="city" autocomplete="address-level2" placeholder="Casablanca, Rabat..." required>
+            <span class="rbx-field__err">3afak 3mmer lmadina.</span>
+          </div>
+          <div class="rbx-field" data-field>
+            <label for="rbx-address">Adresse *</label>
+            <textarea id="rbx-address" name="address" rows="2" autocomplete="street-address" placeholder="3onwan kamel l'livraison" required></textarea>
+            <span class="rbx-field__err">3afak 3mmer l3onwan.</span>
+          </div>
+
+          <div class="rbx-field" data-field data-pillgroup="size">
+            <label>Taille *</label>
+            <div class="rbx-pills" role="radiogroup" aria-label="Taille">
+              {%- if size_opt != blank -%}
+                {%- assign size_idx = size_opt.position | minus: 1 -%}
+                {%- for val in size_opt.values -%}
+                  {%- assign vid = '' -%}
+                  {%- assign avail = false -%}
+                  {%- for v in p.variants -%}
+                    {%- assign vopt = v.options[size_idx] -%}
+                    {%- if vopt == val -%}
+                      {%- assign vid = v.id -%}
+                      {%- if v.available -%}{%- assign avail = true -%}{%- endif -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <label class="rbx-pill{% unless avail %} rbx-pill--soldout{% endunless %}">
+                    <input type="radio" name="size" value="{{ val | escape }}" data-variant-id="{{ vid }}"{% unless avail %} disabled{% endunless %} required>{{ val }}
+                  </label>
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign sizes = 'M,L,XL,XXL' | split: ',' -%}
+                {%- for sz in sizes -%}
+                  <label class="rbx-pill"><input type="radio" name="size" value="{{ sz }}" required>{{ sz }}</label>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+            <span class="rbx-field__err">3afak khtar taille.</span>
+
+            <div class="rbx-sizeguide" data-rbx-sizeguide>
+              <button type="button" class="rbx-sizeguide__toggle">{{ ic_ruler }} {{ s.sizeguide_word | default: 'Guide des tailles' }}</button>
+              <div class="rbx-sizeguide__panel">
+                <table class="rbx-sizetable">
+                  <thead><tr><th>Taille</th><th>Poids</th><th>Taille (cm)</th></tr></thead>
+                  <tbody>
+                    <tr><td>M</td><td>55–65 kg</td><td>165–172</td></tr>
+                    <tr><td>L</td><td>65–78 kg</td><td>172–180</td></tr>
+                    <tr><td>XL</td><td>78–90 kg</td><td>180–188</td></tr>
+                    <tr><td>XXL</td><td>90–105 kg</td><td>188–196</td></tr>
+                  </tbody>
+                </table>
+                <p class="rbx__p rbx-mb-0 rbx-mt-8" style="font-size:12px">{{ ic_swap }} {{ s.sizeguide_note | default: 'Pas sûr? Échange taille GRATUIT après livraison.' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rbx-field" data-pillgroup="qty">
+            <label>Quantité</label>
+            <div class="rbx-pills" role="radiogroup" aria-label="Quantité">
+              <label class="rbx-pill rbx-pill--active"><input type="radio" name="qty" value="1" checked>1<small>kit</small></label>
+              <label class="rbx-pill"><input type="radio" name="qty" value="2">2<small>−{{ s.save2 | default: '99' }} {{ s.currency | default: 'DH' }}</small></label>
+              <label class="rbx-pill"><input type="radio" name="qty" value="3">3<small>−{{ s.save3 | default: '198' }} {{ s.currency | default: 'DH' }}</small></label>
+            </div>
+          </div>
+
+          <div class="rbx-sum"
+               data-rbx-sum
+               data-unit="{{ unit_value }}"
+               data-currency="{{ s.currency | default: 'DH' }}"
+               data-bundle="{{ s.bundle_prices }}"
+               data-save2="{{ s.save2 | default: '99' }}"
+               data-save3="{{ s.save3 | default: '198' }}">
+            <div class="rbx-sum__row"><span data-sum-label>RBX Kit × 1</span><span data-sum-sub>{{ unit_value }} {{ s.currency | default: 'DH' }}</span></div>
+            <div class="rbx-sum__row" data-sum-saverow style="display:none"><span>Remise pack</span><span class="rbx-sum__free" data-sum-save>− 0 DH</span></div>
+            <div class="rbx-sum__row"><span>Manchettes (×2)</span><span class="rbx-sum__free">GRATUIT</span></div>
+            <div class="rbx-sum__row"><span>Livraison</span><span class="rbx-sum__free">GRATUITE</span></div>
+            <div class="rbx-sum__row rbx-sum__row--total"><span>Total à payer</span><b data-sum-total>{{ unit_value }} {{ s.currency | default: 'DH' }}</b></div>
+          </div>
+
+          <button type="submit" class="rbx-btn">{{ s.order_btn | default: 'تأكيد الطلب — COD' }}</button>
+
+          {%- if wa_num != blank and wa_num != '212600000000' -%}
+            <p class="rbx-or">— wla —</p>
+            <a href="{{ wa_link }}" class="rbx-btn rbx-btn--wa" target="_blank" rel="nofollow noopener">{{ ic_wa }} {{ s.wa_btn | default: 'Commander via WhatsApp' }}</a>
+          {%- endif -%}
+
+          <div class="rbx-order__reassure">
+            <span>{{ ic_cash }} Paiement à la livraison — ماشي خلاص قبل</span>
+            <span>{{ ic_truck }} Livraison gratuite partout au Maroc</span>
+            <span>{{ ic_swap }} Échange taille gratuit · {{ ic_shield }} Garantie 30 jours</span>
+          </div>
+        </form>
+
+        <div class="rbx-order__success" role="status" tabindex="-1">
+          {{ ic_shield }}
+          <h3 class="rbx__h3">شكراً! Commande مأكدة</h3>
+          <p class="rbx__p rbx-mb-0">Ghadi nt9onta3o m3ak f a9rab w9t bach n'akkdo commande. (Démo — wsl form b endpoint d'COD).</p>
+        </div>
+
+        <div class="rbx-order__error" role="alert" hidden>
+          {{ ic_x }}
+          <h3 class="rbx__h3">{{ s.order_error_title | default: 'Erreur — 3awd 7awl' }}</h3>
+          <p class="rbx__p rbx-mb-0">{{ s.order_error_text | default: "Ma t'sift'ch commande. 3afak 3awd 7awl, wla commandi via WhatsApp." }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ============ 10b. FOOTER / LEGITIMACY ============ {%- endcomment -%}
+  {%- assign has_links = false -%}
+  {%- if s.returns_url != blank or s.contact_url != blank or s.legal_url != blank -%}{%- assign has_links = true -%}{%- endif -%}
+  {%- if s.legal_company != blank or s.legal_phone != blank or s.legal_email != blank or s.legal_address != blank or has_links -%}
+  <section class="rbx__section rbx__section--alt rbx-legal">
+    <div class="rbx__wrap">
+      {%- if s.legal_company != blank -%}<p class="rbx-legal__company">{{ s.legal_company }}</p>{%- endif -%}
+      {%- if s.legal_address != blank -%}<p class="rbx-legal__line">{{ s.legal_address }}</p>{%- endif -%}
+      <div class="rbx-legal__contact">
+        {%- if s.legal_phone != blank -%}<a href="tel:{{ s.legal_phone | remove: ' ' }}">{{ ic_cash }} {{ s.legal_phone }}</a>{%- endif -%}
+        {%- if s.legal_email != blank -%}<a href="mailto:{{ s.legal_email }}">{{ s.legal_email }}</a>{%- endif -%}
+      </div>
+      {%- if has_links -%}
+      <div class="rbx-legal__links">
+        {%- if s.returns_url != blank -%}<a href="{{ s.returns_url }}">{{ s.returns_label | default: 'Politique de retour' }}</a>{%- endif -%}
+        {%- if s.contact_url != blank -%}<a href="{{ s.contact_url }}">{{ s.contact_label | default: 'Contact' }}</a>{%- endif -%}
+        {%- if s.legal_url != blank -%}<a href="{{ s.legal_url }}">{{ s.legal_label | default: 'Mentions légales' }}</a>{%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} ============ 11. STICKY CTA ============ {%- endcomment -%}
+  <div class="rbx-sticky" data-rbx-sticky aria-hidden="true">
+    <div class="rbx-sticky__price">
+      <b>{{ price }}</b>
+      <small>COD · Livraison gratuite</small>
+    </div>
+    {%- if wa_num != blank and wa_num != '212600000000' -%}
+      <a href="{{ wa_link }}" class="rbx-sticky__wa" target="_blank" rel="nofollow noopener" aria-label="WhatsApp">{{ ic_wa }}</a>
+    {%- endif -%}
+    <a href="#rbx-order" class="rbx-btn" data-rbx-scroll>{{ s.sticky_btn | default: 'COMMANDER' }}</a>
+  </div>
+
+</div>
+
+{%- comment -%} ============ SEO — Structured data (real values only) ============ {%- endcomment -%}
+{%- liquid
+  assign cur_code = s.currency_code | default: 'MAD'
+  assign rc_digits = reviews_count | remove: ',' | remove: '+' | remove: ' '
+  assign rev_blocks = section.blocks | where: 'type', 'review'
+  assign faq_sd = section.blocks | where: 'type', 'faq'
+-%}
+{%- capture rbx_images -%}
+{%- if p != blank and p.images.size > 0 -%}
+{%- for image in p.images limit: 6 -%}{{ image | image_url: width: 1200 | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+{%- elsif hero_img != blank -%}{{ hero_img | image_url: width: 1200 | json }}{%- endif -%}
+{%- endcapture -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ prod_title | json }},
+  {%- if prod_desc != blank %}"description": {{ prod_desc | strip_html | truncatewords: 60 | json }},{% endif %}
+  {%- assign rbx_images_t = rbx_images | strip %}{% if rbx_images_t != blank %}"image": [{{ rbx_images_t }}],{% endif %}
+  "brand": { "@type": "Brand", "name": {{ s.legal_company | default: 'RBX' | json }} },
+  "offers": {
+    "@type": "Offer",
+    "price": {{ unit_value | json }},
+    "priceCurrency": {{ cur_code | json }},
+    "availability": "https://schema.org/InStock"
+  }{% if rating != blank %},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rating | json }},
+    "reviewCount": {% if rc_digits != blank %}{{ rc_digits | json }}{% elsif rev_blocks.size > 0 %}"{{ rev_blocks.size }}"{% else %}"1"{% endif %}
+  }{% endif %}{% if rev_blocks.size > 0 %},
+  "review": [
+    {%- for r in rev_blocks -%}
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": {{ r.settings.name | json }} },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "reviewBody": {{ r.settings.text | json }}
+    }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]{% endif %}
+}
+</script>
+{%- if faq_sd.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for f in faq_sd -%}
+    {
+      "@type": "Question",
+      "name": {{ f.settings.q | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ f.settings.a | strip_html | json }} }
+    }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if s.pixel_id != blank -%}
+<script>
+  /* RBX — Meta Pixel bootstrap (only if not already loaded by theme/app). */
+  (function () {
+    if (window.fbq) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', {{ s.pixel_id | json }});
+    fbq('track', 'PageView');
+  })();
+</script>
+{%- endif -%}
+{{ 'rbx-landing-page.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "RBX Landing Page",
+  "tag": "section",
+  "class": "rbx-section",
+  "settings": [
+    { "type": "header", "content": "Produit (données dynamiques)" },
+    { "type": "product", "id": "product", "label": "Produit lié", "info": "Sélectionnez le produit : titre, prix, prix barré, images et tailles seront tirés automatiquement. Laisser vide = valeurs par défaut + placeholders." },
+
+    { "type": "header", "content": "Prix & devise (fallback / override)" },
+    { "type": "text", "id": "price", "label": "Prix affiché", "info": "Utilisé seulement si aucun produit n'est lié.", "default": "299 DH" },
+    { "type": "number", "id": "price_value", "label": "Prix (valeur numérique)", "info": "Pour le calcul JS quand aucun produit n'est lié.", "default": 299 },
+    { "type": "text", "id": "currency", "label": "Devise (affichage)", "default": "DH" },
+    { "type": "text", "id": "currency_code", "label": "Code devise ISO (SEO/Pixel)", "info": "Code ISO 4217 pour les données structurées. Ex: MAD.", "default": "MAD" },
+    { "type": "text", "id": "compare_price", "label": "Ancien prix (barré)", "default": "399 DH" },
+    { "type": "text", "id": "discount_badge", "label": "Badge réduction", "default": "-25%" },
+    { "type": "text", "id": "bundle_prices", "label": "Prix packs (qty:total)", "info": "Ex: 1:299,2:499,3:699. Laisser vide = calcul auto à partir du prix produit − économies (recommandé).",  },
+    { "type": "text", "id": "save2", "label": "Économie pack 2 (DH)", "default": "99" },
+    { "type": "text", "id": "save3", "label": "Économie pack 3 (DH)", "default": "198" },
+
+    { "type": "header", "content": "Barre d'annonce" },
+    { "type": "text", "id": "announce_1", "label": "Annonce 1", "default": "Paiement à la livraison" },
+    { "type": "text", "id": "announce_2", "label": "Annonce 2", "default": "Livraison GRATUITE partout au Maroc" },
+    { "type": "text", "id": "announce_3", "label": "Annonce 3", "default": "Offre limitée — stock 9lil" },
+
+    { "type": "header", "content": "Preuve sociale & notes", "info": "Mettez UNIQUEMENT des chiffres réels. Laissez vide pour masquer (aucune stat inventée n'est affichée par défaut)." },
+    { "type": "text", "id": "rating", "label": "Note /5 (réelle)", "info": "Ex: 4.8. Vide = note + étoiles masquées." },
+    { "type": "text", "id": "reviews_count", "label": "Nombre d'avis (réel)", "info": "Ex: 1 200+. Vide = masqué." },
+    { "type": "text", "id": "orders_count", "label": "Commandes livrées (réel)", "info": "Vide = masqué." },
+    { "type": "text", "id": "recommend_pct", "label": "% qui recommandent (réel)", "info": "Ex: 98%. Vide = cellule masquée." },
+    { "type": "text", "id": "reviews_title", "label": "Titre section avis", "default": "شنو كيقولو الرياضيين" },
+
+    { "type": "header", "content": "Tracking (Meta Pixel)" },
+    { "type": "text", "id": "pixel_id", "label": "Meta Pixel ID", "info": "Optionnel. Charge le pixel de base seulement s'il n'est pas déjà installé par le thème/app. Laisser vide = désactivé. Les événements (PageView, ViewContent, InitiateCheckout, Lead) restent actifs si un pixel est déjà présent." },
+
+    { "type": "header", "content": "WhatsApp (commande directe)" },
+    { "type": "text", "id": "whatsapp", "label": "Numéro WhatsApp", "info": "Format international sans +, ex: 2126XXXXXXXX. Laisser le défaut désactive le bouton.", "default": "212600000000" },
+    { "type": "text", "id": "whatsapp_msg", "label": "Message pré-rempli", "default": "Salam, bghit ncommandi RBX Kit (COD)" },
+    { "type": "text", "id": "wa_btn", "label": "Texte bouton WhatsApp", "default": "Commander via WhatsApp" },
+
+    { "type": "header", "content": "Urgence (stock + minuteur)" },
+    { "type": "checkbox", "id": "urgency_enable", "label": "Activer l'urgence", "default": true },
+    { "type": "text", "id": "stock_left", "label": "Stock restant", "default": "37" },
+    { "type": "number", "id": "timer_minutes", "label": "Durée minuteur (minutes)", "default": 120 },
+    { "type": "text", "id": "timer_end", "label": "Date de fin réelle (optionnel)", "info": "Format ISO ex: 2026-07-15T23:59. Si renseignée = compte à rebours réel partagé (s'arrête et se masque à l'échéance). Vide = fenêtre glissante par visite." },
+
+    { "type": "header", "content": "1. Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image hero (override produit)" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "RBX MOROCCO · PREMIUM SPORTSWEAR" },
+    { "type": "text", "id": "hero_title", "label": "Titre", "info": "Bénéfice d'abord, une seule langue = plus clair pour le cold traffic.", "default": "LBES LI YBAYAN M3ADAD DYALK" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sous-titre" },
+    { "type": "text", "id": "cta_primary", "label": "CTA principal (hero)", "default": "COMMANDER MAINTENANT" },
+    { "type": "text", "id": "cta_secondary", "label": "CTA après transformation", "default": "بغيت نشري دابا" },
+    { "type": "text", "id": "cta_reviews", "label": "CTA après avis", "default": "كمل الطلب ديالك" },
+    { "type": "text", "id": "cta_gift", "label": "CTA section cadeau", "default": "خود الكيت + الهدية" },
+
+    { "type": "header", "content": "2. Pourquoi RBX (utiliser blocs Benefit)" },
+    { "type": "text", "id": "why_title", "label": "Titre", "default": "علاش les athlètes كيختارو RBX" },
+
+    { "type": "header", "content": "3. Transformation" },
+    { "type": "text", "id": "transform_title", "label": "Titre" },
+    { "type": "textarea", "id": "transform_text", "label": "Texte", "info": "Vide = description du produit lié, sinon texte par défaut." },
+    { "type": "image_picker", "id": "transform_image_1", "label": "Image 1 (gym-scene-1)" },
+    { "type": "image_picker", "id": "transform_image_2", "label": "Image 2 (football-scene)" },
+
+    { "type": "header", "content": "4. Tissu premium" },
+    { "type": "text", "id": "fabric_title", "label": "Titre", "default": "TISSU COMPRESSION PREMIUM" },
+    { "type": "image_picker", "id": "fabric_image_1", "label": "Image 1 (override produit img 4)" },
+    { "type": "image_picker", "id": "fabric_image_2", "label": "Image 2 (override produit img 5)" },
+
+    { "type": "header", "content": "5. Avant / Après" },
+    { "type": "text", "id": "ba_title", "label": "Titre", "default": "الفرق كاين" },
+
+    { "type": "header", "content": "6. Contenu du pack" },
+    { "type": "text", "id": "incl_title", "label": "Titre" },
+    { "type": "image_picker", "id": "incl_image_1", "label": "Image 1 (override produit img 1)" },
+    { "type": "text", "id": "incl_1_title", "label": "Titre article 1", "default": "T-shirt RBX Pro" },
+    { "type": "text", "id": "incl_1_text", "label": "Texte article 1", "default": "Maillot compression premium, coupe athletic." },
+    { "type": "image_picker", "id": "incl_image_2", "label": "Image 2 (override produit img 2)" },
+    { "type": "text", "id": "incl_2_title", "label": "Titre article 2", "default": "Short RBX Pro" },
+    { "type": "text", "id": "incl_2_text", "label": "Texte article 2", "default": "Short assorti, tissu respirant, liberté totale." },
+    { "type": "image_picker", "id": "incl_image_3", "label": "Image 3 (override produit img 3)" },
+    { "type": "text", "id": "incl_3_title", "label": "Titre article 3", "default": "2 Manchettes Compression" },
+    { "type": "text", "id": "incl_3_text", "label": "Texte article 3", "default": "Cadeau m3a kola commande. Support l'bras f training." },
+
+    { "type": "header", "content": "7. Cadeau gratuit" },
+    { "type": "text", "id": "gift_title", "label": "Titre" },
+    { "type": "textarea", "id": "gift_text", "label": "Texte" },
+
+    { "type": "header", "content": "8. Confiance" },
+    { "type": "text", "id": "trust_title", "label": "Titre", "default": "علاش تثيق فينا" },
+    { "type": "text", "id": "trust_1_title", "label": "Badge 1 — titre", "default": "COD" },
+    { "type": "text", "id": "trust_1_text", "label": "Badge 1 — sous-titre", "default": "Khalas mnin toselek" },
+    { "type": "text", "id": "trust_2_title", "label": "Badge 2 — titre", "default": "Livraison gratuite" },
+    { "type": "text", "id": "trust_2_text", "label": "Badge 2 — sous-titre", "default": "Partout au Maroc" },
+    { "type": "text", "id": "trust_3_title", "label": "Badge 3 — titre", "default": "Échange taille" },
+    { "type": "text", "id": "trust_3_text", "label": "Badge 3 — sous-titre", "default": "Gratuit w facile" },
+    { "type": "text", "id": "trust_4_title", "label": "Badge 4 — titre", "default": "Garantie 30j" },
+    { "type": "text", "id": "trust_4_text", "label": "Badge 4 — sous-titre", "default": "Satisfait wla remboursé" },
+
+    { "type": "header", "content": "Footer / Légitimité", "info": "Renforce la confiance (cold traffic Meta). Renseignez ce que vous avez ; chaque champ vide est masqué." },
+    { "type": "text", "id": "legal_company", "label": "Nom de l'entreprise / marque" },
+    { "type": "text", "id": "legal_address", "label": "Adresse / ville" },
+    { "type": "text", "id": "legal_phone", "label": "Téléphone" },
+    { "type": "text", "id": "legal_email", "label": "Email" },
+    { "type": "url", "id": "returns_url", "label": "Lien — politique de retour" },
+    { "type": "text", "id": "returns_label", "label": "Texte lien retour", "default": "Politique de retour" },
+    { "type": "url", "id": "contact_url", "label": "Lien — contact" },
+    { "type": "text", "id": "contact_label", "label": "Texte lien contact", "default": "Contact" },
+    { "type": "url", "id": "legal_url", "label": "Lien — mentions légales" },
+    { "type": "text", "id": "legal_label", "label": "Texte lien mentions légales", "default": "Mentions légales" },
+
+    { "type": "header", "content": "9. FAQ (utiliser blocs FAQ)" },
+    { "type": "text", "id": "faq_title", "label": "Titre", "default": "أسئلة كثيرة" },
+
+    { "type": "header", "content": "10. Formulaire commande (COD)" },
+    { "type": "text", "id": "order_title", "label": "Titre" },
+    { "type": "text", "id": "order_btn", "label": "Texte bouton", "default": "تأكيد الطلب — COD" },
+    { "type": "text", "id": "form_action", "label": "Form action URL (endpoint COD)", "info": "Laisser # pour démo. Mettre l'URL de votre app/sheet COD pour activer (envoi AJAX, sans redirection).", "default": "#" },
+    { "type": "text", "id": "order_error_title", "label": "Titre message d'erreur", "default": "Erreur — 3awd 7awl" },
+    { "type": "textarea", "id": "order_error_text", "label": "Texte message d'erreur", "default": "Ma t'sift'ch commande. 3afak 3awd 7awl, wla commandi via WhatsApp." },
+
+    { "type": "header", "content": "11. Sticky CTA" },
+    { "type": "text", "id": "sticky_btn", "label": "Texte bouton sticky", "default": "COMMANDER" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Avantage",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "gem",
+          "options": [
+            { "value": "gem", "label": "Premium" },
+            { "value": "muscle", "label": "Fit" },
+            { "value": "shield", "label": "Durable" },
+            { "value": "drop", "label": "Anti-sueur" },
+            { "value": "bolt", "label": "Performance" }
+          ] },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Qualité Premium" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Tissu compression importé, finition premium." }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question FAQ",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "Wach qualité mzyana?" },
+        { "type": "textarea", "id": "a", "label": "Réponse", "default": "Oui, tissu premium compression." }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Avis client",
+      "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Photo client (optionnel)" },
+        { "type": "text", "id": "name", "label": "Nom", "default": "Yassine B." },
+        { "type": "text", "id": "city", "label": "Ville", "default": "Casablanca" },
+        { "type": "checkbox", "id": "verified", "label": "Achat vérifié", "info": "Cochez uniquement si c'est un vrai achat vérifié.", "default": false },
+        { "type": "textarea", "id": "text", "label": "Avis", "default": "Tissu top, kayban m3adad. Nconseille." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RBX Landing Page",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "gem", "title": "Qualité Premium", "text": "Tissu compression importé, finition premium. Machi cheap marketplace." } },
+        { "type": "benefit", "settings": { "icon": "muscle", "title": "Fit Parfait", "text": "Coupe athletic li katbayan l'muscles. Kayban 3lik m3adad." } },
+        { "type": "benefit", "settings": { "icon": "shield", "title": "Durable", "text": "Kayb9a lawn w forme mn b3d ghasil. Ma kaytl9ach." } },
+        { "type": "benefit", "settings": { "icon": "drop", "title": "Anti-Transpiration", "text": "Tissu respirant kaymtass l3rg. Confort f kola séance." } },
+        { "type": "faq", "settings": { "q": "Wach qualité mzyana?", "a": "Oui, tissu premium compression, finition haute qualité." } },
+        { "type": "faq", "settings": { "q": "Wach taille katji mzyan?", "a": "Oui, guide des tailles disponible. Échange gratuit ila bghiti." } },
+        { "type": "faq", "settings": { "q": "Wach tissu kay3req?", "a": "Non, tissu respirant kaymtass l3rg." } },
+        { "type": "faq", "settings": { "q": "Wach kayb9a lawn?", "a": "Oui, haute qualité, kayb9a lawn mn b3d ghasil." } },
+        { "type": "faq", "settings": { "q": "Wach kayn échange?", "a": "Oui, échange taille gratuit w facile." } },
+        { "type": "faq", "settings": { "q": "Wach nkhales 9bel?", "a": "Non, paiement à la livraison (COD)." } },
+        { "type": "review", "settings": { "name": "Yassine B.", "city": "Casablanca", "text": "Tissu top, kayban m3adad b9el. Manchettes free hadya zwina. Wsalni f 3 ayam, khlast f dar." } },
+        { "type": "review", "settings": { "name": "Mehdi R.", "city": "Rabat", "text": "9addit dial taille mzyana. Tissu ma kay3reqch w kayb9a forme mn b3d ghasil. Nconseille." } },
+        { "type": "review", "settings": { "name": "Anas T.", "city": "Marrakech", "text": "Qualité premium 100%. Khlast mnin wsalni, b9it mrtah. Look pro f gym, confiance kbira." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
