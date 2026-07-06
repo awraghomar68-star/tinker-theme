@@ -1,0 +1,49 @@
+/* ============================================================
+   ELOVIRA — Product Recommendations (Phase 7)
+   Layout-only. Cards are elovira-product-card (owns its own CSS);
+   this file only lays the grid out and styles the heading/skeleton.
+   ============================================================ */
+
+.elovira-recommendations__section {
+  max-width: var(--container-wide, 1280px);
+  margin: 0 auto;
+  padding-inline: var(--pad-page, 16px);
+}
+
+.elovira-recommendations__heading {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: var(--fw-regular);
+  color: var(--beauty-text);
+  text-align: center;
+  margin: 0 0 var(--space-4, 32px);
+}
+
+.elovira-recommendations__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3, 24px) var(--space-2, 16px);
+}
+
+@media screen and (min-width: 768px) {
+  .elovira-recommendations__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.elovira-recommendations__skeleton {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  background: var(--beauty-beige);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .elovira-recommendations__skeleton {
+    animation: elovira-recommendations-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes elovira-recommendations-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .6; }
+}

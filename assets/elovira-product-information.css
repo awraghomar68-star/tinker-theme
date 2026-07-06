@@ -1,0 +1,67 @@
+/* ============================================================
+   ELOVIRA — Product Detail Page (Phase 7)
+   Visual strategy: do NOT fight Horizon CSS. Native components
+   (media gallery, variant picker, buy buttons, sticky add-to-cart,
+   price, quantity, pickup availability) keep their own markup and
+   JS untouched. Scoped under .elovira-pdp, this file only redefines
+   Horizon's existing CSS custom properties so native components
+   automatically inherit the ELOVIRA Design System look.
+   No structural selectors against Horizon's internal classes.
+   ============================================================ */
+
+.elovira-pdp {
+  /* ---- Base palette -> Horizon color tokens ---- */
+  --color-background: var(--beauty-bg);
+  --color-background-rgb: 248, 245, 242;
+  --color-foreground: var(--beauty-text);
+  --color-foreground-rgb: 43, 35, 32;
+  --color-border: var(--beauty-text);
+  --color-border-rgb: 43, 35, 32;
+
+  /* ---- Primary button (Add to cart, Buy now) -> DS CTA (rose) ---- */
+  --color-primary-button-background: var(--beauty-rose);
+  --color-primary-button-text: var(--beauty-white);
+  --color-primary-button-border: var(--beauty-rose);
+  --color-primary-button-focus-outline: var(--beauty-gold);
+  --color-primary-button-hover-background: var(--beauty-rose-hover);
+  --color-primary-button-hover-text: var(--beauty-white);
+  --color-primary-button-hover-border: var(--beauty-rose-hover);
+
+  /* ---- Secondary button (e.g. gift card recipient toggle) ---- */
+  --color-secondary-button-background: var(--beauty-white);
+  --color-secondary-button-text: var(--beauty-rose);
+  --color-secondary-button-border: var(--beauty-rose);
+  --color-secondary-button-hover-background: var(--beauty-beige);
+  --color-secondary-button-hover-text: var(--beauty-rose);
+  --color-secondary-button-hover-border: var(--beauty-rose);
+
+  /* ---- Inputs (quantity, gift card recipient form) ---- */
+  --color-input-background: var(--beauty-white);
+  --color-input-text: var(--beauty-text);
+  --color-input-border: var(--beauty-text-soft);
+
+  /* ---- Variant picker (buttons / swatches) ---- */
+  --color-variant-background: var(--beauty-white);
+  --color-variant-border: var(--beauty-text-soft);
+  --color-variant-text: var(--beauty-text);
+  --color-variant-hover-background: var(--beauty-beige);
+  --color-variant-hover-text: var(--beauty-text);
+  --color-variant-hover-border: var(--beauty-gold);
+
+  --color-selected-variant-background: var(--beauty-text);
+  --color-selected-variant-border: var(--beauty-text);
+  --color-selected-variant-text: var(--beauty-white);
+  --color-selected-variant-hover-background: var(--beauty-text);
+  --color-selected-variant-hover-text: var(--beauty-white);
+  --color-selected-variant-hover-border: var(--beauty-text);
+
+  /* ---- Typography ---- */
+  --font-body--family: var(--font-body);
+  --font-body--weight: var(--fw-regular);
+  --font-heading--family: var(--font-display);
+  --font-heading--weight: var(--fw-regular);
+
+  /* ---- Shape / elevation ---- */
+  --style-border-radius-buttons-primary: var(--radius-pill);
+  --shadow-popover: var(--shadow-soft);
+}
