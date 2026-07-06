@@ -1,0 +1,68 @@
+/* ============================================================
+   ELOVIRA — Collection / PLP (Phase 8)
+   Visual strategy: identical to Phase 7 (PDP). Do NOT fight
+   Horizon CSS. Native components (filters, sort dropdown, grid
+   density toggle, pagination, product grid) keep their own markup
+   and JS untouched. Scoped under .elovira-collection, this file
+   only redefines Horizon's existing CSS custom properties so
+   native components automatically inherit the ELOVIRA Design
+   System look. No structural selectors against Horizon's
+   internal classes.
+   ============================================================ */
+
+.elovira-collection {
+  /* ---- Base palette -> Horizon color tokens ---- */
+  --color-background: var(--beauty-bg);
+  --color-background-rgb: 248, 245, 242;
+  --color-foreground: var(--beauty-text);
+  --color-foreground-rgb: 43, 35, 32;
+  --color-border: var(--beauty-text);
+  --color-border-rgb: 43, 35, 32;
+
+  /* ---- Primary button (e.g. "Apply filters" on mobile) -> DS CTA (rose) ---- */
+  --color-primary-button-background: var(--beauty-rose);
+  --color-primary-button-text: var(--beauty-white);
+  --color-primary-button-border: var(--beauty-rose);
+  --color-primary-button-focus-outline: var(--beauty-gold);
+  --color-primary-button-hover-background: var(--beauty-rose-hover);
+  --color-primary-button-hover-text: var(--beauty-white);
+  --color-primary-button-hover-border: var(--beauty-rose-hover);
+
+  /* ---- Secondary button (e.g. "Clear filters") ---- */
+  --color-secondary-button-background: var(--beauty-white);
+  --color-secondary-button-text: var(--beauty-rose);
+  --color-secondary-button-border: var(--beauty-rose);
+  --color-secondary-button-hover-background: var(--beauty-beige);
+  --color-secondary-button-hover-text: var(--beauty-rose);
+  --color-secondary-button-hover-border: var(--beauty-rose);
+
+  /* ---- Inputs (price range, sort select) ---- */
+  --color-input-background: var(--beauty-white);
+  --color-input-text: var(--beauty-text);
+  --color-input-border: var(--beauty-text-soft);
+
+  /* ---- Filter/facet chips reuse the variant-picker token set ---- */
+  --color-variant-background: var(--beauty-white);
+  --color-variant-border: var(--beauty-text-soft);
+  --color-variant-text: var(--beauty-text);
+  --color-variant-hover-background: var(--beauty-beige);
+  --color-variant-hover-text: var(--beauty-text);
+  --color-variant-hover-border: var(--beauty-gold);
+
+  --color-selected-variant-background: var(--beauty-text);
+  --color-selected-variant-border: var(--beauty-text);
+  --color-selected-variant-text: var(--beauty-white);
+  --color-selected-variant-hover-background: var(--beauty-text);
+  --color-selected-variant-hover-text: var(--beauty-white);
+  --color-selected-variant-hover-border: var(--beauty-text);
+
+  /* ---- Typography ---- */
+  --font-body--family: var(--font-body);
+  --font-body--weight: var(--fw-regular);
+  --font-heading--family: var(--font-display);
+  --font-heading--weight: var(--fw-regular);
+
+  /* ---- Shape / elevation ---- */
+  --style-border-radius-buttons-primary: var(--radius-pill);
+  --shadow-popover: var(--shadow-soft);
+}
