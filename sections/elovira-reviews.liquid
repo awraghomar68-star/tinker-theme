@@ -1,0 +1,78 @@
+{%- comment -%}
+  ELOVIRA — Reviews section (Phase 6). DS: ReviewGrid.
+  Independent section, zero JS. Blocks = testimonials, fully
+  merchant-editable placeholder copy (no invented "real" reviews).
+  Judge.me/Loox integration point documented for a later phase.
+{%- endcomment -%}
+
+{{ 'elovira-reviews.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="elovira elovira-reviews{% if section.settings.alt_bg %} elovira-section--alt{% endif %}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;"
+>
+  <div class="elovira-reviews__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="elovira-reviews__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="elovira-reviews__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="elovira-reviews__grid">
+        {%- for block in section.blocks -%}
+          <div class="elovira-reviews__card" {{ block.shopify_attributes }}>
+            <div class="elovira-reviews__stars">
+              {%- render 'elovira-stars', rating: block.settings.rating -%}
+            </div>
+            {%- if block.settings.quote != blank -%}
+              <p class="elovira-reviews__quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+            {%- endif -%}
+            <p class="elovira-reviews__author">
+              {{- block.settings.name -}}
+              {%- if block.settings.location != blank -%} &middot; {{ block.settings.location }}{%- endif -%}
+            </p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Reviews",
+  "tag": "section",
+  "class": "elovira-reviews-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Elles nous font confiance" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ce que disent nos clientes" },
+    { "type": "checkbox", "id": "alt_bg", "label": "Alternate background", "default": false },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.5, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Ma peau est visiblement plus lumineuse après 2 semaines." },
+        { "type": "text", "id": "name", "label": "Name", "default": "Salma K." },
+        { "type": "text", "id": "location", "label": "Location", "default": "Casablanca" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Reviews",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review", "settings": { "name": "Imane R.", "location": "Rabat", "quote": "Le pack sent divinement bon, texture très agréable." } },
+        { "type": "review", "settings": { "name": "Fatima Z.", "location": "Marrakech", "quote": "Parfait comme cadeau, emballage soigné." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

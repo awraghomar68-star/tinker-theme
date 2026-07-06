@@ -1,0 +1,60 @@
+/* ============================================================
+   ELOVIRA — Quantity stepper atom styles. DS-exact.
+   Phase 3 · additive · owns its styles · DS tokens only.
+   ============================================================ */
+
+.elovira-qty {
+  display: inline-flex;
+  align-items: center;
+  background: var(--beauty-white, #fff);
+  border: 1px solid var(--beauty-line);
+  border-radius: var(--radius-pill, 999px);
+  box-shadow: var(--shadow-soft);
+}
+
+.elovira-qty__btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--beauty-text);
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  padding: 0;
+}
+.elovira-qty__btn[disabled] {
+  color: var(--beauty-line);
+  cursor: default;
+}
+.elovira-qty__btn:focus-visible {
+  outline: var(--focus-ring, 2px solid var(--beauty-gold));
+  outline-offset: -3px;
+}
+
+.elovira-qty__input {
+  width: 40px;
+  min-width: 32px;
+  text-align: center;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--beauty-text);
+  padding: 0;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.elovira-qty__input::-webkit-outer-spin-button,
+.elovira-qty__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.elovira-qty__input:focus-visible {
+  outline: var(--focus-ring, 2px solid var(--beauty-gold));
+  outline-offset: 2px;
+  border-radius: 6px;
+}

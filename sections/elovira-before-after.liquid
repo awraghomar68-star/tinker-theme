@@ -1,0 +1,75 @@
+{%- comment -%}
+  ELOVIRA — Before/After section (Phase 6). DS: BeforeAfter.
+  Independent section. Progressive enhancement: static side-by-side
+  images render by default (works with zero JS); when JavaScript
+  runs, elovira-before-after.js defines a custom element that reveals
+  a draggable/keyboard-accessible comparison slider — same gating
+  pattern (`elovira-js` flag on <html>) used by the nav drawer.
+{%- endcomment -%}
+
+{{ 'elovira-before-after.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'elovira-before-after.js' | asset_url }}" defer></script>
+
+<div class="elovira elovira-before-after" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="elovira-before-after__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="elovira-before-after__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="elovira-before-after__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.image_before != blank and section.settings.image_after != blank -%}
+      <div class="elovira-before-after__static">
+        <div class="elovira-before-after__static-item">
+          <img src="{{ section.settings.image_before | image_url: width: 600 }}" alt="{{ section.settings.label_before | escape }}" width="{{ section.settings.image_before.width }}" height="{{ section.settings.image_before.height }}" loading="lazy">
+          <span class="elovira-before-after__static-label">{{ section.settings.label_before }}</span>
+        </div>
+        <div class="elovira-before-after__static-item">
+          <img src="{{ section.settings.image_after | image_url: width: 600 }}" alt="{{ section.settings.label_after | escape }}" width="{{ section.settings.image_after.width }}" height="{{ section.settings.image_after.height }}" loading="lazy">
+          <span class="elovira-before-after__static-label">{{ section.settings.label_after }}</span>
+        </div>
+      </div>
+
+      <elovira-before-after class="elovira-before-after__slider">
+        <img class="elovira-before-after__img" src="{{ section.settings.image_before | image_url: width: 900 }}" alt="{{ section.settings.label_before | escape }}" width="{{ section.settings.image_before.width }}" height="{{ section.settings.image_before.height }}" loading="lazy">
+        <img class="elovira-before-after__img elovira-before-after__img--after" src="{{ section.settings.image_after | image_url: width: 900 }}" alt="{{ section.settings.label_after | escape }}" width="{{ section.settings.image_after.width }}" height="{{ section.settings.image_after.height }}" loading="lazy">
+        <div class="elovira-before-after__handle" aria-hidden="true"></div>
+        <div class="elovira-before-after__tags" aria-hidden="true">
+          <span class="elovira-before-after__tag">{{ section.settings.label_before }}</span>
+          <span class="elovira-before-after__tag">{{ section.settings.label_after }}</span>
+        </div>
+        <input
+          type="range"
+          class="elovira-before-after__range"
+          min="0"
+          max="100"
+          value="50"
+          aria-label="{{ section.settings.slider_aria_label | default: 'Comparer avant et après' | escape }}"
+        >
+      </elovira-before-after>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Before/After",
+  "tag": "section",
+  "class": "elovira-before-after-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Des résultats visibles" },
+    { "type": "image_picker", "id": "image_before", "label": "Before image" },
+    { "type": "image_picker", "id": "image_after", "label": "After image" },
+    { "type": "text", "id": "label_before", "label": "Before label", "default": "Avant" },
+    { "type": "text", "id": "label_after", "label": "After label", "default": "Après" },
+    { "type": "text", "id": "slider_aria_label", "label": "Slider accessible label", "default": "Comparer avant et après" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [
+    { "name": "ELOVIRA Before/After" }
+  ]
+}
+{% endschema %}

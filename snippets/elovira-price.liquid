@@ -1,0 +1,36 @@
+{%- comment -%}
+  ELOVIRA — Price atom (Phase 3). DS: gold price + struck compare-at
+  + optional savings line.
+  Single responsibility: display a price pair. No money math here —
+  the caller passes already-formatted money strings (use Shopify's
+  `money` filter at the call site), so the atom stays currency-agnostic.
+
+  Params:
+    value      (string, required) — formatted current price
+    compare_at (string) — formatted compare-at price (struck)
+    size       'card' (default) | 'hero' | 'bundle' | 'sticky'
+    save       (string) — savings line (e.g. rendered "Économisez 150 DH")
+    id · class · aria_label
+
+  Reusable across Home / PLP / PDP / Cart / Search. Owns elovira-price.css.
+{%- endcomment -%}
+
+{{ 'elovira-price.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign price_size = size | default: 'card'
+  assign classes = 'elovira-price elovira-price--' | append: price_size
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+-%}
+
+<span class="{{ classes }}"{% if id != blank %} id="{{ id }}"{% endif %}{% if aria_label != blank %} role="text" aria-label="{{ aria_label | escape }}"{% endif %}>
+  <b class="elovira-price__value">{{ value }}</b>
+  {%- if compare_at != blank -%}
+    <s class="elovira-price__compare">{{ compare_at }}</s>
+  {%- endif -%}
+  {%- if save != blank -%}
+    <span class="elovira-price__save">{{ save }}</span>
+  {%- endif -%}
+</span>

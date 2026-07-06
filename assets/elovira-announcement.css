@@ -1,0 +1,54 @@
+/* ============================================================
+   ELOVIRA — Announcement bar (Phase 4)
+   DS source: components/navigation/AnnouncementBar.jsx
+   Thin deep-rose strip, optional rotating messages.
+   Owns its styles; loaded only when the section renders.
+   ============================================================ */
+
+.elovira-announce {
+  display: block;
+  background: var(--elv-announce-bg, var(--beauty-rose));
+  color: var(--elv-announce-fg, #fff);
+}
+
+.elovira-announce__viewport {
+  max-width: var(--container-wide, 1280px);
+  margin: 0 auto;
+  min-height: 1.5em; /* reserve one line — CLS 0 during rotation */
+  padding: var(--space-9px, 9px) var(--space-2, 16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1.4;
+}
+
+.elovira-announce__msg {
+  display: inline-block;
+}
+
+.elovira-announce__msg.is-hidden {
+  display: none;
+}
+
+.elovira-announce__msg--anim {
+  animation: elovira-fade-up .4s ease;
+}
+
+.elovira-announce__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@keyframes elovira-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-announce__msg--anim { animation: none; }
+}

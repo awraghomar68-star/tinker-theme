@@ -1,0 +1,39 @@
+{%- comment -%}
+  ELOVIRA — head foundation (Phase 1, additive)
+  Loads the ELOVIRA token + utility stylesheets and emits a
+  settings-driven :root override so merchants can tune the
+  brand palette / free-shipping threshold from the Theme Editor
+  without touching code. Defaults equal the frozen DS values,
+  so an untouched theme renders exactly to spec.
+
+  Rendered once from layout/theme.liquid AFTER Horizon's own
+  token snippets — ELOVIRA custom properties are namespaced
+  (--beauty-*) and cannot collide with Horizon's --color-*.
+  Purely additive: removing this render + the two assets fully
+  reverts the theme to stock Horizon.
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+{{ 'elovira-tokens.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'elovira-utilities.css' | asset_url | stylesheet_tag }}
+{{ 'elovira-base.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  :root {
+    --beauty-bg: {{ settings.elovira_color_bg | default: '#F8F5F2' }};
+    --beauty-text: {{ settings.elovira_color_ink | default: '#2B2320' }};
+    --beauty-text-soft: {{ settings.elovira_color_ink_soft | default: '#7A6F68' }};
+    --beauty-rose: {{ settings.elovira_color_rose | default: '#8E4B5C' }};
+    --beauty-gold: {{ settings.elovira_color_gold | default: '#C9A24B' }};
+    --beauty-rosegold: {{ settings.elovira_color_rosegold | default: '#B76E79' }};
+    --beauty-beige: {{ settings.elovira_color_beige | default: '#EDE4DA' }};
+    --beauty-pink: {{ settings.elovira_color_pink | default: '#F3D9DD' }};
+    --beauty-success: {{ settings.elovira_color_success | default: '#6FA287' }};
+    --beauty-error: {{ settings.elovira_color_error | default: '#d9534f' }};
+
+    /* Commerce foundation exposed to ELOVIRA components (later phases) */
+    --elovira-free-shipping-threshold: {{ settings.elovira_free_shipping_threshold | default: 500 }};
+  }
+{%- endstyle -%}

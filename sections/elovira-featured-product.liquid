@@ -1,0 +1,90 @@
+{%- comment -%}
+  ELOVIRA — Featured product section (Phase 6). DS: ProductSpotlight.
+  Independent, display-only spotlight for one real product (native
+  product picker). Links straight to the PDP — no cart/AJAX/bundle
+  logic here; that belongs to the cart-integration phase, kept
+  behind a single swappable surface per the project's COD adapter
+  precedent. Zero JS, works without JavaScript.
+{%- endcomment -%}
+
+{{ 'elovira-featured-product.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign product = all_products[section.settings.product]
+-%}
+
+<div
+  class="elovira elovira-featured-product{% if section.settings.alt_bg %} elovira-section--alt{% endif %}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;"
+>
+  <div class="elovira-featured-product__inner">
+    {%- if product != blank -%}
+      <a class="elovira-featured-product__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+        {%- if product.featured_image != blank -%}
+          <img
+            class="elovira-featured-product__img"
+            src="{{ product.featured_image | image_url: width: 900 }}"
+            srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 900 }} 900w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 990px) 50vw, 100vw"
+            alt=""
+            width="{{ product.featured_image.width }}"
+            height="{{ product.featured_image.height }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </a>
+
+      <div class="elovira-featured-product__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="elovira-featured-product__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="elovira-featured-product__title">
+          <a href="{{ product.url }}">{{ section.settings.heading | default: product.title }}</a>
+        </h2>
+        {%- if section.settings.show_rating -%}
+          <div class="elovira-featured-product__stars">
+            {%- render 'elovira-stars', rating: section.settings.rating, label: section.settings.rating_label -%}
+          </div>
+        {%- endif -%}
+        <p class="elovira-featured-product__desc">
+          {{ section.settings.description | default: product.description | strip_html | truncatewords: 32 }}
+        </p>
+        <span class="elovira-featured-product__price">
+          {%- if product.compare_at_price > product.price -%}
+            {%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price | money, size: 'hero' -%}
+          {%- else -%}
+            {%- render 'elovira-price', value: product.price | money, size: 'hero' -%}
+          {%- endif -%}
+        </span>
+        {%- render 'elovira-button', label: section.settings.button_label, href: product.url, variant: 'gold', full: false -%}
+      </div>
+    {%- else -%}
+      <p class="elovira-product-card__empty">{{ section.settings.empty_text }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Featured Product",
+  "tag": "section",
+  "class": "elovira-featured-product-section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading override", "info": "Leave empty to use the product title." },
+    { "type": "richtext", "id": "description", "label": "Description override", "info": "Leave empty to use the product description." },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": false },
+    { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 5 },
+    { "type": "text", "id": "rating_label", "label": "Rating label", "default": "4.9/5 · 1 240 avis" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Voir le produit" },
+    { "type": "text", "id": "empty_text", "label": "Empty state text", "default": "Sélectionnez un produit dans les paramètres de section." },
+    { "type": "checkbox", "id": "alt_bg", "label": "Alternate background", "default": false },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [
+    { "name": "ELOVIRA Featured Product" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,67 @@
+/* ============================================================
+   ELOVIRA — Benefits section (Phase 6)
+   DS: content/BenefitGrid. Independent section.
+   ============================================================ */
+
+.elovira-benefits {
+  background: var(--beauty-bg);
+}
+
+.elovira-benefits.elovira-section--alt {
+  background: var(--beauty-beige);
+}
+
+.elovira-benefits__inner {
+  max-width: var(--container-content, 1080px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 16px);
+  text-align: center;
+}
+
+.elovira-benefits__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--beauty-gold-text);
+  margin: 0 0 var(--space-4px, 4px);
+}
+
+.elovira-benefits__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  color: var(--beauty-text);
+  margin: 0 0 var(--space-4, 32px);
+}
+
+.elovira-benefits__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4, 32px);
+}
+
+@media (min-width: 750px) {
+  .elovira-benefits__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.elovira-benefits__item { text-align: center; }
+
+.elovira-benefits__icon {
+  margin: 0 auto var(--space-2, 16px);
+}
+
+.elovira-benefits__item-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  color: var(--beauty-text);
+  margin: 0 0 var(--space-4px, 4px);
+}
+
+.elovira-benefits__item-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  line-height: var(--line-body);
+  color: var(--beauty-text-soft);
+  margin: 0;
+}

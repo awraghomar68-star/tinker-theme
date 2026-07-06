@@ -1,0 +1,68 @@
+/* ============================================================
+   ELOVIRA — Scoped Base Layer
+   Phase 2 · additive · SCOPED to `.elovira` only.
+   Gives ELOVIRA sections/components a DS-correct baseline
+   (type, color, box-sizing, element resets) WITHOUT touching
+   Horizon's global rendering. Every rule is prefixed `.elovira`;
+   element defaults use :where() (zero specificity) so `elv-*`
+   utilities and component classes always win.
+
+   CONVENTION: from Phase 3 onward, every ELOVIRA section's
+   outermost wrapper carries class="elovira". Horizon DOM never
+   does, so nothing here can leak to stock theme markup.
+
+   Built entirely on elovira-tokens.css. No :root / html / body
+   / bare element selectors — by design.
+   ============================================================ */
+
+/* ---- Root scope: type + color baseline ---- */
+.elovira {
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  line-height: var(--line-body);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Scoped border-box (contained to ELOVIRA subtree) ---- */
+.elovira *,
+.elovira *::before,
+.elovira *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Scoped element defaults (zero specificity via :where) ---- */
+.elovira :where(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-tight);
+  color: var(--text-body);
+  margin: 0;
+}
+
+.elovira :where(p) {
+  margin: 0;
+}
+
+.elovira :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.elovira :where(img, svg, video) {
+  display: block;
+  max-width: 100%;
+}
+
+.elovira :where(button) {
+  font: inherit;
+  color: inherit;
+}
+
+.elovira :where(ul, ol) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

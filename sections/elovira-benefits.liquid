@@ -1,0 +1,88 @@
+{%- comment -%}
+  ELOVIRA — Benefits section (Phase 6). DS: BenefitGrid.
+  Independent section. Blocks = benefit tiles (icon + title + text),
+  fully merchant-editable, reuses the elovira-icon atom's medallion.
+{%- endcomment -%}
+
+{{ 'elovira-benefits.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="elovira elovira-benefits{% if section.settings.alt_bg %} elovira-section--alt{% endif %}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;"
+>
+  <div class="elovira-benefits__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="elovira-benefits__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="elovira-benefits__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="elovira-benefits__grid">
+        {%- for block in section.blocks -%}
+          <div class="elovira-benefits__item" {{ block.shopify_attributes }}>
+            <div class="elovira-benefits__icon">
+              {%- render 'elovira-icon', name: block.settings.icon, size: 24, circle: true -%}
+            </div>
+            {%- if block.settings.title != blank -%}
+              <h3 class="elovira-benefits__item-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="elovira-benefits__item-text">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Benefits",
+  "tag": "section",
+  "class": "elovira-benefits-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pourquoi nous choisir" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Le soin que votre peau mérite" },
+    { "type": "checkbox", "id": "alt_bg", "label": "Alternate background", "default": false },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "flower", "label": "Flower" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "sparkle"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Ingrédients doux" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Formules douces, sans agression, adaptées à tous types de peau." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "flower", "title": "Ingrédients doux" } },
+        { "type": "benefit", "settings": { "icon": "sparkle", "title": "Résultats visibles" } },
+        { "type": "benefit", "settings": { "icon": "heart", "title": "Packs curés" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

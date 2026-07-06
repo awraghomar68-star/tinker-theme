@@ -2116,5 +2116,116 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "ELOVIRA — Foundation",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "ELOVIRA brand tokens (frozen Design System v1.0). Defaults match the design spec — change only with design approval. These drive the --beauty-* CSS custom properties used by ELOVIRA sections."
+      },
+      {
+        "type": "header",
+        "content": "Brand colors"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_bg",
+        "label": "Page background",
+        "default": "#F8F5F2"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_ink",
+        "label": "Ink / body text",
+        "default": "#2B2320"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_ink_soft",
+        "label": "Soft text",
+        "default": "#7A6F68"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_rose",
+        "label": "Rose — primary CTA",
+        "default": "#8E4B5C"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_gold",
+        "label": "Gold — accent (prices, stars, checks)",
+        "default": "#C9A24B"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_rosegold",
+        "label": "Rose-gold — badges / ribbons",
+        "default": "#B76E79"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_beige",
+        "label": "Surface beige",
+        "default": "#EDE4DA"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_pink",
+        "label": "Surface pink",
+        "default": "#F3D9DD"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_success",
+        "label": "Success (icons/dots only)",
+        "default": "#6FA287"
+      },
+      {
+        "type": "color",
+        "id": "elovira_color_error",
+        "label": "Error",
+        "default": "#d9534f"
+      },
+      {
+        "type": "header",
+        "content": "Commerce"
+      },
+      {
+        "type": "number",
+        "id": "elovira_free_shipping_threshold",
+        "label": "Free-shipping threshold (DH)",
+        "default": 500,
+        "info": "Shared across cart drawer + cart page free-shipping progress bar."
+      },
+      {
+        "type": "checkbox",
+        "id": "elovira_cod_enabled",
+        "label": "Enable Cash-on-Delivery flow",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "elovira_cod_backend",
+        "label": "COD order-intake backend",
+        "info": "Frontend is backend-agnostic. This only selects which adapter the COD form submits through; the form UI + validation are identical for every option.",
+        "options": [
+          { "value": "none", "label": "None (frontend only — no submission)" },
+          { "value": "draft_order", "label": "Shopify Draft Orders" },
+          { "value": "admin_api", "label": "Shopify Admin API" },
+          { "value": "easysell", "label": "EasySell COD" },
+          { "value": "releasit", "label": "Releasit COD Form" },
+          { "value": "webhook", "label": "Custom webhook" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "text",
+        "id": "elovira_whatsapp_number",
+        "label": "WhatsApp support number (international format)",
+        "info": "Used by COD reassurance + support links in later phases. Example: 2126XXXXXXXX"
+      }
+    ]
   }
 ]

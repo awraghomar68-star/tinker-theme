@@ -1,0 +1,82 @@
+{
+  "type": "footer",
+  "name": "ELOVIRA Footer",
+  "sections": {
+    "elovira_footer": {
+      "type": "elovira-footer",
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Restez informée",
+            "text": "Offres et nouveautés, sans spam.",
+            "email_label": "Adresse e-mail",
+            "email_placeholder": "vous@exemple.com",
+            "button_label": "S'inscrire",
+            "success_text": "Merci ! Vous êtes inscrite.",
+            "error_text": "Adresse e-mail invalide."
+          }
+        },
+        "col_shop": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Boutique",
+            "menu": "main-menu"
+          }
+        },
+        "col_help": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Aide",
+            "menu": ""
+          }
+        },
+        "badge_cod": {
+          "type": "payment_badge",
+          "settings": { "label": "Paiement à la livraison" }
+        },
+        "badge_visa": {
+          "type": "payment_badge",
+          "settings": { "label": "VISA" }
+        },
+        "badge_cmi": {
+          "type": "payment_badge",
+          "settings": { "label": "CMI" }
+        },
+        "social_instagram": {
+          "type": "social_link",
+          "settings": { "platform": "instagram", "url": "" }
+        },
+        "social_whatsapp": {
+          "type": "social_link",
+          "settings": { "platform": "whatsapp", "url": "" }
+        },
+        "legal_privacy": {
+          "type": "legal_link",
+          "settings": { "label": "Politique de confidentialité", "url": "" }
+        },
+        "legal_terms": {
+          "type": "legal_link",
+          "settings": { "label": "Conditions générales", "url": "" }
+        }
+      },
+      "block_order": [
+        "newsletter",
+        "col_shop",
+        "col_help",
+        "badge_cod",
+        "badge_visa",
+        "badge_cmi",
+        "social_instagram",
+        "social_whatsapp",
+        "legal_privacy",
+        "legal_terms"
+      ],
+      "settings": {
+        "show_copyright": true,
+        "copyright_text": ""
+      }
+    }
+  },
+  "order": ["elovira_footer"]
+}

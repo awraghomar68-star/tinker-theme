@@ -1,0 +1,56 @@
+{%- comment -%}
+  ELOVIRA — Quantity stepper atom (Phase 3). DS: pill stepper, 44px
+  thumb-friendly controls.
+  Single responsibility: pick an integer quantity within [min,max].
+  Wraps a native <input type="number"> (form-submittable + accessible);
+  behavior is a self-contained web component (elovira-quantity-stepper.js),
+  dependency-free so it works on cart, PDP, quick-add, anywhere.
+
+  Params:
+    name   (string, default 'quantity') — form field name
+    value  (number, default 1)
+    min    (number, default 1)
+    max    (number, default 99)
+    id · class
+    dec_label (string, a11y, default 'Réduire la quantité')
+    inc_label (string, a11y, default 'Augmenter la quantité')
+
+  Reusable across Home / PLP / PDP / Cart / Search.
+  Owns elovira-quantity-stepper.css + .js.
+{%- endcomment -%}
+
+{{ 'elovira-quantity-stepper.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'elovira-quantity-stepper.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign qty_name = name | default: 'quantity'
+  assign qty_value = value | default: 1
+  assign qty_min = min | default: 1
+  assign qty_max = max | default: 99
+  assign qty_id = id | default: qty_name
+  assign classes = 'elovira-qty'
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+-%}
+
+<elovira-quantity-stepper class="{{ classes }}">
+  <button type="button" class="elovira-qty__btn" data-dec aria-label="{{ dec_label | default: 'Réduire la quantité' | escape }}"{% if qty_value <= qty_min %} disabled{% endif %}>
+    {%- render 'elovira-icon', name: 'minus', size: 18 -%}
+  </button>
+  <input
+    class="elovira-qty__input"
+    id="{{ qty_id }}"
+    name="{{ qty_name }}"
+    type="number"
+    inputmode="numeric"
+    value="{{ qty_value }}"
+    min="{{ qty_min }}"
+    max="{{ qty_max }}"
+    step="1"
+    aria-live="polite"
+  >
+  <button type="button" class="elovira-qty__btn" data-inc aria-label="{{ inc_label | default: 'Augmenter la quantité' | escape }}"{% if qty_value >= qty_max %} disabled{% endif %}>
+    {%- render 'elovira-icon', name: 'plus', size: 18 -%}
+  </button>
+</elovira-quantity-stepper>

@@ -1,0 +1,86 @@
+/* ============================================================
+   ELOVIRA — Field atom styles. DS-exact (.beauty-field).
+   Phase 3 · additive · owns its styles · DS tokens only.
+   ============================================================ */
+
+.elovira-field {
+  margin-bottom: var(--space-14px, 14px);
+  text-align: left;
+}
+
+.elovira-field__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: var(--space-7px, 7px);
+  color: var(--beauty-text);
+}
+.elovira-field__req { color: var(--beauty-rose); }
+
+.elovira-field__control {
+  width: 100%;
+  padding: var(--space-13px, 13px) var(--space-14px, 14px);
+  font-family: var(--font-body);
+  font-size: 16px; /* >=16px prevents iOS zoom on focus */
+  color: var(--beauty-text);
+  background: var(--beauty-bg);
+  border: 1px solid var(--beauty-line);
+  border-radius: var(--radius-sm, 14px);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .15s ease;
+}
+.elovira-field__control::placeholder { color: var(--beauty-text-soft); }
+
+.elovira-field__control:focus {
+  border-color: var(--beauty-gold);
+}
+.elovira-field__control:focus-visible {
+  outline: var(--focus-ring, 2px solid var(--beauty-gold));
+  outline-offset: 1px;
+}
+
+/* Error state */
+.elovira-field.is-error .elovira-field__control,
+.elovira-field__control[aria-invalid="true"] {
+  border-color: var(--beauty-error, #d9534f);
+}
+
+.elovira-field__error {
+  display: block;
+  color: var(--beauty-error, #d9534f);
+  font-family: var(--font-body);
+  font-size: 12px;
+  margin-top: var(--space-6px, 6px);
+}
+.elovira-field__help {
+  display: block;
+  color: var(--beauty-text-soft);
+  font-family: var(--font-body);
+  font-size: 12px;
+  margin-top: var(--space-6px, 6px);
+}
+
+/* Select: custom chevron, native control */
+.elovira-field__select-wrap { position: relative; }
+.elovira-field__control--select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: var(--space-5, 40px);
+  cursor: pointer;
+}
+.elovira-field__chevron {
+  position: absolute;
+  right: var(--space-14px, 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--beauty-text-soft);
+  pointer-events: none;
+}
+
+textarea.elovira-field__control { resize: vertical; min-height: 64px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-field__control { transition: none; }
+}

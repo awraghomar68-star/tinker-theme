@@ -1,0 +1,45 @@
+/* ============================================================
+   ELOVIRA — Final CTA section (Phase 6)
+   DS: content/FinalCTA. Independent section.
+   ============================================================ */
+
+.elovira-final-cta {
+  background: var(--beauty-pink);
+  text-align: center;
+}
+
+.elovira-final-cta__inner {
+  max-width: var(--container-narrow, 680px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 16px);
+}
+
+.elovira-final-cta__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--beauty-gold-text);
+  margin: 0 0 var(--space-4px, 4px);
+}
+
+.elovira-final-cta__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  color: var(--beauty-text);
+  margin: 0 0 var(--space-2, 16px);
+}
+
+.elovira-final-cta__text {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  line-height: var(--line-body);
+  color: var(--beauty-text-soft);
+  margin: 0 0 var(--space-4, 32px);
+}
+
+.elovira-final-cta__actions {
+  display: flex;
+  justify-content: center;
+}

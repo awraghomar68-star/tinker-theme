@@ -1,0 +1,56 @@
+{%- comment -%}
+  ELOVIRA — Product card atom (Phase 6). DS: ProductCard.
+  Single responsibility: one clickable product summary (image,
+  title, price). No cart/AJAX logic here (owned by Phase 11) —
+  card always links straight to the product page, works with
+  zero JavaScript.
+
+  Params:
+    product      (product object, required)
+    badge_label  (string) — optional merchant-set ribbon (no invented data)
+    badge_tone   passed through to elovira-badge (default 'promo')
+    image_loading 'lazy' (default) | 'eager' (first row / LCP)
+    class
+
+  Reusable across Home / PLP / Search. Owns elovira-product-card.css.
+{%- endcomment -%}
+
+{{ 'elovira-product-card.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign classes = 'elovira-product-card'
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+  assign loading = image_loading | default: 'lazy'
+-%}
+
+<a class="{{ classes }}" href="{{ product.url }}">
+  <span class="elovira-product-card__media">
+    {%- if product.featured_image != blank -%}
+      <img
+        class="elovira-product-card__img"
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 900 }} 900w"
+        sizes="(min-width: 990px) 25vw, 50vw"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        width="{{ product.featured_image.width }}"
+        height="{{ product.featured_image.height }}"
+        loading="{{ loading }}"
+      >
+    {%- endif -%}
+    {%- if badge_label != blank -%}
+      <span class="elovira-product-card__badge">
+        {%- render 'elovira-badge', label: badge_label, tone: badge_tone -%}
+      </span>
+    {%- endif -%}
+  </span>
+
+  <h3 class="elovira-product-card__title">{{ product.title }}</h3>
+
+  {%- if product.compare_at_price > product.price -%}
+    {%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price | money, size: 'card' -%}
+  {%- else -%}
+    {%- render 'elovira-price', value: product.price | money, size: 'card' -%}
+  {%- endif -%}
+</a>

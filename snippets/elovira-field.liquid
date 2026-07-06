@@ -1,0 +1,108 @@
+{%- comment -%}
+  ELOVIRA — Field atom (Phase 3). DS: .beauty-field (reusable input).
+  Single responsibility: one labelled form control + error slot.
+  Fully accessible: label[for], aria-invalid, aria-describedby wired
+  to the error message; error styling driven by --beauty-error.
+
+  Params:
+    label       (string, required) — field label (no hardcoded copy)
+    name        (string, required) — form field name
+    id          (string) — defaults to name
+    type        'text' (default) | 'tel' | 'email' | 'number' | 'textarea' | 'select'
+    value       (string) — prefilled value
+    placeholder (string)
+    required    (bool)
+    inputmode   (string) — e.g. 'numeric'
+    autocomplete(string)
+    rows        (number, textarea; default 2)
+    options     (array of {value,label,selected}) — for type 'select'
+    error       (bool) — error state
+    error_msg   (string) — error text (shown when error)
+    help        (string) — helper text below the control
+    class
+
+  Reusable across Home / PLP / PDP / Cart / Search. Owns elovira-field.css.
+{%- endcomment -%}
+
+{{ 'elovira-field.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign field_type = type | default: 'text'
+  assign field_id = id | default: name
+  assign classes = 'elovira-field'
+  if error
+    assign classes = classes | append: ' is-error'
+  endif
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+  assign describedby = ''
+  if help != blank
+    assign describedby = field_id | append: '-help'
+  endif
+  if error and error_msg != blank
+    assign errfield_id = field_id | append: '-error'
+    if describedby != blank
+      assign describedby = describedby | append: ' ' | append: errfield_id
+    else
+      assign describedby = errfield_id
+    endif
+  endif
+-%}
+
+<div class="{{ classes }}">
+  <label class="elovira-field__label" for="{{ field_id }}">{{ label }}{% if required %} <span class="elovira-field__req" aria-hidden="true">*</span>{% endif %}</label>
+
+  {%- if field_type == 'textarea' -%}
+    <textarea
+      class="elovira-field__control"
+      id="{{ field_id }}"
+      name="{{ name }}"
+      rows="{{ rows | default: 2 }}"
+      {% if placeholder != blank %}placeholder="{{ placeholder | escape }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+      {% if describedby != blank %}aria-describedby="{{ describedby }}"{% endif %}
+    >{{ value }}</textarea>
+
+  {%- elsif field_type == 'select' -%}
+    <div class="elovira-field__select-wrap">
+      <select
+        class="elovira-field__control elovira-field__control--select"
+        id="{{ field_id }}"
+        name="{{ name }}"
+        {% if required %}required{% endif %}
+        {% if error %}aria-invalid="true"{% endif %}
+        {% if describedby != blank %}aria-describedby="{{ describedby }}"{% endif %}
+      >
+        {% if placeholder != blank %}<option value="" disabled{% unless value != blank %} selected{% endunless %}>{{ placeholder }}</option>{% endif %}
+        {% for opt in options %}
+          <option value="{{ opt.value }}"{% if opt.selected or opt.value == value %} selected{% endif %}>{{ opt.label }}</option>
+        {% endfor %}
+      </select>
+      {%- render 'elovira-icon', name: 'chevron-down', size: 16, class: 'elovira-field__chevron' -%}
+    </div>
+
+  {%- else -%}
+    <input
+      class="elovira-field__control"
+      type="{{ field_type }}"
+      id="{{ field_id }}"
+      name="{{ name }}"
+      {% if value != blank %}value="{{ value | escape }}"{% endif %}
+      {% if placeholder != blank %}placeholder="{{ placeholder | escape }}"{% endif %}
+      {% if inputmode != blank %}inputmode="{{ inputmode }}"{% endif %}
+      {% if autocomplete != blank %}autocomplete="{{ autocomplete }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if error %}aria-invalid="true"{% endif %}
+      {% if describedby != blank %}aria-describedby="{{ describedby }}"{% endif %}
+    >
+  {%- endif -%}
+
+  {%- if help != blank -%}
+    <span class="elovira-field__help" id="{{ field_id }}-help">{{ help }}</span>
+  {%- endif -%}
+  {%- if error and error_msg != blank -%}
+    <span class="elovira-field__error" id="{{ field_id }}-error">{{ error_msg }}</span>
+  {%- endif -%}
+</div>

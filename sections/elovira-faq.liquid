@@ -1,0 +1,63 @@
+{%- comment -%}
+  ELOVIRA — FAQ section (Phase 6). DS: FAQAccordion.
+  Independent section, zero JS: each item is a native
+  <details>/<summary> disclosure — accessible and keyboard-operable
+  without any JavaScript. Blocks = question/answer pairs.
+{%- endcomment -%}
+
+{{ 'elovira-faq.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="elovira elovira-faq{% if section.settings.alt_bg %} elovira-section--alt{% endif %}"
+  style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;"
+>
+  <div class="elovira-faq__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="elovira-faq__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      <details class="elovira-faq__item" {{ block.shopify_attributes }}>
+        <summary>
+          <span>{{ block.settings.question }}</span>
+          <span class="elovira-faq__icon">{%- render 'elovira-icon', name: 'chevron-down', size: 18 -%}</span>
+        </summary>
+        <p class="elovira-faq__answer">{{ block.settings.answer }}</p>
+      </details>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA FAQ",
+  "tag": "section",
+  "class": "elovira-faq-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions fréquentes" },
+    { "type": "checkbox", "id": "alt_bg", "label": "Alternate background", "default": false },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Le paiement à la livraison est-il disponible ?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Oui, vous payez uniquement à la réception de votre colis." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA FAQ",
+      "blocks": [
+        { "type": "faq" },
+        { "type": "faq", "settings": { "question": "Quel est le délai de livraison ?", "answer": "Entre 24 et 72 heures selon votre ville." } },
+        { "type": "faq", "settings": { "question": "Puis-je échanger un produit ?", "answer": "Oui, contactez-nous dans les 7 jours suivant la réception." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

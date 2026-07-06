@@ -1,0 +1,82 @@
+{%- comment -%}
+  ELOVIRA — UGC gallery section (Phase 6). DS: UGCGrid.
+  Independent, dark-variant section. Blocks = image tiles,
+  each optionally linking out (e.g. to Instagram). Zero JS.
+{%- endcomment -%}
+
+{{ 'elovira-ugc-gallery.css' | asset_url | stylesheet_tag }}
+
+<div class="elovira elovira-ugc-gallery" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="elovira-ugc-gallery__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="elovira-ugc-gallery__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="elovira-ugc-gallery__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="elovira-ugc-gallery__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.image != blank -%}
+            {%- liquid
+              assign tag = 'span'
+              if block.settings.link != blank
+                assign tag = 'a'
+              endif
+            -%}
+            <{{ tag }}
+              class="elovira-ugc-gallery__item"
+              {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <img
+                class="elovira-ugc-gallery__img"
+                src="{{ block.settings.image | image_url: width: 500 }}"
+                alt="{{ block.settings.image.alt | default: '' | escape }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+              >
+            </{{ tag }}>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA UGC Gallery",
+  "tag": "section",
+  "class": "elovira-ugc-gallery-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Communauté" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "#ELOVIRA sur les réseaux" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA UGC Gallery",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

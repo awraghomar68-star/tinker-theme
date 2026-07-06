@@ -1,0 +1,41 @@
+/* ============================================================
+   ELOVIRA — Price atom styles. DS-exact.
+   Phase 3 · additive · owns its styles · DS tokens only.
+   ============================================================ */
+
+.elovira-price {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1, 8px);
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+.elovira-price__value {
+  color: var(--beauty-gold);
+  white-space: nowrap;
+}
+
+.elovira-price__compare {
+  color: var(--beauty-text-soft);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.elovira-price__save {
+  flex-basis: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--beauty-rose);
+}
+
+/* ---- Sizes: [ value , compare ] per DS ---- */
+.elovira-price--hero   .elovira-price__value { font-size: 26px; }
+.elovira-price--hero   .elovira-price__compare { font-size: 16px; }
+.elovira-price--bundle .elovira-price__value { font-size: 24px; }
+.elovira-price--bundle .elovira-price__compare { font-size: 14px; }
+.elovira-price--card   .elovira-price__value { font-size: 18px; }
+.elovira-price--card   .elovira-price__compare { font-size: 13px; }
+.elovira-price--sticky .elovira-price__value { font-size: 18px; }
+.elovira-price--sticky .elovira-price__compare { font-size: 11px; }

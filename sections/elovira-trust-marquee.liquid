@@ -1,0 +1,71 @@
+{%- comment -%}
+  ELOVIRA — Trust marquee section (Phase 6). DS: TrustMarquee.
+  Independent, zero-JS: pure CSS infinite scroll, duplicated
+  track for seamless loop, disabled under prefers-reduced-motion
+  (falls back to a static wrapped row). Blocks = trust messages,
+  fully merchant-editable (no hardcoded copy).
+{%- endcomment -%}
+
+{{ 'elovira-trust-marquee.css' | asset_url | stylesheet_tag }}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="elovira elovira-trust-marquee" role="region" aria-label="{{ section.settings.aria_label | default: 'Trust messages' | escape }}">
+    <div class="elovira-trust-marquee__track">
+      {%- for i in (1..2) -%}
+        <div class="elovira-trust-marquee__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <span class="elovira-trust-marquee__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon != blank -%}{%- render 'elovira-icon', name: block.settings.icon, size: 16 -%}{%- endif -%}
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "ELOVIRA Trust Marquee",
+  "tag": "section",
+  "class": "elovira-trust-marquee-section",
+  "settings": [
+    { "type": "text", "id": "aria_label", "label": "Accessible label", "default": "Trust messages" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "check", "label": "Check" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "sparkle", "label": "Sparkle" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "text", "label": "Text", "default": "Paiement à la livraison" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Trust Marquee",
+      "blocks": [
+        { "type": "message", "settings": { "icon": "check", "text": "Paiement à la livraison" } },
+        { "type": "message", "settings": { "icon": "truck", "text": "Livraison gratuite" } },
+        { "type": "message", "settings": { "icon": "shield", "text": "Satisfaite ou remboursée" } },
+        { "type": "message", "settings": { "icon": "sparkle", "text": "Ingrédients doux" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

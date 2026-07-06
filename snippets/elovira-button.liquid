@@ -1,0 +1,72 @@
+{%- comment -%}
+  ELOVIRA — Button atom (Phase 3). DS: pill CTA (.beauty-btn).
+  Single responsibility: one call-to-action control.
+  Renders <a> when `href` set, else <button>. DS-exact styling.
+
+  Params:
+    label    (string, required) — visible text (no hardcoded copy here)
+    href     (url) — if present, renders an anchor
+    variant  'gold' (default) | 'rose' | 'ghost'
+    size     '' (default 50px) | 'sm' (44px)
+    type     button type when not a link (default 'button')
+    name/value — optional form attributes
+    full     (bool, default true) — full-width up to 420px, centered
+    disabled (bool) · loading (bool)
+    icon     (icon name) · icon_position 'start' (default) | 'end'
+    id · class · aria_label
+    attrs    (raw string) — extra attributes (e.g. data-*)
+
+  Reusable across Home / PLP / PDP / Cart / Search. Owns elovira-button.css.
+{%- endcomment -%}
+
+{{ 'elovira-button.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign btn_variant = variant | default: 'gold'
+  assign btn_full = full
+  if full == nil
+    assign btn_full = true
+  endif
+  assign classes = 'elovira-button elovira-button--' | append: btn_variant
+  if size == 'sm'
+    assign classes = classes | append: ' elovira-button--sm'
+  endif
+  unless btn_full
+    assign classes = classes | append: ' elovira-button--inline'
+  endunless
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+  assign is_link = false
+  if href != blank and disabled != true and loading != true
+    assign is_link = true
+  endif
+-%}
+
+{%- capture inner -%}
+  {%- if icon != blank and icon_position != 'end' -%}{%- render 'elovira-icon', name: icon, size: 17 -%}{%- endif -%}
+  <span class="elovira-button__label">{{ label }}</span>
+  {%- if icon != blank and icon_position == 'end' -%}{%- render 'elovira-icon', name: icon, size: 17 -%}{%- endif -%}
+{%- endcapture -%}
+
+{%- if is_link -%}
+  <a
+    class="{{ classes }}"
+    href="{{ href }}"
+    {% if id != blank %}id="{{ id }}"{% endif %}
+    {% if aria_label != blank %}aria-label="{{ aria_label | escape }}"{% endif %}
+    {{ attrs }}
+  >{% if loading %}<span class="elovira-button__spinner" aria-hidden="true"></span>{% endif %}{{ inner }}</a>
+{%- else -%}
+  <button
+    class="{{ classes }}"
+    type="{{ type | default: 'button' }}"
+    {% if name != blank %}name="{{ name }}"{% endif %}
+    {% if value != blank %}value="{{ value }}"{% endif %}
+    {% if id != blank %}id="{{ id }}"{% endif %}
+    {% if aria_label != blank %}aria-label="{{ aria_label | escape }}"{% endif %}
+    {% if disabled %}disabled{% endif %}
+    {% if loading %}aria-busy="true"{% endif %}
+    {{ attrs }}
+  >{% if loading %}<span class="elovira-button__spinner" aria-hidden="true"></span>{% endif %}{{ inner }}</button>
+{%- endif -%}

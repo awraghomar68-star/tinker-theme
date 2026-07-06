@@ -1,0 +1,107 @@
+/* ============================================================
+   ELOVIRA — Shared Utility Classes
+   Phase 1 · additive · built entirely on elovira-tokens.css.
+   All classes are prefixed `elv-` so they never collide with
+   Horizon's own classes. No page/section markup here — atoms only.
+   Consumed by the ELOVIRA section/snippet suite in later phases.
+   ============================================================ */
+
+/* ---- Containers (composition widths from DS system tokens) ---- */
+.elv-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.elv-container--narrow { max-width: var(--container-narrow); }
+.elv-container--content { max-width: var(--container-content); }
+.elv-container--wide { max-width: var(--container-wide); }
+
+@media (min-width: 768px) {
+  .elv-container { padding-inline: var(--gutter-desktop); }
+}
+
+/* ---- Section vertical rhythm (48px mobile -> 72px >=720px) ---- */
+.elv-section { padding-block: var(--section-y); }
+.elv-section--tight { padding-block: var(--section-y-tight); }
+
+@media (min-width: 720px) {
+  .elv-section { padding-block: var(--space-9); }        /* 72px */
+  .elv-section--tight { padding-block: var(--section-y-tight-desktop, 44px); }
+}
+
+/* ---- Surfaces ---- */
+.elv-surface-page { background: var(--surface-page); }
+.elv-surface-card { background: var(--surface-card); }
+.elv-surface-alt { background: var(--surface-alt); }
+.elv-surface-tint { background: var(--surface-tint); }
+
+/* ---- Type presets ---- */
+.elv-display { font-family: var(--font-display); font-weight: var(--fw-regular); }
+.elv-h1 {
+  font-family: var(--font-display); font-weight: var(--fw-regular);
+  font-size: var(--text-h1); line-height: 1.12; letter-spacing: var(--ls-display); margin: 0;
+}
+.elv-h2 {
+  font-family: var(--font-display); font-weight: var(--fw-regular);
+  font-size: var(--text-h2); line-height: 1.16; margin: 0;
+}
+.elv-h3 {
+  font-family: var(--font-display); font-weight: var(--fw-regular);
+  font-size: var(--text-h3); line-height: var(--lh-tight); margin: 0;
+}
+.elv-lead { font-size: var(--text-lead); line-height: var(--line-body); color: var(--text-soft); }
+.elv-body { font-size: var(--text-body-size); line-height: var(--line-body); }
+.elv-small { font-size: var(--text-small); }
+.elv-caption { font-size: var(--text-caption); color: var(--text-soft); }
+.elv-eyebrow {
+  font-size: var(--text-eyebrow); text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow); font-weight: var(--fw-semibold); color: var(--beauty-gold-text);
+}
+.elv-mono-label {
+  font-family: var(--font-mono); letter-spacing: var(--ls-mono-label);
+  text-transform: uppercase; font-size: var(--text-caption);
+}
+
+/* ---- Price ---- */
+.elv-price { font-weight: var(--font-weight-price); font-size: var(--text-price-card); }
+.elv-price--hero { font-size: var(--text-price-hero); color: var(--beauty-gold); }
+.elv-price--compare { color: var(--beauty-text-soft); text-decoration: line-through; }
+
+/* ---- Button bases (styling only; markup lives in snippets later) ---- */
+.elv-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--cta-height); padding: 0 var(--space-3);
+  border-radius: var(--radius-pill); border: 1px solid transparent;
+  font-family: var(--font-body); font-weight: var(--fw-bold); font-size: 14px;
+  letter-spacing: .04em; cursor: pointer; text-align: center;
+  transition: background var(--ease-med), color var(--ease-med), transform var(--ease-fast);
+}
+.elv-btn:active { transform: scale(.98); }
+.elv-btn--primary { background: var(--cta); color: var(--beauty-white); }
+.elv-btn--primary:hover { background: var(--beauty-rose-hover); }
+.elv-btn--secondary { background: transparent; color: var(--text-body); border-color: var(--beauty-line); }
+.elv-btn[disabled], .elv-btn[aria-disabled='true'] { opacity: var(--opacity-disabled); cursor: not-allowed; }
+
+/* ---- Card ---- */
+.elv-card {
+  background: var(--surface-card); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft); border: 1px solid var(--border-line);
+}
+
+/* ---- Accessibility helpers ---- */
+.elv-visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.elv-focusable:focus-visible,
+:where(.elv-btn, .elv-card a, .elv-container a):focus-visible {
+  outline: var(--focus-ring); outline-offset: var(--focus-offset);
+}
+.elv-tap { min-width: var(--tap-min); min-height: var(--tap-min); }
+
+/* ---- Reduced-motion guard for all ELOVIRA transitions ---- */
+@media (prefers-reduced-motion: reduce) {
+  .elv-btn, .elv-card, [class^='elv-'], [class*=' elv-'] {
+    transition: none !important; animation: none !important;
+  }
+}

@@ -1,0 +1,33 @@
+/* ============================================================
+   ELOVIRA — Badge atom styles.
+   Phase 3 · additive · owns its styles · DS tokens only.
+   Rosegold badge family per DS colors.css (badges / discount
+   pills / ribbons). Gold reserved for graphic accents >=19px, so
+   the small badge text uses white on a colored fill for contrast.
+   ============================================================ */
+
+.elovira-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-5px, 5px);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: var(--space-5px, 5px) var(--space-11px, 11px);
+  border-radius: var(--radius-pill, 999px);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.elovira-badge--promo { background: var(--beauty-rosegold, #B76E79); }
+.elovira-badge--sale  { background: var(--beauty-rose, #8E4B5C); }
+.elovira-badge--new   { background: var(--beauty-gold, #C9A24B); }
+
+/* Soft variant: tinted surface, dark text (for subtle labels) */
+.elovira-badge--soft {
+  background: var(--beauty-pink, #F3D9DD);
+  color: var(--beauty-text);
+}

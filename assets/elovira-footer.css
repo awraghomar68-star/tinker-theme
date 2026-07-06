@@ -1,0 +1,166 @@
+/* ============================================================
+   ELOVIRA — Footer group (Phase 5)
+   DS source: components/navigation/Footer.jsx (Footer + Newsletter)
+   One footer instance per page → one stylesheet.
+   All values from DS tokens.
+   ============================================================ */
+
+.elovira-footer {
+  display: block;
+  background: var(--beauty-beige);
+  border-top: 1px solid var(--beauty-line);
+}
+
+.elovira-footer__inner {
+  max-width: var(--container-wide, 1280px);
+  margin: 0 auto;
+  padding: var(--space-6, 48px) var(--space-2, 16px) var(--space-3, 24px);
+}
+
+/* ---- Top row: newsletter + link columns ---- */
+.elovira-footer__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5, 40px);
+}
+
+@media (min-width: 768px) {
+  .elovira-footer__top {
+    grid-template-columns: minmax(240px, 1.2fr) repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-4, 32px);
+  }
+}
+
+.elovira-footer__col-heading {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: var(--fw-regular);
+  color: var(--beauty-text);
+  margin: 0 0 var(--space-2, 16px);
+}
+
+/* ---- Link columns ---- */
+.elovira-footer__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10px, 10px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.elovira-footer__nav-link {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--beauty-text-soft);
+  text-decoration: none;
+}
+
+/* ---- Newsletter ---- */
+.elovira-footer__newsletter-text {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: var(--line-body);
+  color: var(--beauty-text-soft);
+  margin: 0 0 var(--space-2, 16px);
+}
+
+.elovira-footer__newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-10px, 10px);
+}
+
+.elovira-footer__newsletter-form .elovira-field {
+  flex: 1 1 200px;
+}
+
+.elovira-footer__newsletter-msg {
+  font-family: var(--font-body);
+  font-size: 13px;
+  margin: var(--space-1, 8px) 0 0;
+}
+
+.elovira-footer__newsletter-msg.is-success { color: var(--beauty-success); }
+.elovira-footer__newsletter-msg.is-error { color: var(--beauty-error); }
+
+/* ---- Bottom bar: payment badges + social + legal + copyright ---- */
+.elovira-footer__bottom {
+  margin-top: var(--space-6, 48px);
+  padding-top: var(--space-3, 24px);
+  border-top: 1px solid var(--beauty-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 24px);
+}
+
+.elovira-footer__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-10px, 10px);
+}
+
+.elovira-footer__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6px, 6px);
+  padding: var(--space-6px, 6px) var(--space-12px, 12px);
+  border-radius: var(--radius-pill);
+  background: var(--beauty-bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: var(--fw-medium);
+  color: var(--beauty-text-soft);
+}
+
+.elovira-footer__socials {
+  display: flex;
+  gap: var(--space-4px, 4px);
+}
+
+.elovira-footer__social-link {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--beauty-text);
+  text-decoration: none;
+}
+
+.elovira-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4px, 4px) var(--space-2, 16px);
+  order: 3;
+  flex-basis: 100%;
+}
+
+.elovira-footer__legal-link {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--beauty-text-soft);
+  text-decoration: none;
+}
+
+.elovira-footer__copyright {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--beauty-text-soft);
+  margin: 0;
+  order: 4;
+  flex-basis: 100%;
+}
+
+/* ---- Focus ring (WCAG 2.4.7) — every interactive element ---- */
+.elovira-footer__nav-link:focus-visible,
+.elovira-footer__social-link:focus-visible,
+.elovira-footer__legal-link:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}

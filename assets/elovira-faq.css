@@ -1,0 +1,74 @@
+/* ============================================================
+   ELOVIRA — FAQ section (Phase 6)
+   DS: content/FAQAccordion. Independent, zero-JS: native
+   <details>/<summary> disclosure (keyboard + a11y built in).
+   ============================================================ */
+
+.elovira-faq {
+  background: var(--beauty-bg);
+}
+
+.elovira-faq.elovira-section--alt {
+  background: var(--beauty-beige);
+}
+
+.elovira-faq__inner {
+  max-width: var(--container-narrow, 860px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 16px);
+}
+
+.elovira-faq__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  color: var(--beauty-text);
+  text-align: center;
+  margin: 0 0 var(--space-4, 32px);
+}
+
+.elovira-faq__item {
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-faq__item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 16px);
+  padding: var(--space-3, 24px) 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  font-weight: var(--fw-medium);
+  color: var(--beauty-text);
+}
+
+.elovira-faq__item summary::-webkit-details-marker { display: none; }
+
+.elovira-faq__item summary:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.elovira-faq__icon {
+  flex: none;
+  transition: transform var(--ease-med);
+}
+
+.elovira-faq__item[open] .elovira-faq__icon {
+  transform: rotate(180deg);
+}
+
+.elovira-faq__answer {
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  line-height: var(--line-body);
+  color: var(--beauty-text-soft);
+  margin: 0 0 var(--space-3, 24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-faq__icon { transition: none; }
+}

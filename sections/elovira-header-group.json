@@ -1,0 +1,37 @@
+{
+  "type": "header",
+  "name": "ELOVIRA Header",
+  "sections": {
+    "elovira_announcement": {
+      "type": "elovira-announcement-bar",
+      "blocks": {
+        "message_1": {
+          "type": "message",
+          "settings": {
+            "text": "Livraison gratuite dès 500 DH · Paiement à la livraison"
+          }
+        }
+      },
+      "block_order": ["message_1"],
+      "settings": {
+        "speed": 4,
+        "autorotate": true,
+        "pause_on_hover": true,
+        "background": "#8E4B5C",
+        "text_color": "#FFFFFF"
+      }
+    },
+    "elovira_header": {
+      "type": "elovira-header",
+      "settings": {
+        "brand_text": "ELOVIRA",
+        "menu": "main-menu",
+        "sticky": true,
+        "show_search": true,
+        "search_placeholder": "Rechercher un produit…",
+        "drawer_footer": "Paiement à la livraison · Livraison 24-72h"
+      }
+    }
+  },
+  "order": ["elovira_announcement", "elovira_header"]
+}

@@ -1,0 +1,307 @@
+/* ============================================================
+   ELOVIRA — Header + Nav drawer + Search overlay (Phase 4)
+   DS sources:
+     components/navigation/Header.jsx  (Header + NavDrawer)
+     components/commerce/SearchOverlay.jsx
+   One interactive unit → one stylesheet (deduped across the
+   header section + nav-drawer + search-overlay snippets).
+   All values from DS tokens.
+   ============================================================ */
+
+/* ---- Scroll lock (state class, applied by JS only while a dialog is open) ---- */
+html.elovira-scroll-lock { overflow: hidden; }
+
+/* ============================================================
+   Header
+   ============================================================ */
+.elovira-header {
+  display: block;
+  background: var(--beauty-bg);
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky, 40);
+}
+
+/* Translucent + blur only when sticky (overlaps content) */
+@supports ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .elovira-header--sticky {
+    background: color-mix(in srgb, var(--beauty-bg) 92%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.elovira-header__bar {
+  max-width: var(--container-wide, 1280px);
+  margin: 0 auto;
+  padding: 0 var(--space-1, 8px);
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4px, 4px);
+}
+
+.elovira-header__group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4px, 4px);
+  flex: 1;
+}
+
+.elovira-header__group--end { justify-content: flex-end; }
+
+/* Brand wordmark — always centered */
+.elovira-header__brand {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--fw-regular);
+  letter-spacing: .08em;
+  color: var(--beauty-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.elovira-header__logo {
+  display: block;
+  height: auto;
+  max-height: 36px;
+  width: auto;
+}
+
+/* Icon buttons (menu / search / close) — 44px tap target */
+.elovira-header__icon {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  color: var(--beauty-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Cart trigger — DS mono "(n)" count, gold when filled */
+.elovira-header__cart {
+  min-width: 44px;
+  height: 44px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  color: var(--beauty-text);
+}
+
+.elovira-header__cart.is-filled { color: var(--beauty-gold-text); }
+
+/* ---- Navigation: mobile toggle vs desktop inline ---- */
+.elovira-header__nav--inline { display: none; }
+
+.elovira-header__navlink {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: var(--fw-semibold);
+  color: var(--beauty-text);
+  text-decoration: none;
+  padding: var(--space-10px, 10px) var(--space-12px, 12px);
+  border-radius: var(--radius-pill);
+}
+
+.elovira-header__navlink.is-active { color: var(--beauty-gold-text); }
+
+@media (min-width: 768px) {
+  .elovira-header__nav-toggle { display: none; }
+  .elovira-header__nav--inline { display: flex; gap: var(--space-4px, 4px); }
+}
+
+/* ============================================================
+   Nav drawer (mobile) — DS NavDrawer
+   ============================================================ */
+.elovira-nav-drawer__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer, 70);
+  background: var(--overlay-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ease-med);
+}
+
+.elovira-nav-drawer__scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.elovira-nav-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(320px, 86vw);
+  z-index: calc(var(--z-drawer, 70) + 1);
+  background: var(--beauty-bg);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--space-20px, 20px) calc(var(--space-20px, 20px) + env(safe-area-inset-bottom));
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition: transform .3s ease, visibility 0s linear .3s;
+}
+
+.elovira-nav-drawer.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform .3s ease;
+}
+
+/* No-JS fallback: the menu trigger is <a href="#elovira-nav-drawer">, so
+   :target reveals the drawer when JavaScript is unavailable. elovira-header.js
+   sets .elovira-js on <html>, which disables this branch so the JS drawer
+   experience is unaffected. */
+:root:not(.elovira-js) .elovira-nav-drawer:target {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.elovira-nav-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+}
+
+.elovira-nav-drawer__brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: .08em;
+  color: var(--beauty-text);
+}
+
+.elovira-nav-drawer__links {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-1, 8px);
+}
+
+.elovira-nav-drawer__link {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: var(--fw-regular);
+  color: var(--beauty-text);
+  text-decoration: none;
+  padding: var(--space-14px, 14px) 0;
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-nav-drawer__foot {
+  margin-top: auto;
+  padding-top: var(--space-20px, 20px);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--beauty-text-soft);
+}
+
+/* ============================================================
+   Search overlay — DS SearchOverlay
+   ============================================================ */
+.elovira-search {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal, 90);
+  background: var(--beauty-bg);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--ease-med), visibility 0s linear var(--ease-med);
+}
+
+.elovira-search.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--ease-med);
+}
+
+.elovira-search__bar {
+  display: flex;
+  gap: var(--space-1, 8px);
+  align-items: center;
+  padding: var(--space-10px, 10px) var(--space-12px, 12px);
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-search__icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-4px, 4px);
+  color: var(--beauty-text-soft);
+}
+
+.elovira-search__input {
+  flex: 1;
+  min-height: 44px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 16px; /* >=16px prevents iOS zoom */
+  color: var(--beauty-text);
+}
+
+.elovira-search__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2, 16px);
+}
+
+.elovira-search__hint {
+  text-align: center;
+  padding: var(--space-6, 48px) var(--space-3, 24px);
+  font-family: var(--font-body);
+}
+
+.elovira-search__medallion {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto var(--space-18px, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--icon-gradient);
+  color: var(--beauty-gold);
+}
+
+.elovira-search__hint-text {
+  font-size: 14px;
+  color: var(--beauty-text-soft);
+  margin: 0;
+}
+
+/* ---- Focus ring (WCAG 2.4.7) — every interactive element ---- */
+.elovira-header__icon:focus-visible,
+.elovira-header__cart:focus-visible,
+.elovira-header__navlink:focus-visible,
+.elovira-header__brand:focus-visible,
+.elovira-nav-drawer__link:focus-visible,
+.elovira-announce__link:focus-visible,
+.elovira-search__input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}

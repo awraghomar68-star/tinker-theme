@@ -1,0 +1,163 @@
+/* ============================================================
+   ELOVIRA — Design Token Foundation
+   Phase 1 · additive · does not alter Horizon tokens.
+   Source of truth: ELOVIRA Design System project
+     tokens/colors.css · tokens/typography.css
+     tokens/spacing.css · tokens/system.css
+   Values transcribed verbatim from the frozen DS v1.0.
+   Merchant-tunable colors + free-ship threshold are overridden
+   at runtime by snippets/elovira-head.liquid (settings-driven);
+   the values here are the DS defaults / fallbacks.
+   NOTE (Phase 12): fonts load via Google Fonts @import to stay
+   faithful to the DS source; subset / self-host woff2 later.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- Color · base palette (tokens/colors.css) ---- */
+  --beauty-bg: #F8F5F2;          /* warm beige page background */
+  --beauty-white: #FFFFFF;
+  --beauty-beige: #EDE4DA;       /* surface beige */
+  --beauty-pink: #F3D9DD;        /* soft pink surface */
+  --beauty-gold: #C9A24B;        /* accent: prices/stars/checks/icons (large/graphic, >=19px) */
+  --beauty-gold-text: #8F6E2A;   /* AA gold for text <19px on white/beige (4.6:1) */
+  --beauty-gold-hover: #b88f3e;
+  --beauty-rose: #8E4B5C;        /* deep rose: primary CTA */
+  --beauty-rose-hover: #7a3f4d;
+  --beauty-rosegold: #B76E79;    /* badges, discount pills, ribbons */
+  --beauty-text: #2B2320;        /* dark charcoal */
+  --beauty-text-soft: #7A6F68;
+  --beauty-line: rgba(43, 35, 32, .10);
+  --beauty-error: #d9534f;
+  --beauty-success: #6FA287;     /* icons/dots only, never small text on beige */
+
+  /* ---- Color · semantic aliases ---- */
+  --surface-page: var(--beauty-bg);
+  --surface-card: var(--beauty-white);
+  --surface-alt: var(--beauty-beige);
+  --surface-tint: var(--beauty-pink);
+  --text-body: var(--beauty-text);
+  --text-soft: var(--beauty-text-soft);
+  --accent: var(--beauty-gold);
+  --cta: var(--beauty-rose);
+  --badge: var(--beauty-rosegold);
+  --border-line: var(--beauty-line);
+  --ph-gradient: linear-gradient(160deg, var(--beauty-beige), var(--beauty-pink));
+  --icon-gradient: linear-gradient(160deg, var(--beauty-pink), var(--beauty-beige));
+
+  /* ---- Typography (tokens/typography.css) ---- */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-weight-price: 600;
+
+  --text-h1: clamp(30px, 7vw, 46px);        /* lh 1.12, w400, ls -.01em */
+  --text-h2: clamp(24px, 5.5vw, 34px);      /* lh 1.16, w400 */
+  --text-h3: clamp(18px, 4vw, 22px);        /* w400 */
+  --text-lead: 17px;
+  --text-body-size: 15.5px;
+  --text-small: 13.5px;
+  --text-caption: 12px;
+  --text-eyebrow: 12px;                     /* uppercase, ls .18em, w600, gold */
+  --text-price-hero: 26px;                  /* semibold, gold */
+  --text-price-card: 18px;
+
+  --line-body: 1.6;
+  --ls-eyebrow: .18em;
+
+  /* ---- Spacing · 8px system (tokens/spacing.css) ---- */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-9: 72px;
+
+  --pad-page: 16px;
+  --max-content: 680px;
+  --section-y: 48px;             /* 72px >=720px (see utilities media query) */
+  --section-y-tight: 30px;       /* 44px >=720px */
+  --section-y-tight-desktop: 44px;
+
+  /* ---- Spacing · fine scale (sub-8px increments, DS component-level values) ---- */
+  --space-2px: 2px;
+  --space-4px: 4px;
+  --space-5px: 5px;
+  --space-6px: 6px;
+  --space-7px: 7px;
+  --space-9px: 9px;
+  --space-10px: 10px;
+  --space-11px: 11px;
+  --space-12px: 12px;
+  --space-13px: 13px;
+  --space-14px: 14px;
+  --space-15px: 15px;
+  --space-18px: 18px;
+  --space-20px: 20px;
+
+  /* ---- Shape ---- */
+  --radius: 22px;                /* cards */
+  --radius-sm: 14px;             /* inputs */
+  --radius-pill: 999px;          /* buttons, chips, badges */
+
+  /* ---- Elevation ---- */
+  --shadow-soft: 0 8px 30px rgba(43, 35, 32, .07);
+
+  /* ---- Motion ---- */
+  --ease-fast: .15s ease;
+  --ease-med: .25s ease;
+  --ease-reveal: .5s ease;
+  --ease-photo: .4s ease;
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+
+  /* ---- Touch ---- */
+  --tap-min: 44px;
+  --cta-height: 50px;
+
+  /* ---- System · breakpoints (tokens/system.css) ---- */
+  --bp-mobile-max: 767px;
+  --bp-tablet: 768px;            /* THE mobile/desktop switch */
+  --bp-desktop: 1024px;
+  --bp-wide: 1440px;
+
+  /* ---- System · grid / containers ---- */
+  --container-narrow: 680px;     /* mobile-first single column */
+  --container-content: 1080px;   /* desktop content sections */
+  --container-wide: 1280px;      /* desktop PLP grids, header */
+  --gutter: 16px;
+  --gutter-desktop: 32px;
+
+  /* ---- System · z-index scale (always tokens, never literals) ---- */
+  --z-base: 0;
+  --z-sticky: 40;
+  --z-dropdown: 50;
+  --z-drawer: 70;
+  --z-modal: 90;
+  --z-toast: 100;
+
+  /* ---- System · opacity ---- */
+  --opacity-disabled: .45;
+  --opacity-overlay: .94;
+
+  /* ---- System · font weights ---- */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;            /* prices */
+  --fw-bold: 700;                /* buttons, emphasis */
+
+  /* ---- System · line-height & tracking ---- */
+  --lh-display: 1.15;
+  --lh-tight: 1.3;
+  --ls-display: -.01em;
+  --ls-mono-label: .12em;
+
+  /* ---- System · focus ring (WCAG 2.4.7) ---- */
+  --focus-ring: 2px solid var(--beauty-gold);
+  --focus-offset: 3px;
+
+  /* ---- System · overlay / scrim ---- */
+  --overlay-dark: rgba(20, 15, 13, .94);
+  --overlay-scrim: rgba(43, 35, 32, .45);
+}

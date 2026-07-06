@@ -1,0 +1,121 @@
+{%- comment -%}
+  ELOVIRA — Announcement bar section (Phase 4)
+  DS: components/navigation/AnnouncementBar.jsx — thin deep-rose strip,
+  optional rotating messages. Composition: global chrome, above header.
+
+  Theme-Editor: each message is a block (text + optional link). Rotation
+  speed, autorotate + pause-on-hover, and colors are section settings
+  (DS defaults). Rotation JS loads only when >1 message and autorotate on.
+  A11y: labelled region; pauses on hover/focus (WCAG 2.2.2); reduced-motion
+  disables auto-rotation.
+{%- endcomment -%}
+
+{{ 'elovira-announcement.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign bar_bg = section.settings.background | default: 'var(--beauty-rose)'
+  assign bar_fg = section.settings.text_color | default: '#fff'
+  assign rotate = false
+  if section.settings.autorotate and section.blocks.size > 1
+    assign rotate = true
+  endif
+-%}
+
+{%- if rotate -%}
+  <script src="{{ 'elovira-announcement.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+<elovira-announcement
+  class="elovira elovira-announce"
+  data-speed="{{ section.settings.speed }}"
+  data-pause-hover="{{ section.settings.pause_on_hover }}"
+  style="--elv-announce-bg: {{ bar_bg }}; --elv-announce-fg: {{ bar_fg }};"
+>
+  <div class="elovira-announce__viewport" role="region" aria-label="Annonces">
+    {%- for block in section.blocks -%}
+      <div
+        class="elovira-announce__msg{% unless forloop.first %} is-hidden{% endunless %}"
+        {% unless forloop.first %}aria-hidden="true"{% endunless %}
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.link != blank -%}
+          <a class="elovira-announce__link" href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+        {%- else -%}
+          {{ block.settings.text | escape }}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</elovira-announcement>
+
+{% schema %}
+{
+  "name": "ELOVIRA Announcement",
+  "tag": "section",
+  "class": "elovira-announcement-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Rotation speed (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "autorotate",
+      "label": "Auto-rotate messages",
+      "info": "Only applies when there is more than one message. Disabled automatically under reduced-motion.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover / focus",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#8E4B5C"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Livraison gratuite dès 500 DH · Paiement à la livraison"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Announcement",
+      "blocks": [
+        { "type": "message" }
+      ]
+    }
+  ]
+}
+{% endschema %}

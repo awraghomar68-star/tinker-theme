@@ -1,0 +1,43 @@
+/* ============================================================
+   ELOVIRA — Icon atom styles
+   Phase 3 · additive · owns its styles · DS tokens only.
+   Single responsibility: render one glyph (Unicode or SVG),
+   inheriting color from context. Stroke weight is centralized
+   here via --elv-icon-stroke (overridable per context/theme).
+   ============================================================ */
+
+.elovira-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: inherit;
+  flex: none;
+}
+
+.elovira-icon > svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--elv-icon-stroke, 1.6);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* DS iconography medallion: 52px rose->beige gradient, gold glyph */
+.elovira-icon-medallion {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--icon-gradient);
+  color: var(--beauty-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.elovira-icon-medallion .elovira-icon {
+  font-size: 22px;
+}

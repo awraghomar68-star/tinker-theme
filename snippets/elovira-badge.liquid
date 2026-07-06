@@ -1,0 +1,28 @@
+{%- comment -%}
+  ELOVIRA — Badge atom (Phase 3). DS: product/promo ribbon pill
+  (rosegold family — badges, discount pills, ribbons).
+  Single responsibility: one short status label pill.
+
+  Params:
+    label (string, required) — text (no hardcoded copy here)
+    tone  'promo' (default, rosegold) | 'sale' (rose) | 'new' (gold) | 'soft' (pink)
+    icon  (icon name) — optional leading glyph
+    id · class
+
+  Reusable across Home / PLP / PDP / Cart / Search. Owns elovira-badge.css.
+{%- endcomment -%}
+
+{{ 'elovira-badge.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign badge_tone = tone | default: 'promo'
+  assign classes = 'elovira-badge elovira-badge--' | append: badge_tone
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+-%}
+
+<span class="{{ classes }}"{% if id != blank %} id="{{ id }}"{% endif %}>
+  {%- if icon != blank -%}{%- render 'elovira-icon', name: icon, size: 12 -%}{%- endif -%}
+  {{ label }}
+</span>

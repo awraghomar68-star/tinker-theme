@@ -1,0 +1,51 @@
+{%- comment -%}
+  ELOVIRA — Search overlay snippet (Phase 4)
+  DS: components/commerce/SearchOverlay.jsx. Fullscreen search sheet.
+  Rendered once by the header section (only when search is enabled).
+
+  Params:
+    placeholder (string) — input placeholder
+
+  Progressive: native GET form to /search works without JS. When JS is
+  present, elovira-header.js opens it as an overlay (focus, Escape,
+  focus trap, return-focus). Predictive results wiring = Phase 10.
+  Starts closed via `inert` + aria-hidden.
+{%- endcomment -%}
+
+{{ 'elovira-header.css' | asset_url | stylesheet_tag }}
+
+<div
+  id="elovira-search-overlay"
+  class="elovira elovira-search"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Recherche"
+  aria-hidden="true"
+  inert
+>
+  <form class="elovira-search__bar" action="{{ routes.search_url }}" method="get" role="search">
+    <span class="elovira-search__icon" aria-hidden="true">
+      {%- render 'elovira-icon', name: 'search', size: 20 -%}
+    </span>
+    <input
+      type="search"
+      name="q"
+      class="elovira-search__input"
+      placeholder="{{ placeholder | default: 'Rechercher un produit…' | escape }}"
+      aria-label="Rechercher"
+      autocomplete="off"
+      data-search-input
+    >
+    <button type="button" class="elovira-header__icon" data-search-close aria-label="Fermer la recherche">
+      {%- render 'elovira-icon', name: 'close', size: 15 -%}
+    </button>
+  </form>
+  <div class="elovira-search__body" data-search-results>
+    <div class="elovira-search__hint">
+      <span class="elovira-search__medallion" aria-hidden="true">
+        {%- render 'elovira-icon', name: 'search', size: 24 -%}
+      </span>
+      <p class="elovira-search__hint-text">Tapez pour rechercher un produit.</p>
+    </div>
+  </div>
+</div>

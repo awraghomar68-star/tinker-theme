@@ -1,0 +1,233 @@
+{%- comment -%}
+  ELOVIRA — Footer section (Phase 5)
+  DS: components/navigation/Footer.jsx (Footer + Newsletter).
+  Composition: newsletter + link columns (top row), payment badges +
+  social links + legal links + copyright (bottom bar).
+
+  Every block is independently addable/removable/reorderable in the
+  Theme Editor. Link columns reuse the native link_list (menu) picker
+  so the footer scales from a 10-product to a 1000-product catalog
+  without redesign. Legal links are their own block type, kept
+  independent from navigation menus per DS. Newsletter posts through
+  Shopify's native customer form (works without JavaScript).
+
+  A11y: each link column is a labelled <nav>; newsletter status/error
+  messages use role="status"/"alert"; 44px tap targets on social icons;
+  focus ring on every interactive element.
+{%- endcomment -%}
+
+{{ 'elovira-footer.css' | asset_url | stylesheet_tag }}
+
+<div class="elovira elovira-footer">
+  <div class="elovira-footer__inner">
+    <div class="elovira-footer__top">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'newsletter' -%}
+            <div class="elovira-footer__col" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h2 class="elovira-footer__col-heading">{{ block.settings.heading }}</h2>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="elovira-footer__newsletter-text">{{ block.settings.text }}</p>
+              {%- endif -%}
+              {%- form 'customer', id: 'elovira-footer-newsletter', class: 'elovira-footer__newsletter-form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                {%- render 'elovira-field',
+                  label: block.settings.email_label,
+                  name: 'contact[email]',
+                  type: 'email',
+                  required: true,
+                  autocomplete: 'email',
+                  placeholder: block.settings.email_placeholder
+                -%}
+                {%- render 'elovira-button', label: block.settings.button_label, type: 'submit', size: 'sm', full: false -%}
+                {%- if form.posted_successfully? -%}
+                  <p class="elovira-footer__newsletter-msg is-success" role="status">{{ block.settings.success_text | escape }}</p>
+                {%- elsif form.errors -%}
+                  <p class="elovira-footer__newsletter-msg is-error" role="alert">{{ block.settings.error_text | escape }}</p>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+
+          {%- when 'link_list' -%}
+            {%- if block.settings.menu != blank and linklists[block.settings.menu].links.size > 0 -%}
+              <nav class="elovira-footer__col" aria-label="{{ block.settings.heading | default: 'Liens' | escape }}" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="elovira-footer__col-heading">{{ block.settings.heading }}</h2>
+                {%- endif -%}
+                <ul class="elovira-footer__nav-list">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li><a class="elovira-footer__nav-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="elovira-footer__bottom">
+      {%- liquid
+        assign has_badges = false
+        assign has_socials = false
+        for block in section.blocks
+          if block.type == 'payment_badge'
+            assign has_badges = true
+          endif
+          if block.type == 'social_link'
+            assign has_socials = true
+          endif
+        endfor
+      -%}
+
+      {%- if has_badges -%}
+        <div class="elovira-footer__badges" role="group" aria-label="Moyens de paiement">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'payment_badge' and block.settings.label != blank -%}
+              <span class="elovira-footer__badge" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if has_socials -%}
+        <div class="elovira-footer__socials">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'social_link' and block.settings.url != blank -%}
+              <a
+                class="elovira-footer__social-link"
+                href="{{ block.settings.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="{{ block.settings.platform | capitalize }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- render 'elovira-icon', name: block.settings.platform, size: 18 -%}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign legal_links = section.blocks | where: 'type', 'legal_link' -%}
+      {%- if legal_links.size > 0 -%}
+        <nav class="elovira-footer__legal" aria-label="Mentions légales">
+          {%- for block in legal_links -%}
+            {%- if block.settings.label != blank -%}
+              <a class="elovira-footer__legal-link" href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      {%- if section.settings.show_copyright -%}
+        <p class="elovira-footer__copyright">
+          {%- if section.settings.copyright_text != blank -%}
+            {{ section.settings.copyright_text | escape }}
+          {%- else -%}
+            &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Footer",
+  "tag": "section",
+  "class": "elovira-footer-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "Show copyright line",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "info": "Leave empty to auto-generate from the shop name and current year."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Restez informée" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Offres et nouveautés, sans spam." },
+        { "type": "text", "id": "email_label", "label": "Email field label", "default": "Adresse e-mail" },
+        { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "vous@exemple.com" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "S'inscrire" },
+        { "type": "text", "id": "success_text", "label": "Success message", "default": "Merci ! Vous êtes inscrite." },
+        { "type": "text", "id": "error_text", "label": "Error message", "default": "Adresse e-mail invalide." }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Boutique" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    },
+    {
+      "type": "legal_link",
+      "name": "Legal link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Politique de confidentialité" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    },
+    {
+      "type": "payment_badge",
+      "name": "Payment badge",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Paiement à la livraison" }
+      ]
+    },
+    {
+      "type": "social_link",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "platform",
+          "label": "Platform",
+          "options": [
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "whatsapp", "label": "WhatsApp" },
+            { "value": "facebook", "label": "Facebook" }
+          ],
+          "default": "instagram"
+        },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Footer",
+      "blocks": [
+        { "type": "newsletter" },
+        { "type": "link_list", "settings": { "heading": "Boutique" } },
+        { "type": "link_list", "settings": { "heading": "Aide" } },
+        { "type": "payment_badge", "settings": { "label": "Paiement à la livraison" } },
+        { "type": "payment_badge", "settings": { "label": "VISA" } },
+        { "type": "payment_badge", "settings": { "label": "CMI" } },
+        { "type": "social_link", "settings": { "platform": "instagram" } },
+        { "type": "social_link", "settings": { "platform": "whatsapp" } },
+        { "type": "legal_link", "settings": { "label": "Politique de confidentialité" } },
+        { "type": "legal_link", "settings": { "label": "Conditions générales" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

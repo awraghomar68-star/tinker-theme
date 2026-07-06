@@ -1,0 +1,80 @@
+/* ============================================================
+   ELOVIRA — Featured product section (Phase 6)
+   DS: commerce/ProductSpotlight ("offer module"). Display-only
+   spotlight — links to the real PDP; no cart/AJAX logic here
+   (owned by a later cart-integration phase). Independent section.
+   ============================================================ */
+
+.elovira-featured-product {
+  background: var(--beauty-bg);
+}
+
+.elovira-featured-product.elovira-section--alt {
+  background: var(--beauty-beige);
+}
+
+.elovira-featured-product__inner {
+  max-width: var(--container-wide, 1280px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 16px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4, 32px);
+}
+
+@media (min-width: 990px) {
+  .elovira-featured-product__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gutter-desktop, 32px);
+    padding: 0 var(--gutter-desktop, 32px);
+    align-items: center;
+  }
+}
+
+.elovira-featured-product__media {
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--ph-gradient);
+}
+
+.elovira-featured-product__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.elovira-featured-product__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--beauty-gold-text);
+  margin: 0 0 var(--space-4px, 4px);
+}
+
+.elovira-featured-product__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  color: var(--beauty-text);
+  margin: 0 0 var(--space-2, 16px);
+}
+
+.elovira-featured-product__stars {
+  margin-bottom: var(--space-2, 16px);
+}
+
+.elovira-featured-product__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  line-height: var(--line-body);
+  color: var(--beauty-text-soft);
+  margin: 0 0 var(--space-3, 24px);
+}
+
+.elovira-featured-product__price {
+  margin-bottom: var(--space-4, 32px);
+  display: block;
+}

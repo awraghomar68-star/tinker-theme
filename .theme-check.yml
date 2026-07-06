@@ -1,0 +1,17 @@
+# Theme Check configuration
+# Inherits Shopify's default checks. The only override is a TEMPORARY,
+# explicitly-scoped OrphanedSnippet exemption for the ELOVIRA atom
+# library: these reusable snippets are built ahead of the sections that
+# consume them (phased build). Each entry is removed once a section
+# renders that atom, so genuine orphans elsewhere are still reported.
+extends: :default
+
+OrphanedSnippet:
+  enabled: true
+  ignore:
+    - snippets/elovira-button.liquid
+    - snippets/elovira-price.liquid
+    - snippets/elovira-stars.liquid
+    - snippets/elovira-badge.liquid
+    - snippets/elovira-field.liquid
+    - snippets/elovira-quantity-stepper.liquid

@@ -1,0 +1,98 @@
+{%- comment -%}
+  ELOVIRA — Hero section (Phase 6). DS: content/Hero.
+  Fully independent: own background/spacing, no assumption about
+  neighboring sections. Merchant-configurable via schema only —
+  no hardcoded copy, no invented product data.
+{%- endcomment -%}
+
+{{ 'elovira-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign inner_class = 'elovira-hero__inner'
+  if section.settings.image_position == 'left'
+    assign inner_class = inner_class | append: ' elovira-hero__inner--reverse'
+  endif
+-%}
+
+<div class="elovira elovira-hero" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="{{ inner_class }}">
+    <div class="elovira-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="elovira-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="elovira-hero__title">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="elovira-hero__subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+        <div class="elovira-hero__actions">
+          {%- if section.settings.button_label != blank -%}
+            {%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link | default: '#', variant: 'gold', full: false -%}
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            {%- render 'elovira-button', label: section.settings.button_label_2, href: section.settings.button_link_2 | default: '#', variant: 'ghost', full: false -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.image != blank -%}
+      <div class="elovira-hero__media">
+        <img
+          class="elovira-hero__img"
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          srcset="{{ section.settings.image | image_url: width: 600 }} 600w, {{ section.settings.image | image_url: width: 900 }} 900w, {{ section.settings.image | image_url: width: 1200 }} 1200w, {{ section.settings.image | image_url: width: 1600 }} 1600w"
+          sizes="(min-width: 990px) 50vw, 100vw"
+          alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Hero",
+  "tag": "section",
+  "class": "elovira-hero-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Révélez votre éclat naturel" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position (desktop)",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+    { "type": "text", "id": "button_label", "label": "Primary button label" },
+    { "type": "url", "id": "button_link", "label": "Primary button link" },
+    { "type": "text", "id": "button_label_2", "label": "Secondary button label" },
+    { "type": "url", "id": "button_link_2", "label": "Secondary button link" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Hero",
+      "settings": {
+        "eyebrow": "PACKS SOIN PREMIUM",
+        "heading": "Révélez votre éclat naturel",
+        "button_label": "Choisir mon pack",
+        "button_link": "#"
+      }
+    }
+  ]
+}
+{% endschema %}

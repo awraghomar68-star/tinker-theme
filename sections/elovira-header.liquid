@@ -1,0 +1,166 @@
+{%- comment -%}
+  ELOVIRA — Header section (Phase 4)
+  DS: components/navigation/Header.jsx (Header + NavDrawer).
+  Composition: sticky site header — menu button (mobile) / inline nav
+  (desktop ≥768px), centered serif wordmark, search + cart actions.
+
+  Reuses Phase 3 atoms (elovira-icon). Cart trigger is a real link to
+  the cart page (progressive; drawer restyle = Phase 8). Search trigger
+  is a real link to /search that JS upgrades into the DS overlay
+  (progressive enhancement — works without JS). Sticky = pure CSS.
+
+  A11y: 44px tap targets, labelled nav, aria-current on active link,
+  aria-expanded on toggles, focus ring on every interactive element.
+  Drawer + overlay behavior (focus trap, Escape, return-focus) lives in
+  elovira-header.js.
+{%- endcomment -%}
+
+{{ 'elovira-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'elovira-header.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign menu = section.settings.menu
+  assign brand = section.settings.brand_text | default: 'ELOVIRA'
+  assign has_menu = false
+  if menu != blank and linklists[menu].links.size > 0
+    assign has_menu = true
+  endif
+-%}
+
+<elovira-header class="elovira elovira-header{% if section.settings.sticky %} elovira-header--sticky{% endif %}">
+  <div class="elovira-header__bar">
+    <div class="elovira-header__group elovira-header__group--start">
+      {%- if has_menu -%}
+        <a
+          class="elovira-header__icon elovira-header__nav-toggle"
+          href="#elovira-nav-drawer"
+          data-nav-open
+          aria-label="Ouvrir le menu"
+          aria-controls="elovira-nav-drawer"
+          aria-expanded="false"
+        >
+          {%- render 'elovira-icon', name: 'menu', size: 18 -%}
+        </a>
+        <nav class="elovira-header__nav elovira-header__nav--inline" aria-label="Navigation principale">
+          {%- for link in linklists[menu].links -%}
+            <a
+              class="elovira-header__navlink{% if link.active or link.child_active %} is-active{% endif %}"
+              href="{{ link.url }}"
+              {% if link.active %}aria-current="page"{% endif %}
+            >{{ link.title | escape }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    </div>
+
+    <a class="elovira-header__brand" href="{{ routes.root_url }}" aria-label="{{ brand | escape }} — Accueil">
+      {%- if section.settings.logo != blank -%}
+        {{
+          section.settings.logo
+          | image_url: width: 400
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'elovira-header__logo',
+            alt: brand,
+            widths: '160, 240, 320, 400',
+            sizes: '160px'
+        }}
+      {%- else -%}
+        {{ brand | escape }}
+      {%- endif -%}
+    </a>
+
+    <div class="elovira-header__group elovira-header__group--end">
+      {%- if section.settings.show_search -%}
+        <a
+          class="elovira-header__icon"
+          href="{{ routes.search_url }}"
+          data-search-open
+          aria-label="Rechercher"
+          aria-controls="elovira-search-overlay"
+          aria-expanded="false"
+        >
+          {%- render 'elovira-icon', name: 'search', size: 20 -%}
+        </a>
+      {%- endif -%}
+      <a
+        class="elovira-header__cart{% if cart.item_count > 0 %} is-filled{% endif %}"
+        href="{{ routes.cart_url }}"
+        aria-label="Panier, {{ cart.item_count }} article{% if cart.item_count > 1 %}s{% endif %}"
+      >
+        <span class="elovira-header__cart-count" data-cart-count aria-hidden="true">({{ cart.item_count }})</span>
+      </a>
+    </div>
+  </div>
+</elovira-header>
+
+{%- if has_menu -%}
+  {%- render 'elovira-nav-drawer', menu: menu, brand: brand, footer_text: section.settings.drawer_footer -%}
+{%- endif -%}
+{%- if section.settings.show_search -%}
+  {%- render 'elovira-search-overlay', placeholder: section.settings.search_placeholder -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "ELOVIRA Header",
+  "tag": "section",
+  "class": "elovira-header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Optional. Leave empty to use the serif wordmark."
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Wordmark",
+      "default": "ELOVIRA"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Rechercher un produit…"
+    },
+    {
+      "type": "header",
+      "content": "Drawer"
+    },
+    {
+      "type": "text",
+      "id": "drawer_footer",
+      "label": "Drawer footer note",
+      "default": "Paiement à la livraison · Livraison 24-72h"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

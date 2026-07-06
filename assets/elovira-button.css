@@ -1,0 +1,105 @@
+/* ============================================================
+   ELOVIRA — Button atom styles. DS-exact (.beauty-btn).
+   Phase 3 · additive · owns its styles · DS tokens only.
+   ============================================================ */
+
+.elovira-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-10px, 10px);
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  min-height: 50px;
+  padding: var(--space-15px, 15px) var(--space-3, 24px);
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-decoration: none;
+  text-align: center;
+  border: 0;
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  transition:
+    transform .25s var(--spring, cubic-bezier(.34, 1.56, .64, 1)),
+    box-shadow .15s ease,
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
+}
+
+.elovira-button--inline {
+  width: auto;
+  max-width: none;
+  margin-inline: 0;
+}
+
+.elovira-button--sm {
+  min-height: 44px;
+  padding: var(--space-12px, 12px) var(--space-20px, 20px);
+  font-size: 14.5px;
+}
+
+.elovira-button__label { display: inline; }
+
+/* ---- Variants ---- */
+.elovira-button--gold {
+  background: var(--beauty-gold, #C9A24B);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.elovira-button--rose {
+  background: var(--beauty-rose, #8E4B5C);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.elovira-button--ghost {
+  background: transparent;
+  color: var(--beauty-text);
+  border: 1.5px solid var(--beauty-line);
+  box-shadow: none;
+}
+
+/* ---- States (hover/active) ---- */
+.elovira-button--gold:hover { background: var(--beauty-gold-hover, #b88f3e); }
+.elovira-button--rose:hover { background: var(--beauty-rose-hover, #7a3f4d); }
+.elovira-button--ghost:hover {
+  color: var(--beauty-gold);
+  border-color: var(--beauty-gold);
+}
+.elovira-button:not([disabled]):not([aria-busy="true"]):hover { transform: translateY(-1px); }
+.elovira-button:not([disabled]):not([aria-busy="true"]):active { transform: scale(.97); }
+
+.elovira-button[disabled],
+.elovira-button[aria-disabled="true"] {
+  opacity: var(--opacity-disabled, .45);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ---- Loading spinner ---- */
+.elovira-button__spinner {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: elovira-btn-spin .7s linear infinite;
+}
+@keyframes elovira-btn-spin { to { transform: rotate(360deg); } }
+
+.elovira-button:focus-visible {
+  outline: var(--focus-ring, 2px solid var(--beauty-gold));
+  outline-offset: var(--focus-offset, 3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-button { transition: none; }
+  .elovira-button:hover,
+  .elovira-button:active { transform: none; }
+  .elovira-button__spinner { animation-duration: 1.4s; }
+}

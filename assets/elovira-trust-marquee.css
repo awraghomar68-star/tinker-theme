@@ -1,0 +1,56 @@
+/* ============================================================
+   ELOVIRA — Trust marquee section (Phase 6)
+   DS: content/TrustMarquee. Continuous CSS-only scroll,
+   pauses under prefers-reduced-motion. Independent section.
+   ============================================================ */
+
+.elovira-trust-marquee {
+  background: var(--beauty-beige);
+  overflow: hidden;
+  border-top: 1px solid var(--beauty-line);
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-trust-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: elovira-marquee-scroll 26s linear infinite;
+}
+
+.elovira-trust-marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.elovira-trust-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2px, 8px);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  letter-spacing: var(--ls-mono-label);
+  text-transform: uppercase;
+  color: var(--beauty-text);
+  padding: var(--space-3, 24px) var(--space-4, 32px);
+  white-space: nowrap;
+}
+
+.elovira-trust-marquee__item .elovira-icon {
+  color: var(--beauty-gold-text);
+}
+
+@keyframes elovira-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-trust-marquee__track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+  .elovira-trust-marquee__group:nth-child(2) { display: none; }
+}

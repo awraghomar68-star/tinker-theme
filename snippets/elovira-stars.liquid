@@ -1,0 +1,40 @@
+{%- comment -%}
+  ELOVIRA — Stars atom (Phase 3). DS: gold star rating + optional label.
+  Single responsibility: render a 0–5 star rating.
+  Star glyphs are decorative (aria-hidden); the accessible rating is
+  carried by `aria_label` or the visible `label`.
+
+  Params:
+    rating     (number 0–5, default 5) — filled stars (rounded)
+    size       (px, default 15) — star glyph size
+    label      (string) — visible inline label (e.g. "4.9/5 · 1 240 avis")
+    aria_label (string) — accessible rating text (recommended)
+    id · class
+
+  Reusable across Home / PLP / PDP / Cart / Search. Owns elovira-stars.css.
+{%- endcomment -%}
+
+{{ 'elovira-stars.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign star_rating = rating | default: 5 | round
+  if star_rating > 5
+    assign star_rating = 5
+  endif
+  if star_rating < 0
+    assign star_rating = 0
+  endif
+  assign star_empty = 5 | minus: star_rating
+  assign star_size = size | default: 15
+  assign classes = 'elovira-stars'
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+-%}
+
+<span class="{{ classes }}"{% if id != blank %} id="{{ id }}"{% endif %}{% if aria_label != blank %} role="img" aria-label="{{ aria_label | escape }}"{% endif %}>
+  <span class="elovira-stars__glyphs" style="font-size:{{ star_size }}px"{% if aria_label != blank %} aria-hidden="true"{% endif %}>{% for i in (1..star_rating) %}★{% endfor %}<span class="elovira-stars_star_empty">{% for i in (1..star_empty) %}★{% endfor %}</span></span>
+  {%- if label != blank -%}
+    <span class="elovira-stars__label">{{ label }}</span>
+  {%- endif -%}
+</span>
