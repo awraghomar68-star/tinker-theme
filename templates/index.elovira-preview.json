@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "elovira_hero": {
+      "type": "elovira-hero",
+      "settings": {}
+    },
+    "elovira_trust_marquee": {
+      "type": "elovira-trust-marquee",
+      "blocks": {
+        "message_1": {
+          "type": "message",
+          "settings": { "icon": "truck", "text": "Livraison gratuite dès 50€" }
+        },
+        "message_2": {
+          "type": "message",
+          "settings": { "icon": "shield", "text": "Paiement 100% sécurisé" }
+        },
+        "message_3": {
+          "type": "message",
+          "settings": { "icon": "cash", "text": "Paiement à la livraison" }
+        },
+        "message_4": {
+          "type": "message",
+          "settings": { "icon": "sparkle", "text": "Fabrication artisanale" }
+        }
+      },
+      "block_order": ["message_1", "message_2", "message_3", "message_4"]
+    },
+    "elovira_featured_collection": {
+      "type": "elovira-featured-collection",
+      "settings": {}
+    },
+    "elovira_featured_product": {
+      "type": "elovira-featured-product",
+      "settings": {}
+    },
+    "elovira_before_after": {
+      "type": "elovira-before-after",
+      "settings": {}
+    },
+    "elovira_benefits": {
+      "type": "elovira-benefits",
+      "settings": {}
+    },
+    "elovira_reviews": {
+      "type": "elovira-reviews",
+      "settings": {}
+    },
+    "elovira_ugc_gallery": {
+      "type": "elovira-ugc-gallery",
+      "settings": {}
+    },
+    "elovira_faq": {
+      "type": "elovira-faq",
+      "settings": {}
+    },
+    "elovira_final_cta": {
+      "type": "elovira-final-cta",
+      "settings": {}
+    }
+  },
+  "order": [
+    "elovira_hero",
+    "elovira_trust_marquee",
+    "elovira_featured_collection",
+    "elovira_featured_product",
+    "elovira_before_after",
+    "elovira_benefits",
+    "elovira_reviews",
+    "elovira_ugc_gallery",
+    "elovira_faq",
+    "elovira_final_cta"
+  ]
+}
