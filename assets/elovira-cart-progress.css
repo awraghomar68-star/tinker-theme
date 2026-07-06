@@ -1,0 +1,40 @@
+/* ELOVIRA — Cart free-shipping progress bar (Phase 9). Scoped to
+   .elovira-cart-progress only. DS tokens only. */
+
+.elovira-cart-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background-color: var(--surface-alt);
+  border-radius: var(--radius-sm);
+}
+
+.elovira-cart-progress__message {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--text-body);
+}
+
+.elovira-cart-progress--complete .elovira-cart-progress__message {
+  color: var(--beauty-success);
+  font-weight: var(--fw-medium);
+}
+
+.elovira-cart-progress__track {
+  height: var(--space-4px);
+  border-radius: var(--radius-pill);
+  background-color: var(--border-line);
+  overflow: hidden;
+}
+
+.elovira-cart-progress__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  transition: width var(--ease-med);
+}
+
+.elovira-cart-progress--complete .elovira-cart-progress__fill {
+  background-color: var(--beauty-success);
+}

@@ -84,7 +84,7 @@
               data-product-id="{{ product.id }}"
               ref="cards[]"
             >
-              {% render 'elovira-product-card', product: product, image_loading: image_loading %}
+              {% render 'elovira-product-card', product: product, image_loading: image_loading, section_id: section.id, show_quick_add: section.settings.show_quick_add %}
             </li>
           {% endfor %}
         {% endcapture %}
@@ -180,6 +180,12 @@
       "step": 4,
       "default": 24,
       "visible_if": "{{ section.settings.enable_infinite_scroll == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show Quick Add on cards",
+      "default": false
     },
     {
       "type": "header",

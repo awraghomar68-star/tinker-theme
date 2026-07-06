@@ -11,6 +11,9 @@
     badge_tone   passed through to elovira-badge (default 'promo')
     image_loading 'lazy' (default) | 'eager' (first row / LCP)
     class
+    section_id     (string) — optional, caller's section.id, threaded into native quick-add for SRA scoping
+    show_quick_add (boolean) — optional, default false. Atom never reads theme
+                    settings itself; caller decides (e.g. show_quick_add: settings.quick_add)
 
   Reusable across Home / PLP / Search. Owns elovira-product-card.css.
 {%- endcomment -%}
@@ -23,6 +26,7 @@
     assign classes = classes | append: ' ' | append: class
   endif
   assign loading = image_loading | default: 'lazy'
+  assign show_quick_add = show_quick_add | default: false
 -%}
 
 <a class="{{ classes }}" href="{{ product.url }}">
@@ -43,6 +47,9 @@
       <span class="elovira-product-card__badge">
         {%- render 'elovira-badge', label: badge_label, tone: badge_tone -%}
       </span>
+    {%- endif -%}
+    {%- if show_quick_add -%}
+      {% render 'quick-add', product: product, section_id: section_id %}
     {%- endif -%}
   </span>
 

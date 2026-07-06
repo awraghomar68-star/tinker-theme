@@ -1,0 +1,150 @@
+{%- comment -%}
+  ELOVIRA — Cart recommendations (Phase 9). Same Section Rendering API
+  reuse pattern as elovira-product-recommendations.liquid (Phase 7):
+  product-recommendations.js + native fetch/hydrate contract, native
+  routes.product_recommendations_url. No custom fetch, no custom
+  recommendation engine. Only difference from the PDP version: the seed
+  product is the cart's first line item (cart has no single "current
+  product"), and the section hides itself once the cart is empty.
+{%- endcomment -%}
+
+{{ 'elovira-cart-recommendations.css' | asset_url | stylesheet_tag }}
+<script
+  src="{{ 'product-recommendations.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% liquid
+  assign heading = section.settings.heading
+  assign max_products = section.settings.max_products | default: 4
+  assign seed_product = cart.items.first.product
+%}
+
+{%- unless cart.empty? or seed_product == blank -%}
+  <product-recommendations
+    id="cart-recommendations-{{ section.id }}"
+    class="elovira elovira-cart-recommendations"
+    data-url="{{ routes.product_recommendations_url }}?limit={{ max_products }}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ seed_product.id }}"
+    data-intent="{{ section.settings.recommendation_type }}"
+    data-testid="elovira-cart-recommendations"
+    data-recommendations-performed="{{ recommendations.performed }}"
+    data-hydration-key="cart-recommendations-{{ section.id }}"
+    {{ section.shopify_attributes }}
+  >
+    <div
+      class="section elovira-cart-recommendations__section"
+      style="{% render 'spacing-style', settings: section.settings %}"
+    >
+      {% if heading != blank %}
+        <h2 class="elovira-cart-recommendations__heading">{{ heading }}</h2>
+      {% endif %}
+
+      {%- if recommendations.performed -%}
+        {% liquid
+          if recommendations.products_count == 0
+            assign products = null
+          else
+            assign products = recommendations.products
+          endif
+        %}
+
+        {% if products != blank %}
+          <div class="elovira-cart-recommendations__grid" data-testid="elovira-cart-recommendations-grid">
+            {% for product in products limit: max_products %}
+              {% render 'elovira-product-card', product: product, section_id: section.id, show_quick_add: section.settings.show_quick_add %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {%- else -%}
+        <div class="elovira-cart-recommendations__grid" data-testid="elovira-cart-recommendations-skeleton">
+          {% for i in (1..max_products) %}
+            <div
+              class="elovira-cart-recommendations__skeleton"
+              aria-label="{{ 'accessibility.loading_product_recommendations' | t }}"
+            ></div>
+          {% endfor %}
+        </div>
+      {%- endif -%}
+    </div>
+  </product-recommendations>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "ELOVIRA Cart Recs",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "recommendation_type",
+      "label": "t:settings.type",
+      "options": [
+        { "value": "related", "label": "t:options.related" },
+        { "value": "complementary", "label": "t:options.complementary" }
+      ],
+      "default": "complementary"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show Quick Add on cards",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "t:settings.product_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "ELOVIRA Cart Recs",
+      "category": "t:categories.products",
+      "settings": {
+        "recommendation_type": "complementary",
+        "heading": "You may also like",
+        "max_products": 4
+      }
+    }
+  ]
+}
+{% endschema %}

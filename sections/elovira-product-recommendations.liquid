@@ -60,7 +60,7 @@
       {% if products != blank %}
         <div class="elovira-recommendations__grid" data-testid="elovira-recommendations-grid">
           {% for product in products limit: max_products %}
-            {% render 'elovira-product-card', product: product %}
+            {% render 'elovira-product-card', product: product, section_id: section.id, show_quick_add: section.settings.show_quick_add %}
           {% endfor %}
         </div>
       {% endif %}
@@ -110,6 +110,12 @@
       "id": "heading",
       "label": "t:settings.heading",
       "default": "You may also like"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show Quick Add on cards",
+      "default": false
     },
     {
       "type": "range",

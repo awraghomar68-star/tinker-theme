@@ -1,0 +1,196 @@
+{%- comment -%}
+  ELOVIRA — Cart page (Phase 9). Composition wrapper around Horizon's
+  native main-cart architecture: same content_for 'block' composition,
+  same native block types (_cart-title / _cart-products / _cart-summary),
+  same cart-items-component ajax/hydration contract as main-cart.liquid.
+  Zero cart/ajax/checkout/discount/selling-plan/gift-card logic duplicated.
+  Presentation layer only: outer .elovira-cart wrapper for CSS var remap
+  (assets/elovira-cart.css) + an additive free-shipping progress bar
+  (elovira-cart-progress), which is safe to render here — unlike the
+  drawer, the cart page is normal page flow with no <dialog> top-layer
+  boundary, so the bar is genuinely visible.
+{%- endcomment -%}
+
+{{ 'elovira-cart.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign custom_color = false
+  if section.settings.background_color != blank or section.settings.text_color != blank
+    assign custom_color = true
+    render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, section_id: section.id
+  endif
+%}
+
+{% capture cart_page_more_blocks_content %}
+  <div class="cart-page__more-blocks">
+    {%- content_for 'blocks' -%}
+  </div>
+{% endcapture %}
+
+{% capture free_shipping_bar %}
+  {%- if section.settings.show_free_shipping_bar -%}
+    {% render 'elovira-cart-progress',
+      threshold: section.settings.free_shipping_threshold,
+      remaining_text: section.settings.free_shipping_remaining_text,
+      unlocked_text: section.settings.free_shipping_unlocked_text
+    %}
+  {%- endif -%}
+{% endcapture %}
+
+{% capture cart_items_children %}
+  <template id="empty-cart-template">
+    <div class="section-background{% if custom_color %} color-custom-{{ section.id }}{% endif %}"></div>
+    <div
+      class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}"
+    >
+      <div
+        class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
+        style="{% render 'spacing-style', settings: section.settings %}"
+      >
+        <div class="cart-page__title">
+          {%- content_for 'block', id: 'cart-page-title', type: '_cart-title', force_empty: true %}
+        </div>
+        <div class="cart-page__items">
+          {%- content_for 'block', id: 'cart-page-items', type: '_cart-products', force_empty: true %}
+        </div>
+        {{ cart_page_more_blocks_content }}
+      </div>
+    </div>
+  </template>
+
+  <div class="section-background{% if custom_color %} color-custom-{{ section.id }}{% endif %}"></div>
+  <div
+    class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}"
+  >
+    <div
+      class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
+      style="{% render 'spacing-style', settings: section.settings %}"
+    >
+      <div class="cart-page__title">
+        {%- content_for 'block', id: 'cart-page-title', type: '_cart-title' %}
+      </div>
+
+      {%- unless cart.empty? -%}
+        {{ free_shipping_bar }}
+      {%- endunless -%}
+
+      <div class="cart-page__items">
+        {%- content_for 'block', id: 'cart-page-items', type: '_cart-products' %}
+      </div>
+
+      {%- unless cart.empty? -%}
+        <div class="cart-page__summary">
+          {%- content_for 'block', id: 'cart-page-summary', type: '_cart-summary' -%}
+        </div>
+      {%- endunless -%}
+
+      {{ cart_page_more_blocks_content }}
+    </div>
+  </div>
+{% endcapture %}
+
+<div class="elovira elovira-cart" {{ section.shopify_attributes }}>
+  {% render 'cart-items-component', children: cart_items_children, section_id: section.id %}
+</div>
+
+{% stylesheet %}
+  .cart-page__more-blocks {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ELOVIRA Cart",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "text" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "button" },
+    { "type": "video" },
+    { "type": "group" },
+    { "type": "spacer" }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "Free shipping bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_free_shipping_bar",
+      "label": "Show free shipping progress bar",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold (shop currency, e.g. 75)",
+      "default": 75
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_remaining_text",
+      "label": "Remaining copy (use {{ amount }} as placeholder)",
+      "default": "Add {{ amount }} more for free shipping"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_unlocked_text",
+      "label": "Unlocked copy",
+      "default": "You've unlocked free shipping!"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

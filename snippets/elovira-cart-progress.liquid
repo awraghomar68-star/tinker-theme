@@ -1,0 +1,56 @@
+{%- comment -%}
+  ELOVIRA — Free shipping progress (Phase 9). DS: CartProgress.
+  Pure presentation + pure Liquid math on cart.total_price (Shopify's own
+  already-discounted cart total — nothing recomputed). No shipping-rate
+  logic, no discount logic: just a percentage bar toward a merchant
+  threshold. Caller passes the threshold; this snippet never reads
+  settings/section objects itself (atom stays presentation-only).
+
+  Params:
+    threshold      (number, required) — shop-currency major unit, e.g. 75 for $75
+    remaining_text (string, optional) — merchant copy, use {{ amount }} as placeholder
+    unlocked_text  (string, optional) — merchant copy shown once threshold is met
+    class          (string, optional)
+{%- endcomment -%}
+
+{{ 'elovira-cart-progress.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign threshold_cents = threshold | times: 100
+-%}
+
+{%- if threshold_cents > 0 -%}
+  {%- liquid
+    assign remaining_cents = threshold_cents | minus: cart.total_price
+    if remaining_cents < 0
+      assign remaining_cents = 0
+    endif
+    assign percent = cart.total_price | times: 100 | divided_by: threshold_cents
+    if percent > 100
+      assign percent = 100
+    endif
+    assign qualifies = false
+    if cart.total_price >= threshold_cents
+      assign qualifies = true
+    endif
+    assign remaining_amount = remaining_cents | money
+    assign remaining_copy = remaining_text | default: 'Add {{ amount }} more for free shipping'
+    assign remaining_copy = remaining_copy | replace: '{{ amount }}', remaining_amount
+    assign unlocked_copy = unlocked_text | default: "You've unlocked free shipping!"
+  -%}
+  <div
+    class="elovira-cart-progress{% if class != blank %} {{ class }}{% endif %}{% if qualifies %} elovira-cart-progress--complete{% endif %}"
+    data-testid="elovira-cart-progress"
+  >
+    <p class="elovira-cart-progress__message">
+      {%- if qualifies -%}
+        {{ unlocked_copy }}
+      {%- else -%}
+        {{ remaining_copy }}
+      {%- endif -%}
+    </p>
+    <div class="elovira-cart-progress__track" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+      <div class="elovira-cart-progress__fill" style="width: {{ percent }}%;"></div>
+    </div>
+  </div>
+{%- endif -%}

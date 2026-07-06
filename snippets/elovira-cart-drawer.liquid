@@ -1,0 +1,27 @@
+{%- comment -%}
+  ELOVIRA — Cart Drawer (Phase 9). Snippet, not a section — cart-drawer
+  is natively rendered as a bare snippet in theme.liquid (not a section
+  group), so no Theme-Editor section is introduced here. Pure composition
+  wrapper around Horizon's native cart-drawer snippet (cart-drawer.js,
+  cart-drawer-component, cart-products, cart-summary, cart-items-component,
+  theme-drawer). render_wrapper stays true — the native
+  shopify-section-cart-drawer-section wrapper div (used by ajax cart
+  refresh targeting) renders byte-identical, just nested one level inside
+  this presentation-only wrapper. Zero cart/ajax/drawer/checkout logic
+  duplicated — reskins via CSS var remap scoped to .elovira-cart-drawer
+  (assets/elovira-cart-drawer.css).
+
+  Known limitation (flagged, not silently worked around): the free-shipping
+  progress bar (elovira-cart-progress) cannot be injected *inside* the
+  native <dialog> here — anything rendered as a sibling of cart-drawer's
+  output sits outside the dialog's top-layer and would be invisible while
+  the drawer is open. The progress bar is therefore only wired into the
+  Cart Page (elovira-cart section), not this drawer. See Phase 9 report,
+  section "Open Items".
+{%- endcomment -%}
+
+{{ 'elovira-cart-drawer.css' | asset_url | stylesheet_tag }}
+
+<div class="elovira elovira-cart-drawer">
+  {% render 'cart-drawer', render_wrapper: true %}
+</div>

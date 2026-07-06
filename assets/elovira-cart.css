@@ -1,0 +1,66 @@
+/* ELOVIRA — Cart page reskin (Phase 9). Scope: .elovira-cart only.
+   Native main-cart.liquid's own section-level grid stylesheet does not
+   ship when this alternate section is used instead, so the grid layout
+   (positioning only — no cart/ajax/discount logic) is re-declared here
+   under DS tokens, same "wrap native, restyle via scoped CSS" pattern as
+   Phase 7 (PDP) / Phase 8 (PLP). */
+
+.elovira-cart .cart-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-6);
+}
+
+.elovira-cart .cart-page--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.elovira-cart .cart-page__title + .elovira-cart-progress {
+  margin-block-start: var(--space-2);
+}
+
+.elovira-cart .elovira-cart-progress + .cart-page__items,
+.elovira-cart .cart-page__title + .cart-page__items {
+  margin-block-start: var(--space-2);
+}
+
+.elovira-cart .cart-page__summary {
+  padding-top: var(--space-3);
+}
+
+@media screen and (min-width: 750px) {
+  .elovira-cart .cart-page {
+    grid-template-columns: 1fr min(50vw, 380px);
+    grid-template-rows: min-content min-content 1fr;
+  }
+
+  .elovira-cart .cart-page__summary {
+    display: grid;
+    height: 100%;
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: stretch;
+    grid-template-rows: subgrid;
+    padding-top: 0;
+    position: relative;
+  }
+}
+
+.elovira-cart .theme-drawer__title,
+.elovira-cart h1.cart-title,
+.elovira-cart .cart-title {
+  font-family: var(--font-display);
+  color: var(--text-body);
+}
+
+.elovira-cart .cart-page__summary {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-sm);
+}
+
+.elovira-cart #checkout {
+  border-radius: var(--radius-pill);
+}

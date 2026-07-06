@@ -40,7 +40,7 @@
               assign loading = 'eager'
             endif
           -%}
-          {%- render 'elovira-product-card', product: product, image_loading: loading -%}
+          {%- render 'elovira-product-card', product: product, image_loading: loading, section_id: section.id, show_quick_add: section.settings.show_quick_add -%}
         {%- endfor -%}
       </div>
     {%- else -%}
@@ -60,6 +60,7 @@
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "product_limit", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 8 },
     { "type": "checkbox", "id": "show_view_all", "label": "Show \"view all\" button", "default": true },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show Quick Add on cards", "default": false },
     { "type": "text", "id": "view_all_label", "label": "\"View all\" label", "default": "Voir tout" },
     { "type": "text", "id": "empty_text", "label": "Empty collection text", "default": "Aucun produit à afficher pour le moment." },
     { "type": "checkbox", "id": "alt_bg", "label": "Alternate background", "default": false },

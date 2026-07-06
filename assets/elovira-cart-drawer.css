@@ -1,0 +1,43 @@
+/* ELOVIRA — Cart Drawer reskin (Phase 9).
+   Scope: .elovira-cart-drawer only. CSS var remap onto Horizon's own
+   native classes (cart-drawer__*, theme-drawer__*) — no selectors outside
+   this scope, no structural overrides, no duplicated drawer CSS. */
+
+.elovira-cart-drawer {
+  --cart-drawer-padding: var(--space-3);
+}
+
+.elovira-cart-drawer .theme-drawer__dialog {
+  border-radius: var(--radius) 0 0 var(--radius);
+  background-color: var(--surface-page);
+}
+
+.elovira-cart-drawer .theme-drawer__title,
+.elovira-cart-drawer .theme-drawer__header {
+  font-family: var(--font-display);
+  color: var(--text-body);
+}
+
+.elovira-cart-drawer .cart-drawer__content {
+  background-color: var(--surface-page);
+}
+
+.elovira-cart-drawer .cart-drawer__items .cart-items__table-row {
+  border-bottom-color: var(--border-line);
+}
+
+.elovira-cart-drawer .cart-drawer__summary {
+  background-color: var(--surface-card);
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.elovira-cart-drawer .theme-drawer__badge {
+  background-color: var(--cta);
+  color: var(--beauty-white);
+}
+
+.elovira-cart-drawer .quick-add__button--add,
+.elovira-cart-drawer #checkout {
+  border-radius: var(--radius-pill);
+}
