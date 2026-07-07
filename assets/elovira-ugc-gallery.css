@@ -25,14 +25,15 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--beauty-gold);
-  margin: 0 0 var(--space-4px, 4px);
+  margin: 0 0 var(--space-12px, 12px);
 }
 
 .elovira-ugc-gallery__title {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   color: var(--beauty-white);
-  margin: 0 0 var(--space-4, 32px);
+  margin: 0 0 var(--space-5, 40px);
+  text-wrap: balance;
 }
 
 .elovira-ugc-gallery__grid {
@@ -58,6 +59,17 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform .7s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)), opacity .3s ease;
+}
+
+.elovira-ugc-gallery__item:hover .elovira-ugc-gallery__img {
+  transform: scale(1.04);
+  opacity: .92;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-ugc-gallery__img { transition: none; }
+  .elovira-ugc-gallery__item:hover .elovira-ugc-gallery__img { transform: none; opacity: 1; }
 }
 
 .elovira-ugc-gallery__item:focus-visible {

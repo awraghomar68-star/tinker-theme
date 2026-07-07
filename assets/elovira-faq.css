@@ -42,6 +42,11 @@
   font-size: var(--text-body-size);
   font-weight: var(--fw-medium);
   color: var(--beauty-text);
+  transition: color .2s ease;
+}
+
+.elovira-faq__item summary:hover {
+  color: var(--beauty-gold-text);
 }
 
 .elovira-faq__item summary::-webkit-details-marker { display: none; }
@@ -64,11 +69,22 @@
 .elovira-faq__answer {
   font-family: var(--font-body);
   font-size: var(--text-body-size);
-  line-height: var(--line-body);
+  line-height: 1.65;
   color: var(--beauty-text-soft);
   margin: 0 0 var(--space-3, 24px);
+  max-width: 60ch;
+}
+
+.elovira-faq__item[open] .elovira-faq__answer {
+  animation: elovira-faq-reveal .4s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)) both;
+}
+
+@keyframes elovira-faq-reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .elovira-faq__icon { transition: none; }
+  .elovira-faq__item[open] .elovira-faq__answer { animation: none; }
 }

@@ -89,6 +89,11 @@ html.elovira-scroll-lock { overflow: hidden; }
   color: var(--beauty-text);
   cursor: pointer;
   text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+
+.elovira-header__icon:hover {
+  background: var(--beauty-beige);
 }
 
 /* Cart trigger — DS mono "(n)" count, gold when filled */
@@ -115,11 +120,15 @@ html.elovira-scroll-lock { overflow: hidden; }
   font-family: var(--font-body);
   font-size: 13.5px;
   font-weight: var(--fw-semibold);
+  letter-spacing: .02em;
   color: var(--beauty-text);
   text-decoration: none;
   padding: var(--space-10px, 10px) var(--space-12px, 12px);
   border-radius: var(--radius-pill);
+  transition: background .2s ease, color .2s ease;
 }
+
+.elovira-header__navlink:hover { background: var(--beauty-beige); }
 
 .elovira-header__navlink.is-active { color: var(--beauty-gold-text); }
 
@@ -130,22 +139,11 @@ html.elovira-scroll-lock { overflow: hidden; }
 
 /* ============================================================
    Nav drawer (mobile) — DS NavDrawer
+   Native <dialog> (Phase 14B): UA default is display:none while
+   closed, so [open] / .dialog-closing (set by assets/dialog.js
+   during the close animation) drive visibility instead of a
+   custom .is-open class. ::backdrop replaces the old scrim div.
    ============================================================ */
-.elovira-nav-drawer__scrim {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-drawer, 70);
-  background: var(--overlay-scrim);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--ease-med);
-}
-
-.elovira-nav-drawer__scrim.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 .elovira-nav-drawer {
   position: fixed;
   top: 0;
@@ -155,27 +153,37 @@ html.elovira-scroll-lock { overflow: hidden; }
   z-index: calc(var(--z-drawer, 70) + 1);
   background: var(--beauty-bg);
   box-shadow: var(--shadow-soft);
-  display: flex;
   flex-direction: column;
   padding: 0 var(--space-20px, 20px) calc(var(--space-20px, 20px) + env(safe-area-inset-bottom));
+  margin: 0;
+  border: 0;
+  max-width: none;
+  max-height: none;
   transform: translateX(-105%);
-  visibility: hidden;
-  transition: transform .3s ease, visibility 0s linear .3s;
+  transition: transform .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
 }
 
-.elovira-nav-drawer.is-open {
+.elovira-nav-drawer[open] {
+  display: flex;
   transform: translateX(0);
-  visibility: visible;
-  transition: transform .3s ease;
+}
+
+.elovira-nav-drawer.dialog-closing {
+  transform: translateX(-105%);
+}
+
+.elovira-nav-drawer::backdrop {
+  background: var(--overlay-scrim);
 }
 
 /* No-JS fallback: the menu trigger is <a href="#elovira-nav-drawer">, so
    :target reveals the drawer when JavaScript is unavailable. elovira-header.js
-   sets .elovira-js on <html>, which disables this branch so the JS drawer
-   experience is unaffected. */
+   sets .elovira-js on <html>, which disables this branch so the JS dialog
+   experience is unaffected. Author rules override the dialog's UA default
+   display:none, so the fallback keeps working on the native element. */
 :root:not(.elovira-js) .elovira-nav-drawer:target {
+  display: flex;
   transform: translateX(0);
-  visibility: visible;
 }
 
 .elovira-nav-drawer__head {
@@ -206,6 +214,12 @@ html.elovira-scroll-lock { overflow: hidden; }
   text-decoration: none;
   padding: var(--space-14px, 14px) 0;
   border-bottom: 1px solid var(--beauty-line);
+  transition: color .2s ease, padding-left .3s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
+}
+
+.elovira-nav-drawer__link:hover {
+  color: var(--beauty-gold-text);
+  padding-left: var(--space-6px, 6px);
 }
 
 .elovira-nav-drawer__foot {
@@ -218,23 +232,39 @@ html.elovira-scroll-lock { overflow: hidden; }
 
 /* ============================================================
    Search overlay — DS SearchOverlay
+   Native <dialog> (Phase 14B): [open] / .dialog-closing (assets/
+   dialog.js) drive visibility instead of a custom .is-open class.
    ============================================================ */
 .elovira-search {
   position: fixed;
   inset: 0;
   z-index: var(--z-modal, 90);
   background: var(--beauty-bg);
-  display: flex;
   flex-direction: column;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  max-width: none;
+  max-height: none;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--ease-med), visibility 0s linear var(--ease-med);
+  transform: translateY(-6px);
+  transition:
+    opacity .3s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)),
+    transform .3s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
 }
 
-.elovira-search.is-open {
+.elovira-search[open] {
+  display: flex;
   opacity: 1;
-  visibility: visible;
-  transition: opacity var(--ease-med);
+  transform: none;
+}
+
+.elovira-search.dialog-closing {
+  opacity: 0;
+}
+
+.elovira-search::backdrop {
+  background: transparent;
 }
 
 .elovira-search__bar {
@@ -291,6 +321,16 @@ html.elovira-scroll-lock { overflow: hidden; }
   font-size: 14px;
   color: var(--beauty-text-soft);
   margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-nav-drawer,
+  .elovira-search,
+  .elovira-header__icon,
+  .elovira-header__navlink,
+  .elovira-nav-drawer__link { transition: none; }
+  .elovira-search { transform: none; }
+  .elovira-nav-drawer__link:hover { padding-left: 0; }
 }
 
 /* ---- Focus ring (WCAG 2.4.7) — every interactive element ---- */

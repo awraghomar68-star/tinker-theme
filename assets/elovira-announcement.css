@@ -36,7 +36,7 @@
 }
 
 .elovira-announce__msg--anim {
-  animation: elovira-fade-up .4s ease;
+  animation: elovira-fade-up .5s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
 }
 
 .elovira-announce__link {

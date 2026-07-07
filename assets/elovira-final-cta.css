@@ -21,22 +21,24 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--beauty-gold-text);
-  margin: 0 0 var(--space-4px, 4px);
+  margin: 0 0 var(--space-12px, 12px);
 }
 
 .elovira-final-cta__title {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   color: var(--beauty-text);
-  margin: 0 0 var(--space-2, 16px);
+  margin: 0 0 var(--space-20px, 20px);
+  text-wrap: balance;
 }
 
 .elovira-final-cta__text {
   font-family: var(--font-body);
   font-size: var(--text-lead);
-  line-height: var(--line-body);
+  line-height: 1.65;
   color: var(--beauty-text-soft);
-  margin: 0 0 var(--space-4, 32px);
+  margin: 0 auto var(--space-4, 32px);
+  max-width: 46ch;
 }
 
 .elovira-final-cta__actions {

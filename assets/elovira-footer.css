@@ -17,6 +17,13 @@
   padding: var(--space-6, 48px) var(--space-2, 16px) var(--space-3, 24px);
 }
 
+@media (min-width: 768px) {
+  .elovira-footer__inner {
+    padding-top: var(--space-9, 72px);
+    padding-bottom: var(--space-4, 32px);
+  }
+}
+
 /* ---- Top row: newsletter + link columns ---- */
 .elovira-footer__top {
   display: grid;
@@ -33,10 +40,11 @@
 
 .elovira-footer__col-heading {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: var(--fw-regular);
+  letter-spacing: .01em;
   color: var(--beauty-text);
-  margin: 0 0 var(--space-2, 16px);
+  margin: 0 0 var(--space-18px, 18px);
 }
 
 /* ---- Link columns ---- */
@@ -54,6 +62,16 @@
   font-size: 13.5px;
   color: var(--beauty-text-soft);
   text-decoration: none;
+  transition: color .2s ease;
+}
+
+.elovira-footer__nav-link:hover,
+.elovira-footer__legal-link:hover {
+  color: var(--beauty-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--hairline-gold, rgba(201, 162, 75, .28));
 }
 
 /* ---- Newsletter ---- */
@@ -110,6 +128,7 @@
   padding: var(--space-6px, 6px) var(--space-12px, 12px);
   border-radius: var(--radius-pill);
   background: var(--beauty-bg);
+  border: 1px solid var(--beauty-line);
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: var(--fw-medium);
@@ -130,6 +149,12 @@
   border-radius: var(--radius-pill);
   color: var(--beauty-text);
   text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+
+.elovira-footer__social-link:hover {
+  background: var(--beauty-bg);
+  color: var(--beauty-gold-text);
 }
 
 .elovira-footer__legal {

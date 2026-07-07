@@ -29,14 +29,15 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--beauty-gold-text);
-  margin: 0 0 var(--space-4px, 4px);
+  margin: 0 0 var(--space-12px, 12px);
 }
 
 .elovira-reviews__title {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   color: var(--beauty-text);
-  margin: 0 0 var(--space-4, 32px);
+  margin: 0 0 var(--space-5, 40px);
+  text-wrap: balance;
 }
 
 .elovira-reviews__grid {
@@ -53,8 +54,19 @@
 .elovira-reviews__card {
   background: var(--beauty-white);
   border-radius: var(--radius);
-  padding: var(--space-3, 24px);
-  box-shadow: var(--shadow-soft);
+  padding: var(--space-4, 32px) var(--space-4, 32px) var(--space-3, 24px);
+  box-shadow: var(--shadow-card, var(--shadow-soft));
+  border: 1px solid rgba(43, 35, 32, .04);
+  display: flex;
+  flex-direction: column;
+  transition:
+    box-shadow .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)),
+    transform .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
+}
+
+.elovira-reviews__card:hover {
+  box-shadow: var(--shadow-hover, var(--shadow-soft));
+  transform: translateY(-2px);
 }
 
 .elovira-reviews__stars { margin-bottom: var(--space-2, 16px); }
@@ -63,14 +75,22 @@
   font-family: var(--font-display);
   font-style: italic;
   font-size: var(--text-h3);
-  line-height: var(--lh-tight);
+  line-height: 1.4;
   color: var(--beauty-text);
-  margin: 0 0 var(--space-2, 16px);
+  margin: 0 0 var(--space-20px, 20px);
+  hanging-punctuation: first;
 }
 
 .elovira-reviews__author {
   font-family: var(--font-body);
   font-size: var(--text-small);
+  letter-spacing: .02em;
   color: var(--beauty-text-soft);
-  margin: 0;
+  margin: auto 0 0;
+  padding-top: var(--space-2px, 2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-reviews__card { transition: none; }
+  .elovira-reviews__card:hover { transform: none; }
 }

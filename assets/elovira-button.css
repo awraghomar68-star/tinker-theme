@@ -24,11 +24,11 @@
   border-radius: var(--radius-pill, 999px);
   cursor: pointer;
   transition:
-    transform .25s var(--spring, cubic-bezier(.34, 1.56, .64, 1)),
-    box-shadow .15s ease,
-    background .15s ease,
-    color .15s ease,
-    border-color .15s ease;
+    transform .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)),
+    box-shadow .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1)),
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
 
 .elovira-button--inline {
@@ -64,14 +64,24 @@
 }
 
 /* ---- States (hover/active) ---- */
-.elovira-button--gold:hover { background: var(--beauty-gold-hover, #b88f3e); }
-.elovira-button--rose:hover { background: var(--beauty-rose-hover, #7a3f4d); }
+.elovira-button--gold:hover {
+  background: var(--beauty-gold-hover, #b88f3e);
+  box-shadow: var(--shadow-hover, var(--shadow-soft));
+}
+.elovira-button--rose:hover {
+  background: var(--beauty-rose-hover, #7a3f4d);
+  box-shadow: var(--shadow-cta, var(--shadow-soft));
+}
 .elovira-button--ghost:hover {
-  color: var(--beauty-gold);
+  color: var(--beauty-gold-text);
   border-color: var(--beauty-gold);
+  background: rgba(201, 162, 75, .06);
 }
 .elovira-button:not([disabled]):not([aria-busy="true"]):hover { transform: translateY(-1px); }
-.elovira-button:not([disabled]):not([aria-busy="true"]):active { transform: scale(.97); }
+.elovira-button:not([disabled]):not([aria-busy="true"]):active {
+  transform: translateY(0) scale(.985);
+  transition-duration: .1s;
+}
 
 .elovira-button[disabled],
 .elovira-button[aria-disabled="true"] {

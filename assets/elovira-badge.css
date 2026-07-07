@@ -13,13 +13,16 @@
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .06em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   line-height: 1;
-  padding: var(--space-5px, 5px) var(--space-11px, 11px);
+  padding: var(--space-6px, 6px) var(--space-12px, 12px);
   border-radius: var(--radius-pill, 999px);
   color: #fff;
   white-space: nowrap;
+  /* Badges usually sit on photography — a whisper of shadow
+     seats them without reading as a sticker. */
+  box-shadow: 0 1px 4px rgba(43, 35, 32, .14);
 }
 
 .elovira-badge--promo { background: var(--beauty-rosegold, #B76E79); }

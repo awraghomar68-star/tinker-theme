@@ -18,6 +18,18 @@
   overflow: hidden;
   background: var(--ph-gradient);
   margin-bottom: var(--space-2, 16px);
+  box-shadow: var(--shadow-card, var(--shadow-soft));
+  transition: box-shadow .45s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
+}
+
+/* Hairline keyline keeps pale packshots from bleeding into the page. */
+.elovira-product-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(43, 35, 32, .05);
+  pointer-events: none;
 }
 
 .elovira-product-card__img {
@@ -25,6 +37,21 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform .7s var(--ease-luxe, cubic-bezier(.22, 1, .36, 1));
+}
+
+.elovira-product-card:hover .elovira-product-card__media {
+  box-shadow: var(--shadow-hover, var(--shadow-soft));
+}
+
+.elovira-product-card:hover .elovira-product-card__img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elovira-product-card__media,
+  .elovira-product-card__img { transition: none; }
+  .elovira-product-card:hover .elovira-product-card__img { transform: none; }
 }
 
 .elovira-product-card__badge {

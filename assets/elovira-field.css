@@ -29,12 +29,18 @@
   border-radius: var(--radius-sm, 14px);
   outline: none;
   box-sizing: border-box;
-  transition: border-color .15s ease;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
 }
 .elovira-field__control::placeholder { color: var(--beauty-text-soft); }
 
+.elovira-field__control:hover:not(:focus) {
+  border-color: rgba(43, 35, 32, .22);
+}
+
 .elovira-field__control:focus {
   border-color: var(--beauty-gold);
+  background: var(--beauty-white);
+  box-shadow: 0 0 0 3px rgba(201, 162, 75, .12);
 }
 .elovira-field__control:focus-visible {
   outline: var(--focus-ring, 2px solid var(--beauty-gold));
