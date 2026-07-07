@@ -1,0 +1,140 @@
+{%- comment -%}
+  ELOVIRA — Article page (Phase 12).
+  Composition wrapper around Horizon's native main-blog-post section.
+  Article rendering, comments, comment form, pagination, related
+  articles, breadcrumbs, structured data and URL routing are all
+  Horizon's own — zero duplication. Title/details/image/content
+  reuse the exact native theme blocks (_blog-post-title,
+  _blog-post-info-text, _blog-post-image, _blog-post-content) via
+  content_for 'blocks', same as main-blog-post; only the outer
+  layout + comments markup is ELOVIRA-scoped presentation.
+{%- endcomment -%}
+
+{{ 'elovira-article.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section elovira elovira-article{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="elovira-article"
+>
+  <nav class="elovira-article__breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ blog.url }}">{{ blog.title }}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ article.title }}</span>
+  </nav>
+
+  <article class="elovira-article__body">
+    {% content_for 'blocks' %}
+  </article>
+
+  {%- if blog.comments_enabled? -%}
+    <div class="elovira-article__comments">
+      <h2 class="elovira-article__comments-heading">
+        {{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}
+      </h2>
+
+      <div class="elovira-article__comments-list">
+        {% paginate article.comments by 10 %}
+          {%- for comment in article.comments -%}
+            <div class="elovira-article__comment">
+              {{ comment.content }}
+              <div class="elovira-article__comment-author">
+                <span>{{- comment.author -}}</span>
+                <span>{{- 'blogs.article.comment_author_separator' | t -}}</span>
+                <span>{{- comment.created_at | time_tag: format: 'date' -}}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+
+          <div class="elovira-article__comments-pagination">
+            {{- paginate | default_pagination -}}
+          </div>
+        {% endpaginate %}
+      </div>
+
+      {%- render 'blog-comment-form', article: article, section_id: section.id -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": {{ shop.url | append: routes.root_url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ shop.url | append: blog.url | json }} },
+      { "@type": "ListItem", "position": 3, "name": {{ article.title | json }}, "item": {{ shop.url | append: article.url | json }} }
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "ELOVIRA Article",
+  "blocks": [
+    {
+      "type": "_blog-post-title"
+    },
+    {
+      "type": "_blog-post-info-text"
+    },
+    {
+      "type": "_blog-post-featured-image"
+    },
+    {
+      "type": "_blog-post-content"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

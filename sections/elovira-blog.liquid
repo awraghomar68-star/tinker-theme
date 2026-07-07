@@ -1,0 +1,114 @@
+{%- comment -%}
+  ELOVIRA — Blog / article list (Phase 12).
+  Composition wrapper around Horizon's native blog architecture.
+  Native `blog.articles` object, pagination, tags, search and URL
+  routing are all reused untouched — zero business-logic
+  duplication. Only the card-level markup differs: renders
+  elovira-blog-post-card instead of the native _blog-post-card
+  theme block, matching the Phase 8 PLP pattern (elovira-product-card
+  swap over results-list).
+{%- endcomment -%}
+
+{{ 'elovira-blog.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section elovira elovira-blog{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="elovira-blog"
+>
+  {%- if section.settings.show_title -%}
+    <h1 class="elovira-blog__title">{{ blog.title }}</h1>
+  {%- endif -%}
+
+  {% paginate blog.articles by section.settings.articles_per_page %}
+    <div class="elovira-blog__grid" data-testid="elovira-blog-grid">
+      {%- for article in blog.articles -%}
+        {%- liquid
+          assign is_hero = false
+          assign image_loading = 'lazy'
+          if forloop.index == 1 and paginate.current_page == 1
+            assign is_hero = true
+          endif
+          if forloop.index0 == 0
+            assign image_loading = 'eager'
+          endif
+        -%}
+        <div class="elovira-blog__item{% if is_hero %} elovira-blog__item--hero{% endif %}">
+          {%- render 'elovira-blog-post-card', article: article, image_loading: image_loading, horizontal: is_hero -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <div class="elovira-blog__pagination">
+        {{ paginate | default_pagination }}
+      </div>
+    {%- endif -%}
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "ELOVIRA Blog",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show blog title",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

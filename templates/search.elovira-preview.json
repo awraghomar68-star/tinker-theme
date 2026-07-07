@@ -1,0 +1,89 @@
+{
+  "sections": {
+    "search": {
+      "type": "search-header",
+      "blocks": {
+        "heading": {
+          "type": "_heading",
+          "static": true,
+          "settings": {
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "read_only": true,
+            "alignment": "left",
+            "show_alignment": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "search": {
+          "type": "_search-input",
+          "static": true,
+          "settings": {
+            "width": "custom",
+            "custom_width": 50
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "alignment": "flex-start",
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 40,
+        "padding-block-end": 0
+      }
+    },
+    "main": {
+      "type": "elovira-search",
+      "blocks": {
+        "filters": {
+          "type": "filters",
+          "static": true,
+          "settings": {
+            "enable_filtering": true,
+            "filter_style": "horizontal",
+            "filter_width": "centered",
+            "text_label_case": "default",
+            "show_swatch_label": false,
+            "show_filter_label": false,
+            "enable_sorting": true,
+            "enable_grid_density": true,
+            "padding-block-start": 8,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0,
+            "facets_margin_bottom": 8,
+            "facets_margin_right": 20
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [],
+      "settings": {
+        "layout_type": "grid",
+        "product_card_size": "medium",
+        "mobile_product_card_size": "small",
+        "product_grid_width": "centered",
+        "full_width_on_mobile": true,
+        "columns_gap_horizontal": 16,
+        "columns_gap_vertical": 16,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    }
+  },
+  "order": [
+    "search",
+    "main"
+  ]
+}

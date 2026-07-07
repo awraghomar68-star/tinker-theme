@@ -16,6 +16,7 @@
 {%- endcomment -%}
 
 {{ 'elovira-header.css' | asset_url | stylesheet_tag }}
+{{ 'elovira-account.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'elovira-header.js' | asset_url }}" defer></script>
 
 {%- liquid
@@ -34,10 +35,9 @@
         <a
           class="elovira-header__icon elovira-header__nav-toggle"
           href="#elovira-nav-drawer"
-          data-nav-open
+          on:click="#elovira-nav-drawer/showDialog"
           aria-label="Ouvrir le menu"
           aria-controls="elovira-nav-drawer"
-          aria-expanded="false"
         >
           {%- render 'elovira-icon', name: 'menu', size: 18 -%}
         </a>
@@ -72,14 +72,26 @@
     </a>
 
     <div class="elovira-header__group elovira-header__group--end">
+      {%- if shop.customer_accounts_enabled -%}
+        <div class="elovira-header__account">
+          <shopify-account menu="{{ section.settings.account_menu }}">
+            {%- if customer -%}
+              <div class="elovira-header__account-fallback" slot="signed-out-avatar"></div>
+            {%- else -%}
+              <span slot="signed-out-avatar" aria-hidden="true">
+                {%- render 'elovira-icon', name: 'user', size: 18 -%}
+              </span>
+            {%- endif -%}
+          </shopify-account>
+        </div>
+      {%- endif -%}
       {%- if section.settings.show_search -%}
         <a
           class="elovira-header__icon"
           href="{{ routes.search_url }}"
-          data-search-open
+          on:click="#elovira-search-overlay/showDialog"
           aria-label="Rechercher"
           aria-controls="elovira-search-overlay"
-          aria-expanded="false"
         >
           {%- render 'elovira-icon', name: 'search', size: 20 -%}
         </a>
@@ -131,6 +143,16 @@
       "id": "sticky",
       "label": "Sticky header",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Account"
+    },
+    {
+      "type": "text",
+      "id": "account_menu",
+      "label": "Account menu handle",
+      "info": "Passed to Shopify's native customer-account component. Leave blank for default."
     },
     {
       "type": "header",

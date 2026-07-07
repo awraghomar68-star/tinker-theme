@@ -1,0 +1,83 @@
+/* ============================================================
+   ELOVIRA — Search (Phase 10)
+   Presentation only. Native results-list, facets/sort/pagination,
+   predictive-search.js and their markup are untouched. This file
+   only redefines Horizon's existing CSS custom properties so the
+   native components inherit the ELOVIRA Design System look —
+   same technique as elovira-main-collection.css (Phase 8). No
+   structural selectors against Horizon's internal classes.
+   ============================================================ */
+
+.elovira-search-results {
+  --color-background: var(--beauty-bg);
+  --color-background-rgb: 248, 245, 242;
+  --color-foreground: var(--beauty-text);
+  --color-foreground-rgb: 43, 35, 32;
+  --color-border: var(--beauty-text);
+  --color-border-rgb: 43, 35, 32;
+
+  --color-primary-button-background: var(--beauty-rose);
+  --color-primary-button-text: var(--beauty-white);
+  --color-primary-button-border: var(--beauty-rose);
+  --color-primary-button-focus-outline: var(--beauty-gold);
+  --color-primary-button-hover-background: var(--beauty-rose-hover);
+  --color-primary-button-hover-text: var(--beauty-white);
+  --color-primary-button-hover-border: var(--beauty-rose-hover);
+
+  --color-secondary-button-background: var(--beauty-white);
+  --color-secondary-button-text: var(--beauty-rose);
+  --color-secondary-button-border: var(--beauty-rose);
+  --color-secondary-button-hover-background: var(--beauty-beige);
+  --color-secondary-button-hover-text: var(--beauty-rose);
+  --color-secondary-button-hover-border: var(--beauty-rose);
+
+  --color-input-background: var(--beauty-white);
+  --color-input-text: var(--beauty-text);
+  --color-input-border: var(--beauty-text-soft);
+
+  --color-variant-background: var(--beauty-white);
+  --color-variant-border: var(--beauty-text-soft);
+  --color-variant-text: var(--beauty-text);
+  --color-variant-hover-background: var(--beauty-beige);
+  --color-variant-hover-text: var(--beauty-text);
+  --color-variant-hover-border: var(--beauty-gold);
+
+  --color-selected-variant-background: var(--beauty-text);
+  --color-selected-variant-border: var(--beauty-text);
+  --color-selected-variant-text: var(--beauty-white);
+  --color-selected-variant-hover-background: var(--beauty-text);
+  --color-selected-variant-hover-text: var(--beauty-white);
+  --color-selected-variant-hover-border: var(--beauty-text);
+
+  --font-body--family: var(--font-body);
+  --font-body--weight: var(--fw-regular);
+  --font-heading--family: var(--font-display);
+  --font-heading--weight: var(--fw-regular);
+
+  --style-border-radius-buttons-primary: var(--radius-pill);
+  --shadow-popover: var(--shadow-soft);
+}
+
+/* ---- Predictive dropdown skin (header overlay) ----
+   Scoped to the elovira-search-overlay predictive-search-component
+   only — the native header search-modal keeps its own default skin
+   untouched. Same token set as above, no markup changes. */
+#elovira-search-overlay predictive-search-component {
+  --color-background: var(--beauty-bg);
+  --color-background-rgb: 248, 245, 242;
+  --color-foreground: var(--beauty-text);
+  --color-foreground-rgb: 43, 35, 32;
+  --color-border: var(--beauty-text-soft);
+  --color-input-background: var(--beauty-white);
+  --color-input-text: var(--beauty-text);
+  --color-input-border: var(--beauty-text-soft);
+  --style-border-radius-popover: var(--radius);
+  --style-border-radius-inputs: var(--radius);
+  --shadow-popover: var(--shadow-soft);
+}
+
+#elovira-search-overlay .elovira-search__reset {
+  min-width: var(--minimum-touch-target, 44px);
+  height: var(--minimum-touch-target, 44px);
+  color: var(--beauty-text);
+}

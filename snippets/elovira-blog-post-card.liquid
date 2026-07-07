@@ -1,0 +1,57 @@
+{%- comment -%}
+  ELOVIRA — Blog post card atom (Phase 12). DS: BlogPostCard.
+  Single responsibility: one clickable article summary (image,
+  title, date/author, excerpt). No comment/business logic here —
+  card always links straight to the article page, works with
+  zero JavaScript. Mirrors elovira-product-card's pattern: reads
+  the native `article` object directly, zero duplicated business
+  data (native handles image/title/date/author/excerpt/url).
+
+  Params:
+    article        (article object, required)
+    image_loading  'lazy' (default) | 'eager' (first row / LCP)
+    horizontal     (boolean) — optional, wide hero layout for lead post
+    class
+{%- endcomment -%}
+
+{%- liquid
+  assign classes = 'elovira-blog-post-card'
+  if horizontal
+    assign classes = classes | append: ' elovira-blog-post-card--horizontal'
+  endif
+  if class != blank
+    assign classes = classes | append: ' ' | append: class
+  endif
+  assign loading = image_loading | default: 'lazy'
+-%}
+
+<a class="{{ classes }}" href="{{ article.url }}" data-testid="elovira-blog-post-card">
+  {%- if article.image != blank -%}
+    <span class="elovira-blog-post-card__media">
+      <img
+        class="elovira-blog-post-card__img"
+        src="{{ article.image | image_url: width: 800 }}"
+        srcset="{{ article.image | image_url: width: 400 }} 400w, {{ article.image | image_url: width: 800 }} 800w, {{ article.image | image_url: width: 1200 }} 1200w"
+        sizes="(min-width: 990px) 33vw, 100vw"
+        alt="{{ article.image.alt | default: article.title | escape }}"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+        loading="{{ loading }}"
+      >
+    </span>
+  {%- endif -%}
+
+  <span class="elovira-blog-post-card__content">
+    <span class="elovira-blog-post-card__title">{{ article.title | escape }}</span>
+    <span class="elovira-blog-post-card__meta">
+      <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+      {%- if article.author != blank -%}
+        <span>{{ 'content.blog_details_separator' | t }}</span>
+        <span>{{ article.author }}</span>
+      {%- endif -%}
+    </span>
+    {%- if article.excerpt != blank -%}
+      <span class="elovira-blog-post-card__excerpt">{{ article.excerpt | strip_html | truncatewords: 24 }}</span>
+    {%- endif -%}
+  </span>
+</a>

@@ -1,0 +1,48 @@
+/* ============================================================
+   ELOVIRA — Customer Account (Phase 11)
+   Presentation only. Shopify's native <shopify-account> component
+   (new hosted Customer Accounts) owns all markup, auth, and pages —
+   this file only redefines its documented CSS custom properties so
+   the header entry point and any account UI panels inherit the
+   ELOVIRA Design System look. Same technique as elovira-search.css
+   (Phase 10) and elovira-main-collection.css (Phase 8). No
+   structural selectors against Shopify's internal shadow DOM.
+   ============================================================ */
+
+.elovira-header__account {
+  display: flex;
+  align-items: center;
+}
+
+.elovira-header__account shopify-account {
+  --shopify-account-font-heading: var(--font-display);
+  --shopify-account-font-heading-weight: 400;
+  --shopify-account-font-body: var(--font-body);
+  --shopify-account-font-body-weight: 400;
+  --shopify-account-radius-base: var(--radius);
+  --shopify-account-radius-button: var(--radius-pill);
+  --shopify-account-radius-button-small: var(--radius-pill);
+  --shopify-account-radius-input: var(--radius-sm);
+  --shopify-account-color-background: var(--beauty-white);
+  --shopify-account-color-text: var(--beauty-text);
+  --shopify-account-color-accent: var(--beauty-rose);
+  --shopify-account-color-accent-text: var(--beauty-white);
+
+  color: var(--beauty-text);
+}
+
+.elovira-header__account shopify-account:not(:defined) {
+  min-width: var(--tap-min, 44px);
+  height: var(--tap-min, 44px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: normal;
+}
+
+.elovira-header__account-fallback {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background-color: var(--beauty-rose);
+}

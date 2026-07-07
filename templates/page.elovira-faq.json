@@ -1,0 +1,109 @@
+{
+  "sections": {
+    "main": {
+      "type": "elovira-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "t:names.title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-heading--family)",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "faq_accordion": {
+          "type": "accordion",
+          "settings": {
+            "icon": "plus",
+            "dividers": true,
+            "type_preset": "h6"
+          },
+          "blocks": {
+            "row-1": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "What is your shipping policy?",
+                "open_by_default": true,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text-1": {
+                  "type": "text",
+                  "settings": {
+                    "text": "{{ closest.page.content }}",
+                    "width": "100%"
+                  }
+                }
+              },
+              "block_order": ["text-1"]
+            },
+            "row-2": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "What is your return policy?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text-2": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Edit this answer in the theme editor.</p>",
+                    "width": "100%"
+                  }
+                }
+              },
+              "block_order": ["text-2"]
+            },
+            "row-3": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "How can I contact support?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text-3": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Edit this answer in the theme editor.</p>",
+                    "width": "100%"
+                  }
+                }
+              },
+              "block_order": ["text-3"]
+            }
+          },
+          "block_order": ["row-1", "row-2", "row-3"]
+        }
+      },
+      "block_order": ["heading", "faq_accordion"],
+      "settings": {
+        "gap": 32,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["main"]
+}

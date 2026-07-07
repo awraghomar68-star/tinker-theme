@@ -1,0 +1,107 @@
+/* ============================================================
+   ELOVIRA — Blog / article list (Phase 12)
+   Presentation only. blog.articles, pagination, tags, search,
+   URL routing all native/untouched — this file only lays out
+   the card grid and redefines DS tokens. No structural
+   selectors against Horizon internals.
+   ============================================================ */
+
+.elovira-blog {
+  background: var(--beauty-bg);
+  color: var(--beauty-text);
+}
+
+.elovira-blog__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  margin: 0 0 2rem;
+  text-align: center;
+}
+
+.elovira-blog__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .elovira-blog__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.elovira-blog__item--hero {
+  grid-column: 1 / -1;
+}
+
+.elovira-blog-post-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--beauty-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.elovira-blog-post-card--horizontal {
+  flex-direction: row;
+}
+
+@media screen and (max-width: 749px) {
+  .elovira-blog-post-card--horizontal {
+    flex-direction: column;
+  }
+}
+
+.elovira-blog-post-card--horizontal .elovira-blog-post-card__media,
+.elovira-blog-post-card--horizontal .elovira-blog-post-card__content {
+  flex: 1 1 50%;
+}
+
+.elovira-blog-post-card__media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.elovira-blog-post-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.elovira-blog-post-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+
+.elovira-blog-post-card__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.elovira-blog-post-card__meta {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--beauty-text-soft);
+  display: flex;
+  gap: 0.35rem;
+}
+
+.elovira-blog-post-card__excerpt {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--beauty-text-soft);
+}
+
+.elovira-blog__pagination {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}

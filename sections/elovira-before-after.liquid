@@ -22,11 +22,11 @@
     {%- if section.settings.image_before != blank and section.settings.image_after != blank -%}
       <div class="elovira-before-after__static">
         <div class="elovira-before-after__static-item">
-          <img src="{{ section.settings.image_before | image_url: width: 600 }}" alt="{{ section.settings.label_before | escape }}" width="{{ section.settings.image_before.width }}" height="{{ section.settings.image_before.height }}" loading="lazy">
+          <img src="{{ section.settings.image_before | image_url: width: 900 }}" alt="{{ section.settings.label_before | escape }}" width="{{ section.settings.image_before.width }}" height="{{ section.settings.image_before.height }}" loading="lazy">
           <span class="elovira-before-after__static-label">{{ section.settings.label_before }}</span>
         </div>
         <div class="elovira-before-after__static-item">
-          <img src="{{ section.settings.image_after | image_url: width: 600 }}" alt="{{ section.settings.label_after | escape }}" width="{{ section.settings.image_after.width }}" height="{{ section.settings.image_after.height }}" loading="lazy">
+          <img src="{{ section.settings.image_after | image_url: width: 900 }}" alt="{{ section.settings.label_after | escape }}" width="{{ section.settings.image_after.width }}" height="{{ section.settings.image_after.height }}" loading="lazy">
           <span class="elovira-before-after__static-label">{{ section.settings.label_after }}</span>
         </div>
       </div>

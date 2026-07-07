@@ -8,32 +8,30 @@
     brand       (string) — wordmark shown in the drawer head
     footer_text (string) — reassurance note pinned to the bottom
 
-  Closed state: `visibility:hidden` + off-canvas transform keep it out of the
-  tab order and AT. When JS is present, elovira-header.js adds `inert` +
-  aria-hidden and drives open/close (focus trap, Escape, return-focus). When JS
-  is off, the header's <a href="#elovira-nav-drawer"> reveals it via the CSS
-  :target fallback (no `inert` in the markup, so links stay operable).
+  Closed state: browser's native `<dialog>` `display:none` default keeps it
+  out of the tab order and AT. When JS is present, this is a native Horizon
+  <dialog-component>/<dialog> (Phase 14B) — open/close, focus trap, Escape,
+  scroll-lock and return-focus are 100% native, zero custom JS. When JS is
+  off, the header's <a href="#elovira-nav-drawer"> still reveals it via the
+  CSS :target fallback below (author CSS overrides the dialog's UA default).
   Single-level menu by design (DS: no mega menu for a small catalog).
 {%- endcomment -%}
 
 {{ 'elovira-header.css' | asset_url | stylesheet_tag }}
 
-<div class="elovira-nav-drawer__scrim" data-nav-close></div>
-<nav
-  id="elovira-nav-drawer"
+<dialog-component id="elovira-nav-drawer" class="elovira-nav-drawer-component">
+<dialog
+  ref="dialog"
   class="elovira elovira-nav-drawer"
-  role="dialog"
-  aria-modal="true"
   aria-label="Menu"
-  tabindex="-1"
 >
   <div class="elovira-nav-drawer__head">
     <span class="elovira-nav-drawer__brand">{{ brand | default: 'ELOVIRA' | escape }}</span>
-    <a class="elovira-header__icon" href="#" data-nav-close aria-label="Fermer le menu">
+    <a class="elovira-header__icon" href="#" on:click="dialog-component/closeDialog" aria-label="Fermer le menu">
       {%- render 'elovira-icon', name: 'close', size: 16 -%}
     </a>
   </div>
-  <div class="elovira-nav-drawer__links">
+  <nav class="elovira-nav-drawer__links" aria-label="Navigation principale">
     {%- for link in linklists[menu].links -%}
       <a
         class="elovira-nav-drawer__link"
@@ -41,8 +39,9 @@
         {% if link.active %}aria-current="page"{% endif %}
       >{{ link.title | escape }}</a>
     {%- endfor -%}
-  </div>
+  </nav>
   {%- if footer_text != blank -%}
     <div class="elovira-nav-drawer__foot">{{ footer_text | escape }}</div>
   {%- endif -%}
-</nav>
+</dialog>
+</dialog-component>

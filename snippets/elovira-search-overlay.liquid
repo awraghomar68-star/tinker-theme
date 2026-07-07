@@ -1,5 +1,5 @@
 {%- comment -%}
-  ELOVIRA — Search overlay snippet (Phase 4)
+  ELOVIRA — Search overlay snippet (Phase 4, predictive wiring Phase 10)
   DS: components/commerce/SearchOverlay.jsx. Fullscreen search sheet.
   Rendered once by the header section (only when search is enabled).
 
@@ -7,45 +7,91 @@
     placeholder (string) — input placeholder
 
   Progressive: native GET form to /search works without JS. When JS is
-  present, elovira-header.js opens it as an overlay (focus, Escape,
-  focus trap, return-focus). Predictive results wiring = Phase 10.
-  Starts closed via `inert` + aria-hidden.
+  present, the overlay is a native Horizon <dialog-component>/<dialog>
+  (Phase 14B) — open/close, focus trap, Escape, scroll-lock and
+  return-focus are 100% native browser + assets/dialog.js, zero custom
+  JS in elovira-header.js. Predictive results are Horizon's own
+  <predictive-search-component> (assets/predictive-search.js) — same
+  refs/on:* handlers as snippets/search-modal.liquid, just skinned.
+  Zero JS/fetch/endpoint rewrite.
 {%- endcomment -%}
 
 {{ 'elovira-header.css' | asset_url | stylesheet_tag }}
+{{ 'elovira-search.css' | asset_url | stylesheet_tag }}
+{% render 'predictive-search-styles' %}
 
-<div
-  id="elovira-search-overlay"
+<script
+  src="{{ 'predictive-search.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<dialog-component id="elovira-search-overlay" class="elovira-search-overlay-component">
+<dialog
+  ref="dialog"
   class="elovira elovira-search"
-  role="dialog"
-  aria-modal="true"
   aria-label="Recherche"
-  aria-hidden="true"
-  inert
 >
-  <form class="elovira-search__bar" action="{{ routes.search_url }}" method="get" role="search">
-    <span class="elovira-search__icon" aria-hidden="true">
-      {%- render 'elovira-icon', name: 'search', size: 20 -%}
-    </span>
-    <input
-      type="search"
-      name="q"
-      class="elovira-search__input"
-      placeholder="{{ placeholder | default: 'Rechercher un produit…' | escape }}"
-      aria-label="Rechercher"
-      autocomplete="off"
-      data-search-input
+  <predictive-search-component
+    class="elovira-search__predictive predictive-search"
+    data-section-id="predictive-search"
+    role="search"
+    aria-label="{{ 'content.search_input_label' | t }}"
+  >
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="elovira-search__bar"
+      ref="form"
+      on:keydown="/onSearchKeyDown"
     >
-    <button type="button" class="elovira-header__icon" data-search-close aria-label="Fermer la recherche">
-      {%- render 'elovira-icon', name: 'close', size: 15 -%}
-    </button>
-  </form>
-  <div class="elovira-search__body" data-search-results>
-    <div class="elovira-search__hint">
-      <span class="elovira-search__medallion" aria-hidden="true">
-        {%- render 'elovira-icon', name: 'search', size: 24 -%}
+      <span class="elovira-search__icon" aria-hidden="true">
+        {%- render 'elovira-icon', name: 'search', size: 20 -%}
       </span>
-      <p class="elovira-search__hint-text">Tapez pour rechercher un produit.</p>
+      <label for="ElovairaSearchInput" class="visually-hidden">
+        {{- 'content.search_input_label' | t -}}
+      </label>
+      <input
+        id="ElovairaSearchInput"
+        type="search"
+        name="q"
+        class="elovira-search__input search-input"
+        placeholder="{{ placeholder | default: 'Rechercher un produit…' | escape }}"
+        autocomplete="off"
+        autofocus
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="predictive-search-results"
+        aria-controls="predictive-search-results"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        ref="searchInput"
+        on:input="/search"
+        on:keydown="/onSearchKeyDown"
+      >
+      <input name="options[prefix]" type="hidden" value="last">
+      <button
+        type="button"
+        class="elovira-search__reset button-unstyled"
+        ref="resetButton"
+        hidden
+        on:click="/resetSearch"
+      >
+        {{ 'actions.clear' | t }}
+      </button>
+      <button type="button" class="elovira-header__icon" on:click="dialog-component/closeDialog" aria-label="Fermer la recherche">
+        {%- render 'elovira-icon', name: 'close', size: 15 -%}
+      </button>
+    </form>
+
+    <div class="elovira-search__body" ref="predictiveSearchResults" on:click="/handleModalClick">
+      {% render 'predictive-search-empty-state',
+        load_empty_state: true,
+        shadow_opacity: 0.1,
+        products_test_id: 'products-list-default--elovira'
+      %}
     </div>
-  </div>
-</div>
+  </predictive-search-component>
+</dialog>
+</dialog-component>

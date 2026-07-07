@@ -1,0 +1,83 @@
+/* ============================================================
+   ELOVIRA — Article page (Phase 12)
+   Presentation only. Native theme blocks (_blog-post-title,
+   _blog-post-info-text, _blog-post-image, _blog-post-content)
+   and comments/comment-form logic are untouched — this file
+   only lays out the article body + comments and redefines DS
+   tokens. No structural selectors against Horizon internals.
+   ============================================================ */
+
+.elovira-article {
+  background: var(--beauty-bg);
+  color: var(--beauty-text);
+}
+
+.elovira-article__body {
+  max-width: var(--normal-content-width, 720px);
+  margin: 0 auto;
+}
+
+.elovira-article__breadcrumb {
+  max-width: var(--normal-content-width, 720px);
+  margin: 0 auto;
+  padding-bottom: var(--space-12px, 12px);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--beauty-text-soft);
+}
+
+.elovira-article__breadcrumb a {
+  color: var(--beauty-text-soft);
+  text-decoration: none;
+}
+
+.elovira-article__breadcrumb a:hover,
+.elovira-article__breadcrumb a:focus-visible {
+  color: var(--beauty-text);
+  text-decoration: underline;
+}
+
+.elovira-article__breadcrumb [aria-current="page"] {
+  color: var(--beauty-text);
+}
+
+.elovira-article__body h1 {
+  font-family: var(--font-display);
+}
+
+.elovira-article__comments {
+  max-width: var(--normal-content-width, 720px);
+  margin: 3rem auto 0;
+}
+
+.elovira-article__comments-heading {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.elovira-article__comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.elovira-article__comment {
+  font-family: var(--font-body);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--beauty-line);
+}
+
+.elovira-article__comment-author {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--beauty-text-soft);
+}
+
+.elovira-article__comments-pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}

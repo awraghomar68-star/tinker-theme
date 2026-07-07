@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "elovira-blog",
+      "settings": {
+        "show_title": true,
+        "articles_per_page": 12,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": ["main"]
+}
