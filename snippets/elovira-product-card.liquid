@@ -56,8 +56,23 @@
   <h3 class="elovira-product-card__title">{{ product.title }}</h3>
 
   {%- if product.compare_at_price > product.price -%}
-    {%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price | money, size: 'card' -%}
+    {%- render 'elovira-price', value: product.price, compare_at: product.compare_at_price, size: 'card' -%}
   {%- else -%}
-    {%- render 'elovira-price', value: product.price | money, size: 'card' -%}
+    {%- render 'elovira-price', value: product.price, size: 'card' -%}
   {%- endif -%}
 </a>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price
+    | money, size: 'card' -%}"
+  to: "{%- render 'elovira-price', value: product.price, compare_at: product.compare_at_price,
+    size: 'card' -%}"
+  position: 2437..2541
+- from: "{%- render 'elovira-price', value: product.price | money, size: 'card' -%}"
+  to: "{%- render 'elovira-price', value: product.price, size: 'card' -%}"
+  position: 2561..2627
+{% endcomment %}

@@ -51,9 +51,9 @@
         </p>
         <span class="elovira-featured-product__price">
           {%- if product.compare_at_price > product.price -%}
-            {%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price | money, size: 'hero' -%}
+            {%- render 'elovira-price', value: product.price, compare_at: product.compare_at_price, size: 'hero' -%}
           {%- else -%}
-            {%- render 'elovira-price', value: product.price | money, size: 'hero' -%}
+            {%- render 'elovira-price', value: product.price, size: 'hero' -%}
           {%- endif -%}
         </span>
         {%- render 'elovira-button', label: section.settings.button_label, href: product.url, variant: 'gold', full: false -%}
@@ -88,3 +88,18 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'elovira-price', value: product.price | money, compare_at: product.compare_at_price
+    | money, size: 'hero' -%}"
+  to: "{%- render 'elovira-price', value: product.price, compare_at: product.compare_at_price,
+    size: 'hero' -%}"
+  position: 2565..2669
+- from: "{%- render 'elovira-price', value: product.price | money, size: 'hero' -%}"
+  to: "{%- render 'elovira-price', value: product.price, size: 'hero' -%}"
+  position: 2705..2771
+{% endcomment %}

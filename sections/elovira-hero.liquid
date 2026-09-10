@@ -29,10 +29,10 @@
       {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
         <div class="elovira-hero__actions">
           {%- if section.settings.button_label != blank -%}
-            {%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link | default: '#', variant: 'gold', full: false -%}
+            {%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link, default: '#', variant: 'gold', full: false -%}
           {%- endif -%}
           {%- if section.settings.button_label_2 != blank -%}
-            {%- render 'elovira-button', label: section.settings.button_label_2, href: section.settings.button_link_2 | default: '#', variant: 'ghost', full: false -%}
+            {%- render 'elovira-button', label: section.settings.button_label_2, href: section.settings.button_link_2, default: '#', variant: 'ghost', full: false -%}
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -96,3 +96,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'elovira-button', label: section.settings.button_label, href:
+    section.settings.button_link | default: '#', variant: 'gold', full: false -%}"
+  to: "{%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link,
+    default: '#', variant: 'gold', full: false -%}"
+  position: 1408..1557
+- from: "{%- render 'elovira-button', label: section.settings.button_label_2, href:
+    section.settings.button_link_2 | default: '#', variant: 'ghost', full: false -%}"
+  to: "{%- render 'elovira-button', label: section.settings.button_label_2, href:
+    section.settings.button_link_2, default: '#', variant: 'ghost', full: false -%}"
+  position: 1656..1810
+{% endcomment %}
