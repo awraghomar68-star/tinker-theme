@@ -19,7 +19,7 @@
     {%- endif -%}
     {%- if section.settings.button_label != blank -%}
       <div class="elovira-final-cta__actions">
-        {%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link | default: '#', variant: 'gold', full: false -%}
+        {%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link, default: '#', variant: 'gold', full: false -%}
       </div>
     {%- endif -%}
   </div>
@@ -44,3 +44,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'elovira-button', label: section.settings.button_label, href:
+    section.settings.button_link | default: '#', variant: 'gold', full: false -%}"
+  to: "{%- render 'elovira-button', label: section.settings.button_label, href: section.settings.button_link,
+    default: '#', variant: 'gold', full: false -%}"
+  position: 1023..1172
+{% endcomment %}
